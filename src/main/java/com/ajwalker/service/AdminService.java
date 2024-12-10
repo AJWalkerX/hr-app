@@ -18,7 +18,7 @@ public class AdminService {
 	private final JwtManager jwtManager;
 	
 	public String adminLogin(AdminLoginRequestDto dto) {
-		Optional<Admin> adminOptional = adminRepository.findOptionalByUserNameAndPassword(dto.username(), dto.password());
+		Optional<Admin> adminOptional = adminRepository.findOptionalByUsernameAndPassword(dto.username(), dto.password());
 		if (adminOptional.isEmpty())
 			throw new HRAppException(ErrorType.INVALID_ADMIN);
 		String token = jwtManager.createToken(adminOptional.get().getId());

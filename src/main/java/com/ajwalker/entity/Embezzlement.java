@@ -5,11 +5,12 @@ import com.ajwalker.utility.Enum.embezzlement.EEmbezzlementState;
 import com.ajwalker.utility.Enum.embezzlement.EEmbezzlementType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Data
 @Entity
 @Table(name = "tbl_embezzlement")
