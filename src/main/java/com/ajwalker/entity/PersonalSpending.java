@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "tbl_personal_spending")
-public class PersonalSpending {
+public class PersonalSpending extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,5 +21,6 @@ public class PersonalSpending {
     private String description;
     private String billPdfUrl;
     private Double billAmount;
+    @Enumerated(EnumType.STRING)
     private ESpendingType spendingType;
 }

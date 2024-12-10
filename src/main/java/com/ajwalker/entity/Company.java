@@ -17,7 +17,6 @@ public class Company extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String memberShipPlanId;
     private String companyName;
     private String companyAddress;
     private String telNo;
