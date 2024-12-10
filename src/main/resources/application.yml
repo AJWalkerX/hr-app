@@ -15,3 +15,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+java15:
+  jwt:
+    secret-key: 56f71ab4bb5e1dae6d6653244d321a3e
+    issuer: ZorIK
