@@ -2,20 +2,34 @@ server:
   port: 9090
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
   security:
     user:
-      name: admin
-      password: admin
+      name: ${SEC_NAME}
+      password: ${SEC_PASSWORD}
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/hrappdb
-    username: postgres
-    password: root
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
 java15:
   jwt:
-    secret-key: 56f71ab4bb5e1dae6d6653244d321a3e
-    issuer: ZorIK
+    secret-key: ${JWT_SECRET_KEY}
+    issuer: ${JWT_ISSUER}

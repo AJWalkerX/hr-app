@@ -23,7 +23,6 @@ public class User extends BaseEntity {
     private String email;
     private String password;
     private String avatar;
-    private Long userRoleId;
     @Enumerated(EnumType.STRING)
     private EUserState userState;
 }
