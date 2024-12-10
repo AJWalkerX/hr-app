@@ -1,6 +1,5 @@
 package com.ajwalker.entity;
 
-import com.ajwalker.utility.Enum.user.EUserRole;
 import com.ajwalker.utility.Enum.user.EUserState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,8 +23,7 @@ public class User extends BaseEntity {
     private String email;
     private String password;
     private String avatar;
-    @Enumerated(EnumType.STRING)
-    private EUserRole userRole;
+    private Long userRoleId;
     @Enumerated(EnumType.STRING)
     private EUserState userState;
 }
