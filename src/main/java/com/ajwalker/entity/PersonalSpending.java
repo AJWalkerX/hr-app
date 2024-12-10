@@ -1,6 +1,6 @@
 package com.ajwalker.entity;
 
-import com.ajwalker.utility.Enum.ESpendingType;
+import com.ajwalker.utility.Enum.personalSpending.ESpendingType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

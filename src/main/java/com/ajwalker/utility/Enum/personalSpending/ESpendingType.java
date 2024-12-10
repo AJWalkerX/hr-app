@@ -1,4 +1,4 @@
-package com.ajwalker.utility.Enum;
+package com.ajwalker.utility.Enum.personalSpending;
 
 public enum ESpendingType {
     ACCOMMODATION,

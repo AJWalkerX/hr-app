@@ -1,7 +1,7 @@
 package com.ajwalker.entity;
 
-import com.ajwalker.utility.Enum.MemberShipPlan.EMemberShipState;
-import com.ajwalker.utility.Enum.MemberShipPlan.EMemberType;
+import com.ajwalker.utility.Enum.memberShipPlan.EMemberShipState;
+import com.ajwalker.utility.Enum.memberShipPlan.EMemberType;
 import jakarta.persistence.*;
 import lombok.*;
 
