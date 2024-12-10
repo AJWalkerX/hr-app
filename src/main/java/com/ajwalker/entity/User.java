@@ -1,7 +1,7 @@
 package com.ajwalker.entity;
 
-import com.ajwalker.utility.Enum.User.EUserRole;
-import com.ajwalker.utility.Enum.User.EUserState;
+import com.ajwalker.utility.Enum.user.EUserRole;
+import com.ajwalker.utility.Enum.user.EUserState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

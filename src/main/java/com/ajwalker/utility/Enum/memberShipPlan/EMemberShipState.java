@@ -1,4 +1,4 @@
-package com.ajwalker.utility.Enum.MemberShipPlan;
+package com.ajwalker.utility.Enum.memberShipPlan;
 
 public enum EMemberShipState {
     ACTIVE, INACTIVE, COMPLETED
