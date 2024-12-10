@@ -5,11 +5,12 @@ import com.ajwalker.utility.Enum.user.EGender;
 import com.ajwalker.utility.Enum.user.EPosition;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Data
 @Entity
 @Table(name = "tbl_personal_document")

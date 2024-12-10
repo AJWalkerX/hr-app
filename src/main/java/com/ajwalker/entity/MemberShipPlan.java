@@ -4,11 +4,12 @@ import com.ajwalker.utility.Enum.memberShipPlan.EMemberShipState;
 import com.ajwalker.utility.Enum.memberShipPlan.EMemberType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Data
 @Entity
 @Table(name = "tbl_member_ship_plan")
