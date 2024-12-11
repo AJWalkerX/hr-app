@@ -32,9 +32,9 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7);
             Optional<Long> userId = jwtManager.verifyToken(token);
             if (userId.isPresent()) {
-//                UserDetails userDetails = jwtUserDetails.getUserById(userId.get());
+                UserDetails userDetails = jwtUserDetails.getUserById(userId.get());
                 UsernamePasswordAuthenticationToken authenticationToken
-                        = new UsernamePasswordAuthenticationToken(null, null, new ArrayList<>());
+                        = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }

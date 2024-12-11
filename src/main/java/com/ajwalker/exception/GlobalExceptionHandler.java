@@ -18,10 +18,10 @@ public class GlobalExceptionHandler {
 	 * Tanımlaması yapılmayan diğer tüm hataları yakalamak için RuntimeException yakalayım.
 	 *
 	 */
-	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<ErrorMessage> runtimeExcepitonHandler(RuntimeException exception){
-		return  createResponseEntity(ErrorType.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR, null);
-	}
+//	@ExceptionHandler(RuntimeException.class)
+//	public ResponseEntity<ErrorMessage> runtimeExcepitonHandler(RuntimeException exception){
+//		return  createResponseEntity(ErrorType.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR, null);
+//	}
 	
 	@ExceptionHandler(HRAppException.class)// istisnayı yakalayan kısım
 	@ResponseBody

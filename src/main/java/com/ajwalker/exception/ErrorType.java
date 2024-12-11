@@ -12,6 +12,7 @@ public enum ErrorType {
 	PASSWORD_ERROR(6001, "girilen şifreler uyuşmamaktadır",HttpStatus.BAD_REQUEST),
 	INVALID_EMAIL_OR_PASSWORD(6002,"Kullanıcı adı ya da şifre hatalıdır",HttpStatus.BAD_REQUEST),
 	NOTFOUND_USER(6003,"kullanıcı bulunamadı", HttpStatus.NOT_FOUND),
+	DENIED_USER(6100,"Hesap onayi reddedildi! Daha fazla bilgi icin iletisime geciniz", HttpStatus.FORBIDDEN),
 	INVALID_ADMIN(7001,"Admin adı ya da şifre hatalıdır",HttpStatus.BAD_REQUEST),
 	INVALID_TOKEN(9001,"geçersiz token bilgisi",HttpStatus.BAD_REQUEST);
 	

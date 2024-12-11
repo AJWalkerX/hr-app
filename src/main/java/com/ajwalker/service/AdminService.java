@@ -7,6 +7,7 @@ import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.AdminRepository;
 import com.ajwalker.utility.JwtManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,11 +17,12 @@ import java.util.Optional;
 public class AdminService {
 	private final AdminRepository adminRepository;
 	private final JwtManager jwtManager;
-	
+	private final PasswordEncoder passwordEncoder;
 	public String adminLogin(AdminLoginRequestDto dto) {
-		Optional<Admin> adminOptional = adminRepository.findOptionalByUsernameAndPassword(dto.username(), dto.password());
-		if (adminOptional.isEmpty())
+		Optional<Admin> adminOptional = adminRepository.findOptionalByUsername(dto.username());
+		if (adminOptional.isEmpty() || !passwordEncoder.matches(dto.password(), adminOptional.get().getPassword())){
 			throw new HRAppException(ErrorType.INVALID_ADMIN);
+		}
 		String token = jwtManager.createToken(adminOptional.get().getId());
 		return token;
 	}
