@@ -15,6 +15,9 @@ public record RegisterRequestDto(
 		String password,
 		String rePassword,
 		@Email
-		String email
-) {
-}
+		String email,
+		String name,
+		String surname,
+		String personalRole,
+		String companyName
+	){}

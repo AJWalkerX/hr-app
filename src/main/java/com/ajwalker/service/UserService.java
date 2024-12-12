@@ -4,6 +4,8 @@ import com.ajwalker.constant.MailApis;
 import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
+import com.ajwalker.entity.Company;
+import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -27,10 +29,17 @@ public class UserService {
 	private final UserAuthVerifyCodeService userAuthVerifyCodeService;
 	private final JwtManager jwtManager;
 	private final PasswordEncoder passwordEncoder;
+	private final PersonalDocumentService personalDocumentService;
+	private final CompanyService companyService;
 	
 	public Boolean register(RegisterRequestDto dto) {
 		User user = UserMapper.INSTANCE.fromRegisterDto(dto);
 		user.setUserState(EUserState.PENDING);
+		user = userRepository.save(user);
+
+		personalDocumentService.createPersonalDocument(dto.personalRole(), dto.name(), dto.surname(), dto.email(), user.getId());
+		Company company = companyService.createCompany(dto.companyName());
+		user.setCompanyId(company.getId());
 		user = userRepository.save(user);
 
 		String authCode = userAuthVerifyCodeService.generateUserAuthVerifyCode(user.getId());
@@ -55,8 +64,7 @@ public class UserService {
 		if(userOptional.get().getUserState().equals(EUserState.DENIED)){
 			throw new HRAppException(ErrorType.DENIED_USER);
 		}
-		String token  = jwtManager.createToken(userOptional.get().getId());
-		return token;
+        return jwtManager.createToken(userOptional.get().getId());
 	}
 
 	public Optional<User> findUserById(Long userId) {

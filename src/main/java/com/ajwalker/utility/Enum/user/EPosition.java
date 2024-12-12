@@ -7,6 +7,7 @@ public enum EPosition {
     SENIOR,
     TEAM_LEAD,
     MANAGER,
-    DIRECTOR
+    DIRECTOR,
+    NONE
 
     }
