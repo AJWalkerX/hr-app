@@ -50,7 +50,7 @@ public class UserController {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
 
-		userService.updateUserState(userIdOptional.get());
+		userService.updateUserStateToInReView(userIdOptional.get());
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(URI.create(ReactApis.DOMAIN));
 		return new ResponseEntity<>(headers, HttpStatus.FOUND);

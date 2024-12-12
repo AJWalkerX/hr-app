@@ -23,5 +23,6 @@ public class RestApis {
 	public static final String ADMINLOGIN = "/adminlogin";
 	public static final String LISTCUSTOMER = "/list-customer";
 	public static final String LISTUSERONWAIT = "/list-user-on-wait";
+	public static final String USERAUTHORISATION = "/user-authorisation";
 
 }

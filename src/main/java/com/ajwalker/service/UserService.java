@@ -1,26 +1,21 @@
 package com.ajwalker.service;
 
 import com.ajwalker.constant.MailApis;
-import com.ajwalker.constant.ReactApis;
 import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
+import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.entity.User;
-import com.ajwalker.entity.UserAuthVerifyCode;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.mapper.UserMapper;
 import com.ajwalker.repository.UserRepository;
+import com.ajwalker.utility.Enum.user.EUserAuthorisation;
 import com.ajwalker.utility.Enum.user.EUserState;
 import com.ajwalker.utility.JwtManager;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +63,7 @@ public class UserService {
 		return userRepository.findById(userId);
 	}
 
-	public void updateUserState(Long userId) {
+	public void updateUserStateToInReView(Long userId) {
 		Optional<User> userOptional = userRepository.findById(userId);
 		if(userOptional.isPresent()) {
 			User user = userOptional.get();
@@ -83,5 +78,28 @@ public class UserService {
 
 	public List<User> getAllUserOnWait() {
 		return userRepository.findAllUserByUserState(List.of(EUserState.PENDING,EUserState.IN_REVIEW));
+	}
+
+	public User userAuthorisation(UserAuthorisationDto dto) {
+		Optional<User> userOptional = userRepository.findById(dto.userId());
+		if(userOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		User user = userOptional.get();
+		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.ACCEPT.toString())) {
+			return updateUserToInActive(user);
+		}
+		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.DENY.toString())) {
+			return updateUserToDenied(user);
+		}
+		return user;
+	}
+	private User updateUserToInActive(User user) {
+		user.setUserState(EUserState.INACTIVE);
+		return userRepository.save(user);
+	}
+	private User updateUserToDenied(User user) {
+		user.setUserState(EUserState.DENIED);
+		return userRepository.save(user);
 	}
 }

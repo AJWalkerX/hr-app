@@ -3,6 +3,7 @@ package com.ajwalker.controller;
 
 import com.ajwalker.dto.request.AdminLoginRequestDto;
 import com.ajwalker.dto.request.DologinRequestDto;
+import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.entity.User;
 import com.ajwalker.service.AdminService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.ajwalker.constant.RestApis.*;
 
@@ -55,15 +57,14 @@ public class AdminController {
 				.build());
 	}
 
-	//TODO: buraya devam kullanici onaylama reddetme islemi kullanici id'sine gore
-//	@PostMapping(LISTUSERONWAIT)
-//	public ResponseEntity<BaseResponse<List<User>>> userAuthorisation(){
-//		return ResponseEntity.ok(BaseResponse.<List<User>>builder()
-//				.message("Kullanici onaylama/ reddetme islemi tamamlanmistir")
-//				.code(200)
-//				.success(true)
-//				.data(userService.())
-//				.build());
-//	}
+	@PostMapping(USERAUTHORISATION)
+	public ResponseEntity<BaseResponse<User>> userAuthorisation(@RequestBody UserAuthorisationDto dto){
+		return ResponseEntity.ok(BaseResponse.<User>builder()
+				.message("Kullanici onaylama/ reddetme islemi tamamlanmistir")
+				.code(200)
+				.success(true)
+				.data(userService.userAuthorisation(dto))
+				.build());
+	}
 
 }
