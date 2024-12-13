@@ -28,7 +28,6 @@ import static com.ajwalker.constant.RestApis.*;
 @CrossOrigin("*")  //Frontend isteklerini sınırlar, * koyunca her porttan gelen istekleri kabul eder
 public class UserController {
 	private final UserService userService;
-	private final JwtManager jwtManager;
 	private final UserAuthVerifyCodeService userAuthVerifyCodeService;
 
 	@PostMapping(REGISTER)
@@ -58,21 +57,12 @@ public class UserController {
 
 	@PostMapping(DOLOGIN)
 	public ResponseEntity<BaseResponse<String>> doLogin(@RequestBody @Valid DologinRequestDto dto){
-		String tokenOrState = userService.doLogin(dto);
-		if (tokenOrState.equals(EUserState.PENDING.toString())) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(URI.create(ReactApis.EMAIL_VERIFY_MASSAGE_PAGE));
-			return new ResponseEntity<>(headers, HttpStatus.FOUND);
-		}
-		if (tokenOrState.equals(EUserState.IN_REVIEW.toString())) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(URI.create(ReactApis.ADMIN_VERIFY_MASSAGE_PAGE));
-			return new ResponseEntity<>(headers, HttpStatus.FOUND);
-		}
+		String token = userService.doLogin(dto);
+
 		return ResponseEntity.ok(BaseResponse.<String>builder()
 				                         .success(true)
 				                         .message("Giriş işlemi başarılı")
-				                         .data(tokenOrState)
+				                         .data(token)
 				                         .code(200)
 		                                     .build()
 		);

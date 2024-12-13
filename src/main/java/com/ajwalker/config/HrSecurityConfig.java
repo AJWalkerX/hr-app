@@ -1,6 +1,5 @@
 package com.ajwalker.config;
 
-import com.ajwalker.constant.RestApis;
 import com.ajwalker.utility.Enum.EAdminRole;
 import com.ajwalker.utility.Enum.user.EUserRole;
 import lombok.extern.slf4j.Slf4j;
@@ -25,30 +24,28 @@ public class HrSecurityConfig {
         return new JWTTokenFilter();
     }
 
-   @Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(req ->{
-            req
-                   .requestMatchers(
-                            "/swagger-ui/**", "/v3/api-docs/**",
-                            "/v1/dev/user/register", "v1/dev/user/login"
-                           ,"v1/dev/admin/login"
-                    )
-                    .permitAll()
-                    .requestMatchers("/admin/**", "/user/**").hasAuthority(EAdminRole.ADMIN.toString())
-                    .requestMatchers("/manager/**").hasAuthority(EUserRole.MANAGER.toString())
-                    .requestMatchers("/personel/**").hasAuthority(EUserRole.PERSONAL.toString())
-//                  .authenticated();
-                    .anyRequest().permitAll();
-        });
+        http.cors(cors -> cors.configurationSource(new CorsConfig().corsConfigurationSource()))
+                .authorizeHttpRequests(req -> {
+                    req.requestMatchers(
+                                    "/swagger-ui/**", "/v3/api-docs/**",
+                                    "/v1/dev/user/register", "/v1/dev/user/dologin",
+                                    "/v1/dev/admin/doLogin"
+                            ).permitAll()
+                            .requestMatchers("/admin/**", "/user/**").hasAuthority(EAdminRole.ADMIN.toString())
+                            .requestMatchers("/manager/**").hasAuthority(EUserRole.MANAGER.toString())
+                            .requestMatchers("/personel/**").hasAuthority(EUserRole.PERSONAL.toString())
+                            .anyRequest().permitAll();
+                });
         http.formLogin(AbstractAuthenticationFilterConfigurer::permitAll);
-       http.csrf(AbstractHttpConfigurer::disable);
-       http.addFilterBefore(getJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.addFilterBefore(getJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-   }
+    }
 
-   @Bean
+    @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
-   }
+    }
 }

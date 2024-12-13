@@ -35,6 +35,7 @@ public class UserService {
 	public Boolean register(RegisterRequestDto dto) {
 		User user = UserMapper.INSTANCE.fromRegisterDto(dto);
 		user.setUserState(EUserState.PENDING);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user = userRepository.save(user);
 
 		personalDocumentService.createPersonalDocument(dto.personalRole(), dto.name(), dto.surname(), dto.email(), user.getId());
@@ -54,12 +55,11 @@ public class UserService {
 		if(!passwordEncoder.matches(dto.password(), userOptional.get().getPassword())){
 			throw new HRAppException(ErrorType.INVALID_EMAIL_OR_PASSWORD);
 		}
-
 		if(userOptional.get().getUserState().equals(EUserState.PENDING)){
-			return EUserState.PENDING.toString();
+			throw new HRAppException(ErrorType.PENDING_USER);
 		}
 		if(userOptional.get().getUserState().equals(EUserState.IN_REVIEW)){
-			return EUserState.IN_REVIEW.toString();
+			throw new HRAppException(ErrorType.IN_REVIEW_USER);
 		}
 		if(userOptional.get().getUserState().equals(EUserState.DENIED)){
 			throw new HRAppException(ErrorType.DENIED_USER);

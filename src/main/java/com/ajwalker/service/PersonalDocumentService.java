@@ -22,12 +22,15 @@ public class PersonalDocumentService {
         personalDocumentRepository.save(personalDocument);
     }
     private EPosition statePersonalDocument(String personalRole) {
+        if (personalRole == null) {
+            return EPosition.NONE;
+        }
         return switch (personalRole.toUpperCase()) {
             case "INTERN" -> EPosition.INTERN;
             case "JUNIOR" -> EPosition.JUNIOR;
-            case "MID_LEVEL" -> EPosition.MID_LEVEL;
+            case "MID LEVEL" -> EPosition.MID_LEVEL;
             case "SENIOR" -> EPosition.SENIOR;
-            case "TEAM_LEAD" -> EPosition.TEAM_LEAD;
+            case "TEAM LEAD" -> EPosition.TEAM_LEAD;
             case "MANAGER" -> EPosition.MANAGER;
             case "DIRECTOR" -> EPosition.DIRECTOR;
             default -> EPosition.NONE;
