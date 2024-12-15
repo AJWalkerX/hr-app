@@ -24,5 +24,7 @@ public class RestApis {
 	public static final String LISTCUSTOMER = "/list-customer";
 	public static final String LISTUSERONWAIT = "/list-user-on-wait";
 	public static final String USERAUTHORISATION = "/user-authorisation";
+	public static final String FORGOT_PASSWORD_MAIL = "/auth-forgot-password";
+	public static final String NEW_PASSWORD = "/new-password";
 
 }

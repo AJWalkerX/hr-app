@@ -2,6 +2,7 @@ package com.ajwalker.service;
 
 import com.ajwalker.constant.MailApis;
 import com.ajwalker.dto.request.DologinRequestDto;
+import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.entity.Company;
@@ -109,5 +110,28 @@ public class UserService {
 	private User updateUserToDenied(User user) {
 		user.setUserState(EUserState.DENIED);
 		return userRepository.save(user);
+	}
+
+	public Boolean forgotPasswordMail(String email) {
+		Optional<User> userOptional = userRepository.findOptionalByEmail(email);
+		if(userOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		User user = userOptional.get();
+		String authCode = userAuthVerifyCodeService.generateUserAuthVerifyCode(user.getId());
+		String verificationLink = MailApis.NEW_PASSWORD_VERIFICATION_LINK + authCode;
+		mailService.sendMail(user.getEmail(), MailApis.VERIFICATION, verificationLink);
+		return true;
+
+	}
+
+	public void updateUserPassword(NewPasswordRequestDto dto) {
+		Optional<User> userOptional = userRepository.findById(dto.userId());
+		if (userOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		User user = userOptional.get();
+		user.setPassword(passwordEncoder.encode(dto.password()));
+		userRepository.save(user);
 	}
 }
