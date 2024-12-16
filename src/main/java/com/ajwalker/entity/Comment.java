@@ -24,5 +24,7 @@ public class Comment extends BaseEntity {
     private String title;
     @Column(nullable = false)
     private String content;
+    private String description;
     private Long commentDate;
+    
 }
