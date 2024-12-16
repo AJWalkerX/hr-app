@@ -51,7 +51,12 @@ public class UserService {
 	}
 	
 	public String doLogin(DologinRequestDto dto) {
+
 		Optional<User> userOptional = userRepository.findOptionalByEmail(dto.email());
+
+		if (userOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.INVALID_EMAIL_OR_PASSWORD);
+		}
 
 		if(!passwordEncoder.matches(dto.password(), userOptional.get().getPassword())){
 			throw new HRAppException(ErrorType.INVALID_EMAIL_OR_PASSWORD);
@@ -114,7 +119,7 @@ public class UserService {
 
 	public Boolean forgotPasswordMail(String email) {
 		Optional<User> userOptional = userRepository.findOptionalByEmail(email);
-		if(userOptional.isEmpty()) {
+		if (userOptional.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
 		User user = userOptional.get();

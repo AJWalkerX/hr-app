@@ -28,6 +28,6 @@ public class UserAuthVerifyCodeService {
     };
 
     public Optional<Long> findUserIdByAuthCode(String authCode) {
-        return userAuthVerifyCodeRepository.findLastUserIdByAuthCode();
+        return userAuthVerifyCodeRepository.findLastUserIdByAuthCode(authCode);
     }
 }

@@ -2,6 +2,7 @@ package com.ajwalker.controller;
 
 import com.ajwalker.constant.ReactApis;
 import com.ajwalker.dto.request.DologinRequestDto;
+import com.ajwalker.dto.request.ForgotPasswordRequestDto;
 import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
@@ -71,26 +72,33 @@ public class UserController {
 	}
 
 	@PostMapping(FORGOT_PASSWORD_MAIL)
-	public ResponseEntity<BaseResponse<Boolean>> forgotPasswordMail(@RequestBody String email){
+	public ResponseEntity<BaseResponse<Boolean>> forgotPasswordMail(@RequestBody ForgotPasswordRequestDto dto) {
 		return ResponseEntity.ok(BaseResponse.<Boolean>builder()
 				.success(true)
 				.message("Yeni sifre olusturma linki mail adresine gonderilmistir!")
-				.data(userService.forgotPasswordMail(email))
+				.data(userService.forgotPasswordMail(dto.forgotPasswordEmail()))
 				.code(200)
 				.build()
 		);
 	}
 
 	@GetMapping(NEW_PASSWORD)
-	public ResponseEntity<Void> setNewPassword(@RequestParam(name = "auth") String authCode){
+	public ResponseEntity<BaseResponse<Long>> setNewPassword(@RequestParam(name = "auth") String authCode){
 		Optional<Long> userIdOptional = userAuthVerifyCodeService.findUserIdByAuthCode(authCode);
 		if (userIdOptional.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(URI.create(ReactApis.NEW_PASSWORD_PAGE));
-		headers.add("userId", String.valueOf(userIdOptional.get()));
-		return new ResponseEntity<>(headers, HttpStatus.FOUND);
+		return ResponseEntity.ok(BaseResponse.<Long>builder()
+						.data(userIdOptional.get())
+						.message("user bulundu!")
+						.code(200)
+						.success(true)
+				.build());
+
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setLocation(URI.create(ReactApis.NEW_PASSWORD_PAGE));
+//		headers.add("userId", String.valueOf(userIdOptional.get()));
+//		return new ResponseEntity<>(headers, HttpStatus.FOUND);
 	}
 	@PostMapping(NEW_PASSWORD)
 	public ResponseEntity<Void> setNewPassword(@RequestBody @Valid NewPasswordRequestDto dto){
