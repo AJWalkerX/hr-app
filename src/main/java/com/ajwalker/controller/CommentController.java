@@ -1,5 +1,6 @@
 package com.ajwalker.controller;
 
+import com.ajwalker.dto.response.CommentCardResponseDto;
 import com.ajwalker.entity.Comment;
 import com.ajwalker.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class CommentController {
 	private final CommentService commentService;
 	
 	@GetMapping(GETALLCOMMENT)
-	public List<Comment> getAllComments(){
+	public List<CommentCardResponseDto> getAllComments(){
 	return 	commentService.findAllComments();
 	}
 }

@@ -26,4 +26,5 @@ public class Company extends BaseEntity {
     private ECompanyType companyType;
     @Enumerated(EnumType.STRING)
     private ERegion region;
+ 
 }

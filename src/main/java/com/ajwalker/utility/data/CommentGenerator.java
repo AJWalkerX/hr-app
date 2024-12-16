@@ -1,9 +1,14 @@
 package com.ajwalker.utility.data;
 
 import com.ajwalker.entity.Comment;
+import com.ajwalker.entity.Company;
+import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
 import com.ajwalker.repository.CommentRepository;
+import com.ajwalker.repository.CompanyRepository;
+import com.ajwalker.repository.PersonalDocumentRepository;
 import com.ajwalker.repository.UserRepository;
+import com.ajwalker.utility.Enum.user.EPosition;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +23,48 @@ public class CommentGenerator {
 	private UserRepository userRepository;
 	@Autowired
 	private CommentRepository commentRepository;
+	@Autowired
+	private CompanyRepository companyRepository;
+	@Autowired
+	private PersonalDocumentRepository personalDocumentRepository;
 	
 //	@PostConstruct
 //	public void createData() {
-//		createComment();
+//		createCompany();
 //		createUser();
-//	}
+//		createComment();
+//		createPersonalDocument();
 //
+//
+//	}
+	
+	private void createPersonalDocument() {
+		PersonalDocument personalDocument1 = PersonalDocument.builder().userId(1L).firstName("Ayşe").lastName("Kaya").position(EPosition.JUNIOR).build();
+		PersonalDocument personalDocument2 =
+				PersonalDocument.builder().userId(1L).firstName("Ayşe").lastName("Kaya").position(EPosition.JUNIOR).build();
+		PersonalDocument personalDocument3 =
+				PersonalDocument.builder().userId(1L).firstName("Ayşe").lastName("Kaya").position(EPosition.JUNIOR).build();
+		PersonalDocument personalDocument4 =
+				PersonalDocument.builder().userId(1L).firstName("Ayşe").lastName("Kaya").position(EPosition.JUNIOR).build();
+		PersonalDocument personalDocument5 =
+				PersonalDocument.builder().userId(1L).firstName("Ayşe").lastName("Kaya").position(EPosition.JUNIOR).build();
+
+			
+				
+				personalDocumentRepository.saveAll(List.of(personalDocument1, personalDocument2, personalDocument3, personalDocument4, personalDocument5));
+	}
+	
+	private void createCompany() {
+		Company company1 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
+		Company company2 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
+		Company company3 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
+		Company company4 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
+		Company company5 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
+		
+		companyRepository.saveAll(List.of(company1, company2, company3, company4, company5));
+		
+	}
+	
 	private void createUser() {
 		User user1 = User.builder()
 		                 .companyId(1L)
@@ -56,39 +96,31 @@ public class CommentGenerator {
 		                 .password("User123**")
 		                 .avatar("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/670fae2401e2303d8dffefd8_nilay%20savas%CC%A7%20foto1-p-500.avif")
 		                 .build();
-		User user6 = User.builder()
-		                 .companyId(6L)
-		                 .email("user6@gmail.com")
-		                 .password("User123**")
-		                 .avatar("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/66c4b3df33625d8026dffd88_1674797319730.avif")
-		                 .build();
 		
-		userRepository.saveAll(List.of(user1, user2, user3, user4, user5, user6));
+		
+		userRepository.saveAll(List.of(user1, user2, user3, user4, user5));
 		
 		
 	}
 	
 	private void createComment() {
-		Comment comment1 = Comment.builder().userId(1l).companyId(1l).title("Medianova")
+		Comment comment1 = Comment.builder().userId(1L).companyId(1L).title("Medianova")
 		                         .content("Kolay İK manuel süreçlerimizi dijital hale getirerek operasyonel yükümüzü hafifletti ve hataları minimuma indirdi. Bu dönüşüm sayesinde tüm bu süreçler için ayırdığımız zaman kısaldı; İK ekibimiz stratejik çalışmalara daha fazla odaklanma imkanı buldu.")
 				.build();
-		Comment comment2 = Comment.builder().userId(2l).companyId(2l).title("ISSD")
+		Comment comment2 = Comment.builder().userId(2L).companyId(2L).title("ISSD")
 		                          .content("Artık aday başvurularını daha düzenli bir şekilde tutabiliyor ve arşivleme için ek bir çaba harcamadan hangi adayın hangi pozisyona başvurduğunu kolayca takip edebiliyoruz")
 		                          .build();
-		Comment comment3 = Comment.builder().userId(3l).companyId(3l).title("TurkNet")
+		Comment comment3 = Comment.builder().userId(3L).companyId(3L).title("TurkNet")
 		                          .content("Tüm görüşme notlarımızı, referans formlarımızı ve adayların hikayelerini uçtan uca takip etme imkanı bulduk.")
 		                          .build();
-		Comment comment4 = Comment.builder().userId(4l).companyId(4l).title("İzmir Özel Türk Koleji")
+		Comment comment4 = Comment.builder().userId(4L).companyId(4L).title("İzmir Özel Türk Koleji")
 		                          .content("İşe alım süreçlerinde adayların, planlamanın, notların ve arşivin tek noktada birleşmesi iş yükümüzü önemli ölçüde azalttı.")
 		                          .build();
-		Comment comment5 = Comment.builder().userId(5l).companyId(5l).title("Kordsa")
+		Comment comment5 = Comment.builder().userId(5L).companyId(5L).title("Kordsa")
 				.content("İnsan kaynakları süreçlerini iyileştirme arayışında olan Kordsa, Peopleoma ile iş birliğine giderek, yalnızca bir yıl içinde 6 ülkede dijitalleştirilmiş İK süreçlerini hayata geçirdi.")
 		                          .build();
-		Comment comment6 = Comment.builder().userId(6l).companyId(6l).title("Medsien")
-				.content("Her seviyeden çalışanın rahatlıkla kullanabileceği, İK süreçlerinin sorunsuz ve kişiden bağımsız şekilde yönetilebildiği bir platform")
-				                  .build();
 		
-		commentRepository.saveAll(List.of(comment1, comment2, comment3, comment4, comment5, comment6));
+		commentRepository.saveAll(List.of(comment1, comment2, comment3, comment4, comment5));
 	}
 	
 	
