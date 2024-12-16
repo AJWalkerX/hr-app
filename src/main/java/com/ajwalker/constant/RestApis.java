@@ -16,6 +16,7 @@ public class RestApis {
 	public static final String ADMIN = ROOT+ "/admin";
 	public static final String PERSONAL = ROOT+ "/personal";
 	public static final String MANAGER = ROOT+ "/manager";
+	public static final String COMMENT = ROOT+ "/comment";
 
 	public static final String REGISTER = "/register";
 	public static final String AUTHMAIL = "/auth-mail";
@@ -26,5 +27,7 @@ public class RestApis {
 	public static final String USERAUTHORISATION = "/user-authorisation";
 	public static final String FORGOT_PASSWORD_MAIL = "/auth-forgot-password";
 	public static final String NEW_PASSWORD = "/new-password";
+	public static final String GETALLCOMMENT = "/get-all-comment";
+	
 
 }
