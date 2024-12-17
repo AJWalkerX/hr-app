@@ -6,7 +6,6 @@ import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.entity.Company;
-import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -130,13 +129,19 @@ public class UserService {
 
 	}
 
-	public void updateUserPassword(NewPasswordRequestDto dto) {
-		Optional<User> userOptional = userRepository.findById(dto.userId());
+	public boolean updateUserPassword(NewPasswordRequestDto dto) {
+		Optional<Long> userIdByAuthCode = userAuthVerifyCodeService.findUserIdByAuthCode(dto.authCode());
+		System.out.println(dto.authCode());
+		if(userIdByAuthCode.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		Optional<User> userOptional = userRepository.findById(userIdByAuthCode.get());
 		if (userOptional.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
 		User user = userOptional.get();
 		user.setPassword(passwordEncoder.encode(dto.password()));
 		userRepository.save(user);
+		return true;
 	}
 }

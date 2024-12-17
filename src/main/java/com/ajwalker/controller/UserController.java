@@ -19,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URI;
 import java.util.Optional;
@@ -83,31 +84,27 @@ public class UserController {
 	}
 
 	@GetMapping(NEW_PASSWORD)
-	public ResponseEntity<BaseResponse<Long>> setNewPassword(@RequestParam(name = "auth") String authCode){
+	public RedirectView  setNewPassword(@RequestParam(name = "auth") String authCode){
 		Optional<Long> userIdOptional = userAuthVerifyCodeService.findUserIdByAuthCode(authCode);
 		if (userIdOptional.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
-		return ResponseEntity.ok(BaseResponse.<Long>builder()
-						.data(userIdOptional.get())
-						.message("user bulundu!")
-						.code(200)
-						.success(true)
-				.build());
 
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.setLocation(URI.create(ReactApis.NEW_PASSWORD_PAGE));
-//		headers.add("userId", String.valueOf(userIdOptional.get()));
-//		return new ResponseEntity<>(headers, HttpStatus.FOUND);
+		return new RedirectView(ReactApis.NEW_PASSWORD_PAGE + "?code=" + authCode);
+
 	}
 	@PostMapping(NEW_PASSWORD)
-	public ResponseEntity<Void> setNewPassword(@RequestBody @Valid NewPasswordRequestDto dto){
+	public ResponseEntity<BaseResponse<Boolean>> setNewPassword(@RequestBody @Valid NewPasswordRequestDto dto){
 		if (!dto.password().equals(dto.rePassword())){
 			throw new HRAppException(ErrorType.PASSWORD_ERROR);
 		}
-		userService.updateUserPassword(dto);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(URI.create(ReactApis.LOGIN_PAGE));
-		return new ResponseEntity<>(headers, HttpStatus.FOUND);
+
+		return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+				.success(true)
+				.message("Yeni sifre basiriyla olsuturuldu!")
+				.data(userService.updateUserPassword(dto))
+				.code(200)
+				.build()
+		);
 	}
 }
