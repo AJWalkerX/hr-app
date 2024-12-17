@@ -27,7 +27,7 @@ public class CommentGenerator {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private PersonalDocumentRepository personalDocumentRepository;
-	
+//
 //	@PostConstruct
 //	public void createData() {
 //		createCompany();
@@ -55,11 +55,11 @@ public class CommentGenerator {
 	}
 	
 	private void createCompany() {
-		Company company1 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
-		Company company2 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
-		Company company3 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
-		Company company4 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
-		Company company5 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png").build();
+		Company company1 = Company.builder().companyLogo("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/6501f6e9dcee8380e5958f35_62098b127be6ea501b463d94_decathlon-kolay-ik-2.webp").build();
+		Company company2 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504bf1c79917963cadc49b_medianova%20(2)%20-%20semra%20solak-p-500.png").build();
+		Company company3 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/6728b2a36c57738ca5a9e631_ISSD-logo%20-%20Deniz%20Demir%20Kahraman%20(1).avif").build();
+		Company company4 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/670fae3d38ef2a203af6dbb9_Logo_Renkli%201%20(1)-p-500.png").build();
+		Company company5 = Company.builder().companyLogo("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/61d41e006d43ad50a4abef04_deltavana_logo-siyah.avif").build();
 		
 		companyRepository.saveAll(List.of(company1, company2, company3, company4, company5));
 		
