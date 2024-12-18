@@ -1,4 +1,4 @@
-package com.ajwalker.utility;
+package com.ajwalker.utility.data;
 
 import com.ajwalker.entity.Admin;
 import com.ajwalker.entity.AdminRole;
@@ -16,7 +16,9 @@ public class DefaultData {
     private final AdminRepository adminRepository;
     private final AdminRoleRepository adminRoleRepository;
     private final PasswordEncoder passwordEncoder;
-
+    
+    
+    
     @PostConstruct
     public void init() {
         if(adminRepository.count() == 0) {
