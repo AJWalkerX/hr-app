@@ -23,4 +23,3 @@ public class MemberShipPlan extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EMemberShipState memberShipState;
 }
-//TODO MemberShipPlan ve MemberShipTracking

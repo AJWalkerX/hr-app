@@ -6,6 +6,7 @@ import com.ajwalker.dto.request.ForgotPasswordRequestDto;
 import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
+import com.ajwalker.dto.response.LoginResponseDto;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -60,13 +61,12 @@ public class UserController {
 	}
 
 	@PostMapping(DOLOGIN)
-	public ResponseEntity<BaseResponse<String>> doLogin(@RequestBody @Valid DologinRequestDto dto){
-		String token = userService.doLogin(dto);
+	public ResponseEntity<BaseResponse<LoginResponseDto>> doLogin(@RequestBody @Valid DologinRequestDto dto){
 
-		return ResponseEntity.ok(BaseResponse.<String>builder()
+		return ResponseEntity.ok(BaseResponse.<LoginResponseDto>builder()
 				                         .success(true)
 				                         .message("Giriş işlemi başarılı")
-				                         .data(token)
+				                         .data(userService.doLogin(dto))
 				                         .code(200)
 		                                     .build()
 		);

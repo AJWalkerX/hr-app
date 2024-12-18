@@ -25,4 +25,5 @@ public class User extends BaseEntity {
     private String avatar;
     @Enumerated(EnumType.STRING)
     private EUserState userState;
+    private Boolean isFirstLogin;
 }

@@ -5,6 +5,7 @@ import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
+import com.ajwalker.dto.response.LoginResponseDto;
 import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
 import com.ajwalker.entity.Company;
 import com.ajwalker.entity.MemberShipPlan;
@@ -55,8 +56,8 @@ public class UserService {
 		return true;
 	}
 	
-	public String doLogin(DologinRequestDto dto) {
-
+	public LoginResponseDto doLogin(DologinRequestDto dto) {
+//		TODO: userOptional'dan user al
 		Optional<User> userOptional = userRepository.findOptionalByEmail(dto.email());
 
 		if (userOptional.isEmpty()) {
@@ -75,7 +76,8 @@ public class UserService {
 		if(userOptional.get().getUserState().equals(EUserState.DENIED)){
 			throw new HRAppException(ErrorType.DENIED_USER);
 		}
-        return jwtManager.createToken(userOptional.get().getId());
+
+        return new LoginResponseDto(jwtManager.createToken(userOptional.get().getId()), userOptional.get().getIsFirstLogin());
 	}
 
 	public Optional<User> findUserById(Long userId) {
