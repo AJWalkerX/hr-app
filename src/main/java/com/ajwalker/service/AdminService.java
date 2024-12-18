@@ -34,7 +34,7 @@ public class AdminService {
 		String token = jwtManager.createToken(adminOptional.get().getId());
 		return token;
 	}
-
+	//TODO
     public List<CompanyCustomersInfoResponseDto> getAllCustomers() {
 		List<Company> allUserByUserState = companyService.findAll();
 		return allUserByUserState.stream().map(company -> {
