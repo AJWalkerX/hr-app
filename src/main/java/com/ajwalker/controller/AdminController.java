@@ -5,6 +5,8 @@ import com.ajwalker.dto.request.AdminLoginRequestDto;
 import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.dto.response.BaseResponse;
+import com.ajwalker.dto.response.CompanyCustomersInfoResponseDto;
+import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
 import com.ajwalker.entity.User;
 import com.ajwalker.service.AdminService;
 import com.ajwalker.service.UserService;
@@ -38,18 +40,18 @@ public class AdminController {
 	}
 
 	@GetMapping(LISTCUSTOMER)
-	public ResponseEntity<BaseResponse<List<User>>> listAllCustomers(){ //Hesabi onaylanan herkes customer
-		return ResponseEntity.ok(BaseResponse.<List<User>>builder()
+	public ResponseEntity<BaseResponse<List<CompanyCustomersInfoResponseDto>>> listAllCustomers(){ //Hesabi onaylanan herkes customer
+		return ResponseEntity.ok(BaseResponse.<List<CompanyCustomersInfoResponseDto>>builder()
 						.message("Tum kullanicilarin listesi")
 						.code(200)
 						.success(true)
-						.data(userService.getAllCustomers())
+						.data(adminService.getAllCustomers())
 				.build());
 	}
 
 	@GetMapping(LISTUSERONWAIT)
-	public ResponseEntity<BaseResponse<List<User>>> listAllUserOnWait(){ //Denied yada in review da olan userlar
-		return ResponseEntity.ok(BaseResponse.<List<User>>builder()
+	public ResponseEntity<BaseResponse<List<UserOnWaitInfoResponseDto>>> listAllUserOnWait(){ //Denied yada in review da olan userlar
+		return ResponseEntity.ok(BaseResponse.<List<UserOnWaitInfoResponseDto>>builder()
 				.message("Tum kullanicilarin listesi")
 				.code(200)
 				.success(true)

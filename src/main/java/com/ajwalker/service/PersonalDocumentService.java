@@ -36,5 +36,11 @@ public class PersonalDocumentService {
             default -> EPosition.NONE;
         };
     }
+
+    public PersonalDocument personalFindById(Long personalId) {
+        return personalDocumentRepository.findById(personalId).orElse(null);
+
+    }
+
 }
 

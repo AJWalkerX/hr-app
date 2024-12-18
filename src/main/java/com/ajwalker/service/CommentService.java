@@ -23,7 +23,8 @@ public class CommentService {
 	private final PersonalDocumentRepository personalDocumentRepository;
 	private final CompanyRepository companyRepository;
 	private final UserRepository userRepository;
-	
+
+
 	public List<CommentCardResponseDto> findAllComments() {
 		List<Comment> comments = commentRepository.findAll();
 		return comments.stream().map(comment -> {

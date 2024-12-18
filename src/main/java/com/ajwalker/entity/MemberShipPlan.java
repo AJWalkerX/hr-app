@@ -18,11 +18,9 @@ public class MemberShipPlan extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long companyId;
-    private Double paymentAmount;
-    private Long statDate;
-    private Long endDate;
     @Enumerated(EnumType.STRING)
     private EMemberType memberType;
     @Enumerated(EnumType.STRING)
     private EMemberShipState memberShipState;
 }
+//TODO MemberShipPlan ve MemberShipTracking
