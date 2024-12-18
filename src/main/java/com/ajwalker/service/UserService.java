@@ -57,27 +57,30 @@ public class UserService {
 	}
 	
 	public LoginResponseDto doLogin(DologinRequestDto dto) {
-//		TODO: userOptional'dan user al
+//
 		Optional<User> userOptional = userRepository.findOptionalByEmail(dto.email());
 
 		if (userOptional.isEmpty()) {
 			throw new HRAppException(ErrorType.INVALID_EMAIL_OR_PASSWORD);
 		}
-
-		if(!passwordEncoder.matches(dto.password(), userOptional.get().getPassword())){
+		User user = userOptional.get();
+		if(!passwordEncoder.matches(dto.password(), user.getPassword())){
 			throw new HRAppException(ErrorType.INVALID_EMAIL_OR_PASSWORD);
 		}
-		if(userOptional.get().getUserState().equals(EUserState.PENDING)){
+		if(user.getUserState().equals(EUserState.PENDING)){
 			throw new HRAppException(ErrorType.PENDING_USER);
 		}
-		if(userOptional.get().getUserState().equals(EUserState.IN_REVIEW)){
+		if(user.getUserState().equals(EUserState.IN_REVIEW)){
 			throw new HRAppException(ErrorType.IN_REVIEW_USER);
 		}
-		if(userOptional.get().getUserState().equals(EUserState.DENIED)){
+		if(user.getUserState().equals(EUserState.DENIED)){
 			throw new HRAppException(ErrorType.DENIED_USER);
 		}
-
-        return new LoginResponseDto(jwtManager.createToken(userOptional.get().getId()), userOptional.get().getIsFirstLogin());
+		if (dto.isFirstLogin() != null && !dto.isFirstLogin()) {
+			user.setIsFirstLogin(false);
+			user = userRepository.save(user);
+		}
+        return new LoginResponseDto(jwtManager.createToken(user.getId()), user.getIsFirstLogin());
 	}
 
 	public Optional<User> findUserById(Long userId) {
