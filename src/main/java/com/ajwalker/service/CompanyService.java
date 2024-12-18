@@ -1,9 +1,9 @@
 package com.ajwalker.service;
 
 import com.ajwalker.entity.Company;
-import com.ajwalker.entity.MemberShipPlan;
 import com.ajwalker.repository.CompanyRepository;
-import com.ajwalker.utility.Enum.user.EUserState;
+import com.ajwalker.utility.Enum.company.ECompanyType;
+import com.ajwalker.utility.Enum.company.ERegion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +23,15 @@ public class CompanyService {
     public Company createCompany(String companyName) {
         Optional<Company> companyOptional = getCompanyByName(companyName);
         if (companyOptional.isPresent()) {
+            memberShipPlanService.createOrFindMemberShip(companyOptional.get().getId());
             return companyOptional.get();
         }
 
-        Company company = Company.builder().companyName(companyName).build();
+        Company company = Company.builder()
+                .companyName(companyName)
+                .companyType(ECompanyType.UNKNOWN)
+                .region(ERegion.TURKEY)
+                .build();
         company = companyRepository.save(company);
         memberShipPlanService.createMemberShip(company.getId());
         return company;

@@ -12,4 +12,5 @@ public enum ECompanyType {
     MEDIA_AND_ENTERTAINMENT,
     AUTOMOTIVE,
     FASHION_AND_TEXTILE,
+    UNKNOWN
 }

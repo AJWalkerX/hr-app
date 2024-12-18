@@ -8,6 +8,8 @@ import com.ajwalker.utility.Enum.memberShipPlan.EMemberType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberShipPlanService {
@@ -25,5 +27,12 @@ public class MemberShipPlanService {
                 .memberShipState(EMemberShipState.NONE)
                 .build();
         memberShipPlanRepository.save(memberShipPlan);
+    }
+
+    public void createOrFindMemberShip(Long companyId) {
+        Optional<MemberShipPlan> memberShipPlanOptional = memberShipPlanRepository.findByCompanyId(companyId);
+        if (memberShipPlanOptional.isEmpty()) {
+            createMemberShip(companyId);
+        }
     }
 }
