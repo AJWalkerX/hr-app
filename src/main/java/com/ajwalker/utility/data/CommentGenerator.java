@@ -27,16 +27,14 @@ public class CommentGenerator {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private PersonalDocumentRepository personalDocumentRepository;
-//
-//	@PostConstruct
-//	public void createData() {
-//		createCompany();
-//		createUser();
-//		createComment();
-//		createPersonalDocument();
-//
-//
-//	}
+
+	@PostConstruct
+	public void createData() {
+		createCompany();
+		createUser();
+		createComment();
+		createPersonalDocument();
+	}
 	
 	private void createPersonalDocument() {
 		PersonalDocument personalDocument1 = PersonalDocument.builder().userId(1L).firstName("Ayşe").lastName("Kaya").position(EPosition.JUNIOR).build();
