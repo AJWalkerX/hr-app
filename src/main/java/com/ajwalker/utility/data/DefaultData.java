@@ -29,16 +29,20 @@ public class DefaultData {
             generateAdmin();
         }
         if(companyRepository.count() == 0) {
-            CompanyGenerator.generateCompanyList();
+            companyRepository.saveAll(CompanyGenerator.generateCompanyList());
+
         }
         if(userRepository.count() == 0) {
             UserGenerator.generateUser();
+            userRepository.saveAll(UserGenerator.generateUser());
         }
         if(memberShipPlanRepository.count() == 0) {
             MemberShipPlanGenerator.generateMemberShipPlans();
+            memberShipPlanRepository.saveAll(MemberShipPlanGenerator.generateMemberShipPlans());
         }
         if(personalDocumentRepository.count() == 0) {
             PersonalDocumentGenerator.generatePersonalDocuments();
+            personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocuments());
         }
     }
 
