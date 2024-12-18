@@ -5,7 +5,10 @@ import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
+import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
 import com.ajwalker.entity.Company;
+import com.ajwalker.entity.MemberShipPlan;
+import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor // bunu yazmazsak constructor injection yapmak gerekir
@@ -31,6 +35,8 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final PersonalDocumentService personalDocumentService;
 	private final CompanyService companyService;
+	private final MemberShipPlanService memberShipPlanService;
+
 	
 	public Boolean register(RegisterRequestDto dto) {
 		User user = UserMapper.INSTANCE.fromRegisterDto(dto);
@@ -85,12 +91,41 @@ public class UserService {
 		}
 	}
 
-	public List<User> getAllCustomers() {
-		return userRepository.findAllUserByUserState(List.of(EUserState.ACTIVE, EUserState.INACTIVE));
-	}
+//	//TODO CompanyServicede yapılacak Admin servicede yapılacak
+//	public List<User> getAllCustomers() {
+//		List<User> allUserByUserState = userRepository.findAllUserByUserState(List.of(EUserState.ACTIVE, EUserState.INACTIVE));
+//		return allUserByUserState.stream().map(user -> {
+//
+//			Company company = companyService
+//					.getCompanyById(user.getCompanyId());
+//
+//			MemberShipPlan memberShipPlan = memberShipPlanService
+//					.findById(company.getId());
+//
+//
+//
+//		}).collect(Collectors.toList());
+//	}
 
-	public List<User> getAllUserOnWait() {
-		return userRepository.findAllUserByUserState(List.of(EUserState.PENDING,EUserState.IN_REVIEW));
+	public List<UserOnWaitInfoResponseDto> getAllUserOnWait() {
+		List<User> allUserByUserState = userRepository.findAllUserByUserState(List.of(EUserState.PENDING, EUserState.IN_REVIEW));
+		return allUserByUserState.stream().map(users->{
+
+			PersonalDocument personalDocument = personalDocumentService
+					.personalFindById(users.getId());
+
+			Company company = companyService
+					.getCompanyById(users.getCompanyId());
+
+			return new UserOnWaitInfoResponseDto(
+					personalDocument.getFirstName(),
+					personalDocument.getLastName(),
+					personalDocument.getEmail(),
+					personalDocument.getPosition().toString(),
+					company.getCompanyName()
+			);
+		}).collect(Collectors.toList());
+
 	}
 
 	public User userAuthorisation(UserAuthorisationDto dto) {
