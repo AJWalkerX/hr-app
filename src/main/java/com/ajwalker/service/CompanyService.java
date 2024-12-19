@@ -41,7 +41,7 @@ public class CompanyService {
         return companyRepository.findByCompanyName(name);
     }
 
-    public List<Company> findAll() {
+    public List<Company> findAllTop100() {
         return companyRepository.findAll();
     }
 }

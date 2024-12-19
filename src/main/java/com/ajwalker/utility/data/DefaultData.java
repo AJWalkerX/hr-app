@@ -1,9 +1,6 @@
 package com.ajwalker.utility.data;
 
-import com.ajwalker.entity.Admin;
-import com.ajwalker.entity.AdminRole;
-import com.ajwalker.entity.MemberShipPlan;
-import com.ajwalker.entity.PersonalDocument;
+import com.ajwalker.entity.*;
 import com.ajwalker.repository.*;
 import com.ajwalker.utility.Enum.EAdminRole;
 import jakarta.annotation.PostConstruct;
@@ -21,6 +18,8 @@ public class DefaultData {
     private final UserRepository userRepository;
     private final MemberShipPlanRepository memberShipPlanRepository;
     private final PersonalDocumentRepository personalDocumentRepository;
+    private final CommentRepository commentRepository;
+    private final MemberShipTrackingRepository memberShipTrackingRepository;
     
     
     @PostConstruct
@@ -28,6 +27,8 @@ public class DefaultData {
         if(adminRepository.count() == 0) {
             generateAdmin();
         }
+
+
         if(companyRepository.count() == 0) {
             companyRepository.saveAll(CompanyGenerator.generateCompanyList());
 
@@ -43,6 +44,15 @@ public class DefaultData {
         if(personalDocumentRepository.count() == 0) {
             PersonalDocumentGenerator.generatePersonalDocuments();
             personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocuments());
+        }
+        if(commentRepository.count() == 0) {
+            companyRepository.saveAll(CommentGenerator.createCompany());
+            userRepository.saveAll(CommentGenerator.createUser());
+            commentRepository.saveAll(CommentGenerator.createComment());
+            personalDocumentRepository.saveAll(CommentGenerator.createPersonalDocument());
+        }
+        if(memberShipTrackingRepository.count() == 0) {
+            memberShipTrackingRepository.saveAll(MemberShipPlanGenerator.generateMemberShipTracking());
         }
     }
 

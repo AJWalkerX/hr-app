@@ -1,7 +1,7 @@
 package com.ajwalker.dto.response;
 
 public record CompanyCustomersInfoResponseDto (
-
+        Long companyId,
         String companyLogo,
         String companyName,
         String companyMail,
@@ -10,11 +10,9 @@ public record CompanyCustomersInfoResponseDto (
         String companyType,
         String region,
         String memberType,
-        String memberShipState
+        String memberShipState,
+        String totalPaymentAmount
 
-//   TODO     Long memberStartDate
-//        Long memberEndDate
-//        Double paymentAmount ekleyeceğiz!!!
 
 ){
 }

@@ -5,16 +5,19 @@ import com.ajwalker.dto.response.CompanyCustomersInfoResponseDto;
 import com.ajwalker.entity.Admin;
 import com.ajwalker.entity.Company;
 import com.ajwalker.entity.MemberShipPlan;
+import com.ajwalker.entity.MemberShipTracking;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.AdminRepository;
 import com.ajwalker.utility.JwtManager;
+import com.ajwalker.view.VwMemberShip;
+import com.ajwalker.view.VwMemberShipTrackingPayment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.text.DecimalFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,36 +28,66 @@ public class AdminService {
 	private final PasswordEncoder passwordEncoder;
 	private final CompanyService companyService;
 	private final MemberShipPlanService memberShipPlanService;
+	private final MemberShipTrackingService memberShipTrackingService;
 
 	public String adminLogin(AdminLoginRequestDto dto) {
 		Optional<Admin> adminOptional = adminRepository.findOptionalByUsername(dto.username());
 		if (adminOptional.isEmpty() || !passwordEncoder.matches(dto.password(), adminOptional.get().getPassword())){
 			throw new HRAppException(ErrorType.INVALID_ADMIN);
 		}
-		String token = jwtManager.createToken(adminOptional.get().getId());
-		return token;
+        return jwtManager.createToken(adminOptional.get().getId());
 	}
-	//TODO
+
     public List<CompanyCustomersInfoResponseDto> getAllCustomers() {
-		List<Company> allUserByUserState = companyService.findAll();
-		return allUserByUserState.stream().map(company -> {
+		DecimalFormat df = new DecimalFormat("#.00");
+// Fetch the top 100 companies
+		List<Company> companyList = companyService.findAllTop100();
+		List<Long> companyIdList = companyList.stream().map(Company::getId).toList();
 
-			MemberShipPlan memberShipPlan = memberShipPlanService
-					.findById(company.getId());
+		// Fetch all membership plans for these companies
+		List<MemberShipPlan> memberShipPlanList = memberShipPlanService.findAllByCompanyId(companyIdList);
+		List<Long> memberShipPlanIdList = memberShipPlanList.stream().map(MemberShipPlan::getId).toList();
 
-			return new CompanyCustomersInfoResponseDto(
-					company.getCompanyLogo(),
-					company.getCompanyName(),
-					company.getCompanyMail(),
-					company.getCompanyAddress(),
-					company.getTelNo(),
-					company.getCompanyType().toString(),
-					company.getRegion().toString(),
-					memberShipPlan.getMemberType().toString(),
-					memberShipPlan.getMemberShipState().toString()
+		// Fetch all payment amounts for the membership plans
+		List<VwMemberShipTrackingPayment> memberShipTrackingPaymentList = memberShipTrackingService.findAllPaymentAmountsByMemberIds(memberShipPlanIdList);
 
-			);
+		// Aggregate payment amounts by membership plan ID
+		Map<Long, Double> memberShipTrackingPaymentMap = memberShipTrackingPaymentList.stream()
+				.collect(Collectors.groupingBy(
+						VwMemberShipTrackingPayment::memberShipPlanId,
+						Collectors.summingDouble(VwMemberShipTrackingPayment::paymentAmount)
+				));
 
-		}).collect(Collectors.toList());
+		// Convert membership plans to VwMemberShip DTOs
+		List<VwMemberShip> vwMemberShipList = memberShipPlanList.stream()
+				.map(memberShip -> new VwMemberShip(
+						memberShip.getId(),
+						memberShip.getCompanyId(),
+						memberShip.getMemberType().toString(),
+						memberShip.getMemberShipState().toString(),
+						memberShipTrackingPaymentMap.get(memberShip.getId()) // Get total payment amount
+				))
+				.toList();
+
+		// Map companies and their membership information to DTOs
+		return companyList.stream()
+				.flatMap(company -> vwMemberShipList.stream()
+						.filter(vwMemberShip -> vwMemberShip.companyId().equals(company.getId())) // Filter matching company ID
+						.map(vwMemberShip -> new CompanyCustomersInfoResponseDto(
+								company.getId(),
+								company.getCompanyLogo(),
+								company.getCompanyName(),
+								company.getCompanyMail(),
+								company.getCompanyAddress(),
+								company.getTelNo(),
+								company.getCompanyType().toString(),
+								company.getRegion().toString(),
+								vwMemberShip.memberType(),
+								vwMemberShip.memberShipState(),
+								df.format(vwMemberShip.totalPaymentAmount())
+
+						))
+				)
+				.collect(Collectors.toList());
     }
 }
