@@ -113,7 +113,7 @@ public class UserService {
 //	}
 
 	public List<UserOnWaitInfoResponseDto> getAllUserOnWait() {
-		List<User> allUserByUserState = userRepository.findAllUserByUserState(List.of(EUserState.PENDING, EUserState.IN_REVIEW));
+		List<User> allUserByUserState = userRepository.findAllUserByUserState(List.of(EUserState.IN_REVIEW));
 		return allUserByUserState.stream().map(users->{
 
 			PersonalDocument personalDocument = personalDocumentService
