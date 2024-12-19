@@ -34,15 +34,12 @@ public class DefaultData {
 
         }
         if(userRepository.count() == 0) {
-            UserGenerator.generateUser();
             userRepository.saveAll(UserGenerator.generateUser());
         }
         if(memberShipPlanRepository.count() == 0) {
-            MemberShipPlanGenerator.generateMemberShipPlans();
             memberShipPlanRepository.saveAll(MemberShipPlanGenerator.generateMemberShipPlans());
         }
         if(personalDocumentRepository.count() == 0) {
-            PersonalDocumentGenerator.generatePersonalDocuments();
             personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocuments());
         }
         if(commentRepository.count() == 0) {
@@ -53,6 +50,12 @@ public class DefaultData {
         }
         if(memberShipTrackingRepository.count() == 0) {
             memberShipTrackingRepository.saveAll(MemberShipPlanGenerator.generateMemberShipTracking());
+        }
+        if(userRepository.count() == 10) {
+            userRepository.saveAll(UserGenerator.generateInReviewUsers());
+        }
+        if(personalDocumentRepository.count() == 10) {
+            personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocumentsForInReviewUsers());
         }
     }
 
