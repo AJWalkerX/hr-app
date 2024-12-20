@@ -28,6 +28,7 @@ public class RestApis {
 	public static final String FORGOT_PASSWORD_MAIL = "/auth-forgot-password";
 	public static final String NEW_PASSWORD = "/new-password";
 	public static final String GETALLCOMMENT = "/get-all-comment";
+	public static final String GETUSERPROFILEINFO = "/get-user-profile-info";
 	
 
 }
