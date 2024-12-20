@@ -17,7 +17,10 @@ public enum ErrorType {
 	PENDING_USER(6130,"Giris yapmadan once email onayi yapmaniz gerekmektedir!", HttpStatus.BAD_GATEWAY),
 	INVALID_ADMIN(7001,"Admin adı ya da şifre hatalıdır",HttpStatus.BAD_REQUEST),
 	INVALID_TOKEN(9001,"geçersiz token bilgisi",HttpStatus.BAD_REQUEST),
-	NOTFOUND_PERSONALDOCUMENT(6013,"PersonelDocument bulunamadı",HttpStatus.BAD_REQUEST);
+	NOTFOUND_PERSONALDOCUMENT(6013,"PersonelDocument bulunamadı",HttpStatus.BAD_REQUEST),
+	NOTFOUND_COMPANY(3003,"Şirket bulunamadı",HttpStatus.BAD_REQUEST),
+	NOTFOUND_MEMBERSHIP_PLAN(2003,"Üyelik planı bulunamadı",HttpStatus.BAD_REQUEST);
+	
 	
 	
 	int code;

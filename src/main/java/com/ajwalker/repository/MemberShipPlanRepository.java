@@ -13,4 +13,6 @@ public interface MemberShipPlanRepository  extends JpaRepository<MemberShipPlan,
 
     @Query("SELECT M FROM MemberShipPlan M WHERE  M.companyId IN(?1)")
     List<MemberShipPlan> findAllByCompanyIds(List<Long> companyIdList);
+    
+ 
 }
