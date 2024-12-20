@@ -12,5 +12,7 @@ public interface MemberShipTrackingRepository  extends JpaRepository<MemberShipT
             "FROM MemberShipTracking M " +
             "WHERE M.memberShipPlanId IN(?1)")
     List<VwMemberShipTrackingPayment> findAmountByMemberId(List<Long> memberShipTrackingPayments);
-
+   
+    @Query("SELECT M.paymentAmount FROM MemberShipTracking M WHERE  M.memberShipPlanId=?1 ")
+    List<Double> getTotalPaymentByMemberShipPlanId(Long memberShipPlanId);
 }
