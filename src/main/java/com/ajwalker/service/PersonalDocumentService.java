@@ -6,6 +6,8 @@ import com.ajwalker.utility.Enum.user.EPosition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class PersonalDocumentService {
@@ -41,6 +43,8 @@ public class PersonalDocumentService {
         return personalDocumentRepository.findById(personalId).orElse(null);
 
     }
-
+    
+    public Optional<PersonalDocument> findByUserId(Long userId) {
+        return personalDocumentRepository.findByUserId(userId);
+    }
 }
-

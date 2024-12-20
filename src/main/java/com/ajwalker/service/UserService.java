@@ -5,6 +5,7 @@ import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
+import com.ajwalker.dto.response.GetUserProfileInfoDto;
 import com.ajwalker.dto.response.LoginResponseDto;
 import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
 import com.ajwalker.entity.Company;
@@ -183,5 +184,26 @@ public class UserService {
 		user.setPassword(passwordEncoder.encode(dto.password()));
 		userRepository.save(user);
 		return true;
+	}
+	
+	public GetUserProfileInfoDto getUserProfileInfo(Long userId) {
+		Optional<PersonalDocument> optionalPersonalDocument = personalDocumentService.findByUserId(userId);
+		if(optionalPersonalDocument.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
+		}
+		PersonalDocument personalDocument = optionalPersonalDocument.get();
+		return new GetUserProfileInfoDto(
+				personalDocument.getFirstName(),
+				personalDocument.getLastName(),
+				personalDocument.getIdentityNumber(),
+				personalDocument.getDateOfBirth(),
+				personalDocument.getMobileNumber(),
+				personalDocument.getAddress(),
+				personalDocument.getGender(),
+				personalDocument.getEmail(),
+				personalDocument.getPosition(),
+				personalDocument.getDateOfEmployment(),
+				personalDocument.getSocialSecurityNumber()
+		);
 	}
 }
