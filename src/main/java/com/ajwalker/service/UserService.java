@@ -8,7 +8,6 @@ import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.dto.response.LoginResponseDto;
 import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
 import com.ajwalker.entity.Company;
-import com.ajwalker.entity.MemberShipPlan;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
@@ -123,9 +122,10 @@ public class UserService {
 					.getCompanyById(users.getCompanyId());
 
 			return new UserOnWaitInfoResponseDto(
+					users.getId(),
 					personalDocument.getFirstName(),
 					personalDocument.getLastName(),
-					personalDocument.getEmail(),
+					users.getEmail(),
 					personalDocument.getPosition().toString(),
 					company.getCompanyName()
 			);
@@ -133,27 +133,27 @@ public class UserService {
 
 	}
 
-	public User userAuthorisation(UserAuthorisationDto dto) {
+	public Boolean userAuthorisation(UserAuthorisationDto dto) {
 		Optional<User> userOptional = userRepository.findById(dto.userId());
 		if(userOptional.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
 		User user = userOptional.get();
 		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.ACCEPT.toString())) {
-			return updateUserToInActive(user);
+			 updateUserToActive(user);
 		}
 		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.DENY.toString())) {
-			return updateUserToDenied(user);
+			 updateUserToDenied(user);
 		}
-		return user;
+        return true;
+    }
+	private void updateUserToActive(User user) {
+		user.setUserState(EUserState.ACTIVE);
+		userRepository.save(user);
 	}
-	private User updateUserToInActive(User user) {
-		user.setUserState(EUserState.INACTIVE);
-		return userRepository.save(user);
-	}
-	private User updateUserToDenied(User user) {
+	private void updateUserToDenied(User user) {
 		user.setUserState(EUserState.DENIED);
-		return userRepository.save(user);
+		userRepository.save(user);
 	}
 
 	public Boolean forgotPasswordMail(String email) {

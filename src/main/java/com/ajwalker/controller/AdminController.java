@@ -60,8 +60,8 @@ public class AdminController {
 	}
 
 	@PostMapping(USERAUTHORISATION)
-	public ResponseEntity<BaseResponse<User>> userAuthorisation(@RequestBody UserAuthorisationDto dto){
-		return ResponseEntity.ok(BaseResponse.<User>builder()
+	public ResponseEntity<BaseResponse<Boolean>> userAuthorisation(@RequestBody UserAuthorisationDto dto){
+		return ResponseEntity.ok(BaseResponse.<Boolean>builder()
 				.message("Kullanici onaylama/ reddetme islemi tamamlanmistir")
 				.code(200)
 				.success(true)
