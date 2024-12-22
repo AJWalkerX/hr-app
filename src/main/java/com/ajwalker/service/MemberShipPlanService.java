@@ -43,26 +43,13 @@ public class MemberShipPlanService {
        return memberShipPlanRepository.findAllByCompanyIds(companyIdList);
     }
     
-    public MemberShipPlan updateMemberShipPlan(Long companyId, String memberShipType) {
+    public MemberShipPlan updateMemberShipPlan(Long companyId) {
         Optional<MemberShipPlan> memberShipPlanOptional = memberShipPlanRepository.findByCompanyId(companyId);
         if (memberShipPlanOptional.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MEMBERSHIP_PLAN);
         }
         MemberShipPlan memberShipPlan = memberShipPlanOptional.get();
-        switch (memberShipType.toUpperCase()) {
-            case "MONTHLY":
-                memberShipPlan.setMemberType(EMemberType.MONTHLY);
-                break;
-            case "YEARLY":
-                memberShipPlan.setMemberType(EMemberType.YEARLY);
-                break;
-            case "NONE":
-                memberShipPlan.setMemberType(EMemberType.NONE);
-                break;
-            default:
-                memberShipPlan.setMemberType(EMemberType.NONE);
-                break;
-        }
+    
        return memberShipPlanRepository.save(memberShipPlan);
     }
 }
