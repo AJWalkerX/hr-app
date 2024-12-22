@@ -8,12 +8,12 @@ import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.mapper.CompanyMapper;
 import com.ajwalker.repository.CompanyRepository;
+import com.ajwalker.utility.Enum.company.ECompanyState;
 import com.ajwalker.utility.Enum.company.ECompanyType;
 import com.ajwalker.utility.Enum.company.ERegion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +39,7 @@ public class CompanyService {
                 .companyName(companyName)
                 .companyType(ECompanyType.UNKNOWN)
                 .region(ERegion.TURKEY)
+                .companyState(ECompanyState.PENDING)
                 .build();
         company = companyRepository.save(company);
         memberShipPlanService.createMemberShip(company.getId());
@@ -86,5 +87,26 @@ public class CompanyService {
         );
         
         
+    }
+
+    public void updateCompanyInReview(Long companyId) {
+        Optional<Company> companyOptional = companyRepository.findById(companyId);
+        if (companyOptional.isPresent()) {
+            Company company = companyOptional.get();
+            company.setCompanyState(ECompanyState.IN_REVIEW);
+            companyRepository.save(company);
+        }
+    }
+
+    public Optional<Company> findById(Long companyId) {
+        return companyRepository.findById(companyId);
+    }
+
+    public void updateCompanyToAccepted(Company company) {
+        company.setCompanyState(ECompanyState.ACCEPTED);
+    }
+
+    public void updateCompanyToDenied(Company company) {
+        company.setCompanyState(ECompanyState.DENIED);
     }
 }

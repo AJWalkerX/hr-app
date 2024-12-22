@@ -90,27 +90,14 @@ public class UserService {
 	public void updateUserStateToInReView(Long userId) {
 		Optional<User> userOptional = userRepository.findById(userId);
 		if(userOptional.isPresent()) {
+		  companyService.updateCompanyInReview(userOptional.get().getCompanyId());
 			User user = userOptional.get();
 			user.setUserState(EUserState.IN_REVIEW);
 			userRepository.save(user);
 		}
 	}
 
-//	//TODO CompanyServicede yapılacak Admin servicede yapılacak
-//	public List<User> getAllCustomers() {
-//		List<User> allUserByUserState = userRepository.findAllUserByUserState(List.of(EUserState.ACTIVE, EUserState.INACTIVE));
-//		return allUserByUserState.stream().map(user -> {
-//
-//			Company company = companyService
-//					.getCompanyById(user.getCompanyId());
-//
-//			MemberShipPlan memberShipPlan = memberShipPlanService
-//					.findById(company.getId());
-//
-//
-//
-//		}).collect(Collectors.toList());
-//	}
+
 
 	public List<UserOnWaitInfoResponseDto> getAllUserOnWait() {
 		List<User> allUserByUserState = userRepository.findAllUserByUserState(List.of(EUserState.IN_REVIEW));
@@ -134,25 +121,13 @@ public class UserService {
 
 	}
 
-	public Boolean userAuthorisation(UserAuthorisationDto dto) {
-		Optional<User> userOptional = userRepository.findById(dto.userId());
-		if(userOptional.isEmpty()) {
-			throw new HRAppException(ErrorType.NOTFOUND_USER);
-		}
-		User user = userOptional.get();
-		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.ACCEPT.toString())) {
-			 updateUserToActive(user);
-		}
-		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.DENY.toString())) {
-			 updateUserToDenied(user);
-		}
-        return true;
-    }
-	private void updateUserToActive(User user) {
+
+
+	public void updateUserToActive(User user) {
 		user.setUserState(EUserState.ACTIVE);
 		userRepository.save(user);
 	}
-	private void updateUserToDenied(User user) {
+	public void updateUserToDenied(User user) {
 		user.setUserState(EUserState.DENIED);
 		userRepository.save(user);
 	}
@@ -205,5 +180,9 @@ public class UserService {
 				personalDocument.getDateOfEmployment(),
 				personalDocument.getSocialSecurityNumber()
 		);
+	}
+
+	public Optional<User> findById(Long userId) {
+		return userRepository.findById(userId);
 	}
 }

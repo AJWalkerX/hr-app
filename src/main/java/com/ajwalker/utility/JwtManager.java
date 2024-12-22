@@ -18,7 +18,7 @@ public class JwtManager {
     private String secretKey;
     @Value("ZorIK")
     private String issuer;
-    private final Long ExDate = 1000L * 40;
+    private final Long ExDate = 1000L * 60 * 40;
 
     public String createToken(Long authId){
         Date createDate = new Date(System.currentTimeMillis());

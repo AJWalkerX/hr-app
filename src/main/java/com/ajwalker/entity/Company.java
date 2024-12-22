@@ -1,5 +1,6 @@
 package com.ajwalker.entity;
 
+import com.ajwalker.utility.Enum.company.ECompanyState;
 import com.ajwalker.utility.Enum.company.ECompanyType;
 import com.ajwalker.utility.Enum.company.ERegion;
 import jakarta.persistence.*;
@@ -26,5 +27,6 @@ public class Company extends BaseEntity {
     private ECompanyType companyType;
     @Enumerated(EnumType.STRING)
     private ERegion region;
- 
+    @Enumerated(EnumType.STRING)
+    private ECompanyState companyState;
 }

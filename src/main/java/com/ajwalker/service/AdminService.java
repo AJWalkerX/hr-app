@@ -1,14 +1,13 @@
 package com.ajwalker.service;
 
 import com.ajwalker.dto.request.AdminLoginRequestDto;
+import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.dto.response.CompanyCustomersInfoResponseDto;
-import com.ajwalker.entity.Admin;
-import com.ajwalker.entity.Company;
-import com.ajwalker.entity.MemberShipPlan;
-import com.ajwalker.entity.MemberShipTracking;
+import com.ajwalker.entity.*;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.AdminRepository;
+import com.ajwalker.utility.Enum.user.EUserAuthorisation;
 import com.ajwalker.utility.JwtManager;
 import com.ajwalker.view.VwMemberShip;
 import com.ajwalker.view.VwMemberShipTrackingPayment;
@@ -29,6 +28,7 @@ public class AdminService {
 	private final CompanyService companyService;
 	private final MemberShipPlanService memberShipPlanService;
 	private final MemberShipTrackingService memberShipTrackingService;
+	private final UserService userService;
 
 	public String adminLogin(AdminLoginRequestDto dto) {
 		Optional<Admin> adminOptional = adminRepository.findOptionalByUsername(dto.username());
@@ -90,4 +90,25 @@ public class AdminService {
 				)
 				.collect(Collectors.toList());
     }
+	public Boolean userAuthorisation(UserAuthorisationDto dto) {
+		Optional<User> userOptional = userService.findById(dto.userId());
+		if(userOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		User user = userOptional.get();
+		Optional<Company> companyOptional = companyService.findById(user.getCompanyId());
+		if (companyOptional.isEmpty()){
+			throw new HRAppException(ErrorType.NOTFOUND_COMPANY);
+		}
+		Company company = companyOptional.get();
+		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.ACCEPT.toString())) {
+			userService.updateUserToActive(user);
+			companyService.updateCompanyToAccepted(company);
+		}
+		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.DENY.toString())) {
+			userService.updateUserToDenied(user);
+			companyService.updateCompanyToDenied(company);
+		}
+		return true;
+	}
 }

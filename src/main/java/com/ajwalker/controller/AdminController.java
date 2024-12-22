@@ -65,7 +65,7 @@ public class AdminController {
 				.message("Kullanici onaylama/ reddetme islemi tamamlanmistir")
 				.code(200)
 				.success(true)
-				.data(userService.userAuthorisation(dto))
+				.data(adminService.userAuthorisation(dto))
 				.build());
 	}
 
