@@ -98,7 +98,7 @@ public class UserController {
 	}
 	
 	@GetMapping(GETUSERPROFILEINFO)
-	public ResponseEntity<BaseResponse<GetUserProfileInfoDto>> getUserProfileInfo(String token) {
+	public ResponseEntity<BaseResponse<GetUserProfileInfoDto>> getUserProfileInfo(@RequestParam(name = "token") String token) {
 		Optional<Long> optionalUserId = jwtManager.verifyToken(token);
 		if (optionalUserId.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
