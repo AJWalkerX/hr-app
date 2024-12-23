@@ -85,7 +85,6 @@ public class AdminService {
 								company.getTelNo(),
 								company.getCompanyType().toString(),
 								company.getRegion().toString(),
-								vwMemberShip.memberType(),
 								vwMemberShip.memberShipState(),
 								df.format(vwMemberShip.totalPaymentAmount())
 

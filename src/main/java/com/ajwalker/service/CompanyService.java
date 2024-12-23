@@ -65,7 +65,7 @@ public class CompanyService {
         company = CompanyMapper.INSTANCE.fromUpdateCompanyCustomerInfoRequestDto(dto,company);
         companyRepository.save(company);
        
-        MemberShipPlan memberShipPlan =  memberShipPlanService.updateMemberShipPlan(dto.companyId(), dto.memberType());
+        MemberShipPlan memberShipPlan =  memberShipPlanService.updateMemberShipPlan(dto.companyId());
         String totalPaymentAmount =
                 memberShipTrackingService.findTotalPaymentByMemberShipPlanId(memberShipPlan.getId());
         return new CompanyCustomersInfoResponseDto(
@@ -77,7 +77,6 @@ public class CompanyService {
                 company.getTelNo(),
                 company.getCompanyType().toString(),
                 company.getRegion().toString(),
-                memberShipPlan.getMemberType().toString(),
                 memberShipPlan.getMemberShipState().toString(),
                 totalPaymentAmount
                 

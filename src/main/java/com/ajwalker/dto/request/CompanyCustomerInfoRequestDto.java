@@ -6,9 +6,9 @@ public record CompanyCustomerInfoRequestDto(
 		String companyName,
 		String companyMail,
 		String companyAddress,
-		String telNo,
+		String companyTelNo,
 		String companyType,
-		String region,
-		String memberType
+		String companyRegion
+	
 ) {
 }
