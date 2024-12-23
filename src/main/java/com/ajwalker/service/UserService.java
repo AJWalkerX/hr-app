@@ -4,7 +4,6 @@ import com.ajwalker.constant.MailApis;
 import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
-import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.dto.response.GetUserProfileInfoDto;
 import com.ajwalker.dto.response.LoginResponseDto;
 import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
@@ -15,7 +14,6 @@ import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.mapper.UserMapper;
 import com.ajwalker.repository.UserRepository;
-import com.ajwalker.utility.Enum.user.EUserAuthorisation;
 import com.ajwalker.utility.Enum.user.EUserState;
 import com.ajwalker.utility.JwtManager;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor // bunu yazmazsak constructor injection yapmak gerekir
@@ -36,10 +34,13 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final PersonalDocumentService personalDocumentService;
 	private final CompanyService companyService;
-	private final MemberShipPlanService memberShipPlanService;
 
 	
 	public Boolean register(RegisterRequestDto dto) {
+		Optional<Company> companyOptional = companyService.findCompanyByCompanyName(dto.companyName());
+		if (companyOptional.isPresent()) {
+			throw new HRAppException(ErrorType.ALREADY_EXIST_COMPANY);
+		}
 		User user = UserMapper.INSTANCE.fromRegisterDto(dto);
 		user.setUserState(EUserState.PENDING);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -99,27 +100,7 @@ public class UserService {
 
 
 
-	public List<UserOnWaitInfoResponseDto> getAllUserOnWait() {
-		List<User> allUserByUserState = userRepository.findAllUserByUserState(List.of(EUserState.IN_REVIEW));
-		return allUserByUserState.stream().map(users->{
 
-			PersonalDocument personalDocument = personalDocumentService
-					.personalFindById(users.getId());
-
-			Company company = companyService
-					.getCompanyById(users.getCompanyId());
-
-			return new UserOnWaitInfoResponseDto(
-					users.getId(),
-					personalDocument.getFirstName(),
-					personalDocument.getLastName(),
-					users.getEmail(),
-					personalDocument.getPosition().toString(),
-					company.getCompanyName()
-			);
-		}).collect(Collectors.toList());
-
-	}
 
 
 
@@ -184,5 +165,9 @@ public class UserService {
 
 	public Optional<User> findById(Long userId) {
 		return userRepository.findById(userId);
+	}
+
+	public List<User> findAllUserByUserState(List<EUserState> inReview) {
+		return userRepository.findAllUserByUserState(inReview);
 	}
 }

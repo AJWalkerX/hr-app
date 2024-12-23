@@ -4,6 +4,7 @@ import com.ajwalker.utility.Enum.user.EPosition;
 
 public record UserOnWaitInfoResponseDto(
         Long userId,
+   Long companyId,
    String firstName,
    String lastName,
    String email,

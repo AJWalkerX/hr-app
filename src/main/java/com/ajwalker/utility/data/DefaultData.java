@@ -27,36 +27,30 @@ public class DefaultData {
         if(adminRepository.count() == 0) {
             generateAdmin();
         }
-
-
-        if(companyRepository.count() == 0) {
-            companyRepository.saveAll(CompanyGenerator.generateCompanyList());
-
-        }
-        if(userRepository.count() == 0) {
-            userRepository.saveAll(UserGenerator.generateUser());
-        }
-        if(memberShipPlanRepository.count() == 0) {
-            memberShipPlanRepository.saveAll(MemberShipPlanGenerator.generateMemberShipPlans());
-        }
-        if(personalDocumentRepository.count() == 0) {
-            personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocuments());
-        }
         if(commentRepository.count() == 0) {
             companyRepository.saveAll(CommentGenerator.createCompany());
             userRepository.saveAll(CommentGenerator.createUser());
             commentRepository.saveAll(CommentGenerator.createComment());
             personalDocumentRepository.saveAll(CommentGenerator.createPersonalDocument());
         }
+        if(memberShipPlanRepository.count() == 0) {
+            memberShipPlanRepository.saveAll(MemberShipPlanGenerator.generateMemberShipPlans());
+        }
         if(memberShipTrackingRepository.count() == 0) {
             memberShipTrackingRepository.saveAll(MemberShipPlanGenerator.generateMemberShipTracking());
         }
-        if(userRepository.count() == 10) {
-            userRepository.saveAll(UserGenerator.generateInReviewUsers());
+
+        if(companyRepository.count() == 5) {
+            companyRepository.saveAll(CompanyGenerator.generateCompanyList());
+
         }
-        if(personalDocumentRepository.count() == 10) {
-            personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocumentsForInReviewUsers());
+        if(userRepository.count() == 5) {
+            userRepository.saveAll(UserGenerator.generateUser());
         }
+        if(personalDocumentRepository.count() == 5) {
+            personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocuments());
+        }
+
     }
 
     public void generateAdmin(){

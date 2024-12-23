@@ -2,12 +2,10 @@ package com.ajwalker.controller;
 
 
 import com.ajwalker.dto.request.AdminLoginRequestDto;
-import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.CompanyCustomersInfoResponseDto;
 import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
-import com.ajwalker.entity.User;
 import com.ajwalker.service.AdminService;
 import com.ajwalker.service.UserService;
 import jakarta.validation.Valid;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.ajwalker.constant.RestApis.*;
 
@@ -55,7 +52,7 @@ public class AdminController {
 				.message("Tum kullanicilarin listesi")
 				.code(200)
 				.success(true)
-				.data(userService.getAllUserOnWait())
+				.data(adminService.getAllOnWaitCustomers())
 				.build());
 	}
 

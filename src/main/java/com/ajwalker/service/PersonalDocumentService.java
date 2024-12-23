@@ -6,7 +6,10 @@ import com.ajwalker.utility.Enum.user.EPosition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +49,13 @@ public class PersonalDocumentService {
     
     public Optional<PersonalDocument> findByUserId(Long userId) {
         return personalDocumentRepository.findByUserId(userId);
+    }
+
+    public Map<Long, PersonalDocument> findPersonalDocumentByUserIds(List<Long> userIds) {
+        return personalDocumentRepository.findAllByUserIds(userIds)
+                .stream().collect(Collectors.toMap(
+                        PersonalDocument::getId,
+                        personalDocument -> personalDocument
+                ));
     }
 }

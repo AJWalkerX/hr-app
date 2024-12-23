@@ -15,7 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +26,6 @@ public class CompanyService {
     private final MemberShipPlanService memberShipPlanService;
     private final MemberShipTrackingService memberShipTrackingService;
 
-    public Company getCompanyById(Long id) {
-        return companyRepository.findById(id).orElse(null);
-    }
 
     public Company createCompany(String companyName) {
         Optional<Company> companyOptional = getCompanyByName(companyName);
@@ -50,7 +49,7 @@ public class CompanyService {
         return companyRepository.findByCompanyName(name);
     }
 
-    public List<Company> findAllTop100() {
+    public List<Company> findAllCompanies() {
         return companyRepository.findAll();
     }
     
@@ -108,5 +107,18 @@ public class CompanyService {
 
     public void updateCompanyToDenied(Company company) {
         company.setCompanyState(ECompanyState.DENIED);
+    }
+
+
+    public Map<Long,Company> getAllInReviewCompanies(List<Long> companyIds) {
+        return companyRepository.findAllByIdAndStateInReview(companyIds, ECompanyState.IN_REVIEW)
+                .stream().collect(Collectors.toMap(
+                        Company::getId,
+                        company -> company
+                ));
+    }
+
+    public Optional<Company> findCompanyByCompanyName(String companyName) {
+        return companyRepository.findByCompanyName(companyName);
     }
 }

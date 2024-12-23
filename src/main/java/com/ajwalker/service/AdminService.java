@@ -3,11 +3,13 @@ package com.ajwalker.service;
 import com.ajwalker.dto.request.AdminLoginRequestDto;
 import com.ajwalker.dto.request.UserAuthorisationDto;
 import com.ajwalker.dto.response.CompanyCustomersInfoResponseDto;
+import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
 import com.ajwalker.entity.*;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.AdminRepository;
 import com.ajwalker.utility.Enum.user.EUserAuthorisation;
+import com.ajwalker.utility.Enum.user.EUserState;
 import com.ajwalker.utility.JwtManager;
 import com.ajwalker.view.VwMemberShip;
 import com.ajwalker.view.VwMemberShipTrackingPayment;
@@ -29,6 +31,7 @@ public class AdminService {
 	private final MemberShipPlanService memberShipPlanService;
 	private final MemberShipTrackingService memberShipTrackingService;
 	private final UserService userService;
+	private final PersonalDocumentService personalDocumentService;
 
 	public String adminLogin(AdminLoginRequestDto dto) {
 		Optional<Admin> adminOptional = adminRepository.findOptionalByUsername(dto.username());
@@ -41,7 +44,7 @@ public class AdminService {
     public List<CompanyCustomersInfoResponseDto> getAllCustomers() {
 		DecimalFormat df = new DecimalFormat("#.00");
 // Fetch the top 100 companies
-		List<Company> companyList = companyService.findAllTop100();
+		List<Company> companyList = companyService.findAllCompanies();
 		List<Long> companyIdList = companyList.stream().map(Company::getId).toList();
 
 		// Fetch all membership plans for these companies
@@ -90,6 +93,32 @@ public class AdminService {
 				)
 				.collect(Collectors.toList());
     }
+
+	public List<UserOnWaitInfoResponseDto> getAllOnWaitCustomers() {
+		List<User> allUserByUserState = userService.findAllUserByUserState(List.of(EUserState.IN_REVIEW));
+		List<Long> userIds = allUserByUserState.stream().map(User::getId).toList();
+		Map<Long,PersonalDocument> personalDocumentMap = personalDocumentService.findPersonalDocumentByUserIds(userIds);
+		List<Long> companyIds = allUserByUserState.stream().map(User::getCompanyId).distinct().toList();
+		Map<Long, Company> companiesMap = companyService.getAllInReviewCompanies(companyIds);
+
+		return allUserByUserState.stream()
+				.map(user -> {
+					PersonalDocument personalDocument = personalDocumentMap.get(user.getId());
+					Company company = companiesMap.get(user.getCompanyId());
+					return new UserOnWaitInfoResponseDto(
+							user.getId(),
+							company.getId(),
+							personalDocument.getFirstName(),
+							personalDocument.getLastName(),
+							user.getEmail(),
+							personalDocument.getPosition() != null ? personalDocument.getPosition().name() : null, // Enum kontrolü
+							company.getCompanyName()
+					);
+				})
+				.toList();
+
+	}
+
 	public Boolean userAuthorisation(UserAuthorisationDto dto) {
 		Optional<User> userOptional = userService.findById(dto.userId());
 		if(userOptional.isEmpty()) {

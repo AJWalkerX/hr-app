@@ -19,6 +19,7 @@ public enum ErrorType {
 	INVALID_TOKEN(9001,"geçersiz token bilgisi",HttpStatus.BAD_REQUEST),
 	NOTFOUND_PERSONALDOCUMENT(6013,"PersonelDocument bulunamadı",HttpStatus.BAD_REQUEST),
 	NOTFOUND_COMPANY(3003,"Şirket bulunamadı",HttpStatus.BAD_REQUEST),
+	ALREADY_EXIST_COMPANY(3003,"Şirket Siteme kayitli! Kayit olmadan once sirketiniz ile iletisime geciniz!",HttpStatus.BAD_REQUEST),
 	NOTFOUND_MEMBERSHIP_PLAN(2003,"Üyelik planı bulunamadı",HttpStatus.BAD_REQUEST);
 	
 	
