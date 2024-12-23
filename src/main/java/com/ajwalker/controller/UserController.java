@@ -8,6 +8,7 @@ import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.GetUserProfileInfoDto;
 import com.ajwalker.dto.response.LoginResponseDto;
+import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import static com.ajwalker.constant.RestApis.*;
@@ -108,6 +110,16 @@ public class UserController {
 		                                     .code(200)
 		                                     .success(true)
 		                                     .data(userService.getUserProfileInfo(optionalUserId.get()))
+		                                     .build());
+		
+	}
+	@GetMapping(GETPERMITUSERLIST)
+	public ResponseEntity<BaseResponse<List<UserPermitResponseDto>>> getUserPermitInfo(){
+		return ResponseEntity.ok(BaseResponse.<List<UserPermitResponseDto>>builder()
+		                                     .message("kullanıcı bilgileri listelendi")
+		                                     .code(200)
+		                                     .success(true)
+		                                     .data(userService.getUserPermitList())
 		                                     .build());
 		
 	}

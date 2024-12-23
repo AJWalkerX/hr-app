@@ -7,6 +7,7 @@ import com.ajwalker.dto.request.RegisterRequestDto;
 import com.ajwalker.dto.response.GetUserProfileInfoDto;
 import com.ajwalker.dto.response.LoginResponseDto;
 import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
+import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.entity.Company;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor // bunu yazmazsak constructor injection yapmak gerekir
@@ -169,5 +171,21 @@ public class UserService {
 
 	public List<User> findAllUserByUserState(List<EUserState> inReview) {
 		return userRepository.findAllUserByUserState(inReview);
+	}
+	
+	public List<UserPermitResponseDto> getUserPermitList() {
+		List<User> userList = userRepository.findAll();
+		return  userList.stream().map(user ->{
+				PersonalDocument personalDocument = personalDocumentService.personalFindById(user.getId());
+			return new UserPermitResponseDto(
+					user.getId(),
+					user.getAvatar(),
+					personalDocument.getFirstName(),
+					personalDocument.getLastName(),
+					personalDocument.getPosition().toString(),
+					personalDocument.getEmploymentStatus().toString()
+					
+			);
+		}).collect(Collectors.toList());
 	}
 }

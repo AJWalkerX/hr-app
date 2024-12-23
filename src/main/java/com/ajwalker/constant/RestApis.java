@@ -31,6 +31,6 @@ public class RestApis {
 	public static final String GETALLCOMMENT = "/get-all-comment";
 	public static final String GETUSERPROFILEINFO = "/get-user-profile-info";
 	public static final String UPDATE_COMPANY= "/update-company";
-	
+	public static final String GETPERMITUSERLIST= "/get-user-permit-list";
 
 }
