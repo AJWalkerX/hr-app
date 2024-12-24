@@ -42,7 +42,7 @@ public class AdminController {
 	}
 
 	@GetMapping(LISTCUSTOMER)
-	public ResponseEntity<BaseResponse<List<CompanyCustomersInfoResponseDto>>> listAllCustomers(String token){ //Hesabi onaylanan herkes customer
+	public ResponseEntity<BaseResponse<List<CompanyCustomersInfoResponseDto>>> listAllCustomers(@RequestParam(name = "token") String token){ //Hesabi onaylanan herkes customer
 		Optional<Long> optionalAdminId = jwtManager.verifyToken(token);
 		if(optionalAdminId.isEmpty()){
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
@@ -56,7 +56,7 @@ public class AdminController {
 	}
 
 	@GetMapping(LISTUSERONWAIT)
-	public ResponseEntity<BaseResponse<List<UserOnWaitInfoResponseDto>>> listAllUserOnWait(String token){ //Denied yada in review da olan userlar
+	public ResponseEntity<BaseResponse<List<UserOnWaitInfoResponseDto>>> listAllUserOnWait(@RequestParam(name = "token") String token){ //Denied yada in review da olan userlar
 		Optional<Long> optionalAdminId = jwtManager.verifyToken(token);
 		if(optionalAdminId.isEmpty()){
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
