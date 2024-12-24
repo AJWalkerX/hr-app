@@ -20,9 +20,22 @@ public class MemberShipPlanGenerator {
 		                                               .memberShipState(EMemberShipState.NONE).build();
 		MemberShipPlan memberShipPlan5 = MemberShipPlan.builder().companyId(5L).memberType(EMemberType.YEARLY)
 		                                               .memberShipState(EMemberShipState.PAUSED).build();
+		MemberShipPlan memberShipPlan6 = MemberShipPlan.builder().companyId(6L).memberType(EMemberType.NONE)
+				.memberShipState(EMemberShipState.NONE).build();
+		MemberShipPlan memberShipPlan7 = MemberShipPlan.builder().companyId(7L).memberType(EMemberType.NONE)
+				.memberShipState(EMemberShipState.NONE).build();
+		MemberShipPlan memberShipPlan8 = MemberShipPlan.builder().companyId(8L).memberType(EMemberType.NONE)
+				.memberShipState(EMemberShipState.NONE).build();
+		MemberShipPlan memberShipPlan9 = MemberShipPlan.builder().companyId(9L).memberType(EMemberType.NONE)
+				.memberShipState(EMemberShipState.NONE).build();
+		MemberShipPlan memberShipPlan10 = MemberShipPlan.builder().companyId(10L).memberType(EMemberType.NONE)
+				.memberShipState(EMemberShipState.NONE).build();
+
+
 
 		
-		return List.of(memberShipPlan1, memberShipPlan2, memberShipPlan3, memberShipPlan4, memberShipPlan5);
+		return List.of(memberShipPlan1, memberShipPlan2, memberShipPlan3, memberShipPlan4, memberShipPlan5,
+				memberShipPlan6, memberShipPlan7, memberShipPlan8, memberShipPlan9, memberShipPlan10);
 		
 	}
 

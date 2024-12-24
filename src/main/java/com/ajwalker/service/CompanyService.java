@@ -50,7 +50,7 @@ public class CompanyService {
     }
 
     public List<Company> findAllCompanies() {
-        return companyRepository.findAll();
+        return companyRepository.findAllByCompanyState(ECompanyState.ACCEPTED);
     }
     
     
@@ -102,10 +102,13 @@ public class CompanyService {
 
     public void updateCompanyToAccepted(Company company) {
         company.setCompanyState(ECompanyState.ACCEPTED);
+        companyRepository.save(company);
+
     }
 
     public void updateCompanyToDenied(Company company) {
         company.setCompanyState(ECompanyState.DENIED);
+        companyRepository.save(company);
     }
 
 

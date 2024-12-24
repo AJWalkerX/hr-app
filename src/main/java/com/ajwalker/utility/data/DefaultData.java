@@ -33,9 +33,7 @@ public class DefaultData {
             commentRepository.saveAll(CommentGenerator.createComment());
             personalDocumentRepository.saveAll(CommentGenerator.createPersonalDocument());
         }
-        if(memberShipPlanRepository.count() == 0) {
-            memberShipPlanRepository.saveAll(MemberShipPlanGenerator.generateMemberShipPlans());
-        }
+
         if(memberShipTrackingRepository.count() == 0) {
             memberShipTrackingRepository.saveAll(MemberShipPlanGenerator.generateMemberShipTracking());
         }
@@ -49,6 +47,9 @@ public class DefaultData {
         }
         if(personalDocumentRepository.count() == 5) {
             personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocuments());
+        }
+        if(memberShipPlanRepository.count() == 0) {
+            memberShipPlanRepository.saveAll(MemberShipPlanGenerator.generateMemberShipPlans());
         }
 
     }

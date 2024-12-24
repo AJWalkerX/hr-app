@@ -14,4 +14,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query("SELECT C from Company C WHERE C.companyState = ?2 AND C.id IN (?1) ")
     List<Company> findAllByIdAndStateInReview(List<Long> companyIds, ECompanyState inReview);
+
+    List<Company> findAllByCompanyState(ECompanyState eCompanyState);
 }

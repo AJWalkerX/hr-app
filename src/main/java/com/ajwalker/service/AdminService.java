@@ -43,36 +43,37 @@ public class AdminService {
 
     public List<CompanyCustomersInfoResponseDto> getAllCustomers() {
 		DecimalFormat df = new DecimalFormat("#.00");
+
 // Fetch the top 100 companies
 		List<Company> companyList = companyService.findAllCompanies();
 		List<Long> companyIdList = companyList.stream().map(Company::getId).toList();
 
-		// Fetch all membership plans for these companies
+// Fetch all membership plans for these companies
 		List<MemberShipPlan> memberShipPlanList = memberShipPlanService.findAllByCompanyId(companyIdList);
 		List<Long> memberShipPlanIdList = memberShipPlanList.stream().map(MemberShipPlan::getId).toList();
 
-		// Fetch all payment amounts for the membership plans
+// Fetch all payment amounts for the membership plans
 		List<VwMemberShipTrackingPayment> memberShipTrackingPaymentList = memberShipTrackingService.findAllPaymentAmountsByMemberIds(memberShipPlanIdList);
 
-		// Aggregate payment amounts by membership plan ID
+// Aggregate payment amounts by membership plan ID
 		Map<Long, Double> memberShipTrackingPaymentMap = memberShipTrackingPaymentList.stream()
 				.collect(Collectors.groupingBy(
 						VwMemberShipTrackingPayment::memberShipPlanId,
 						Collectors.summingDouble(VwMemberShipTrackingPayment::paymentAmount)
 				));
 
-		// Convert membership plans to VwMemberShip DTOs
+// Convert membership plans to VwMemberShip DTOs
 		List<VwMemberShip> vwMemberShipList = memberShipPlanList.stream()
 				.map(memberShip -> new VwMemberShip(
 						memberShip.getId(),
 						memberShip.getCompanyId(),
 						memberShip.getMemberType().toString(),
 						memberShip.getMemberShipState().toString(),
-						memberShipTrackingPaymentMap.get(memberShip.getId()) // Get total payment amount
+						memberShipTrackingPaymentMap.getOrDefault(memberShip.getId(), 0.0) // Handle missing payments
 				))
 				.toList();
 
-		// Map companies and their membership information to DTOs
+// Map companies and their membership information to DTOs
 		return companyList.stream()
 				.flatMap(company -> vwMemberShipList.stream()
 						.filter(vwMemberShip -> vwMemberShip.companyId().equals(company.getId())) // Filter matching company ID
@@ -87,11 +88,11 @@ public class AdminService {
 								company.getRegion().toString(),
 								vwMemberShip.memberShipState(),
 								df.format(vwMemberShip.totalPaymentAmount())
-
 						))
 				)
 				.collect(Collectors.toList());
-    }
+
+	}
 
 	public List<UserOnWaitInfoResponseDto> getAllOnWaitCustomers() {
 		List<User> allUserByUserState = userService.findAllUserByUserState(List.of(EUserState.IN_REVIEW));
