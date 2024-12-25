@@ -9,6 +9,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
+
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,9 +23,11 @@ public class WorkHoliday extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long userId;
-	private long beginDate;
-	private long endDate;
+	private LocalDate beginDate;
+	private LocalDate endDate;
+	@Enumerated(EnumType.STRING)
 	private EHolidayState holidayState;
+	@Enumerated(EnumType.STRING)
 	private EHolidayType holidayType;
 	private String description;
 	

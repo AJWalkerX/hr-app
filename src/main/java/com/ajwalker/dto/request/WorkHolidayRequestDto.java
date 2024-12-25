@@ -1,13 +1,15 @@
 package com.ajwalker.dto.request;
 
-public record WorkHolidayDto(
+import java.time.LocalDate;
+
+public record WorkHolidayRequestDto(
 		Long userId,
 		String firstName,
 		String lastName,
 		String mobileNumber,
 		String email,
-		Long beginDate,
-		Long endDate,
+		LocalDate beginDate,
+		LocalDate endDate,
 		String holidayType,
 		String description
 		

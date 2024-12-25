@@ -1,18 +1,13 @@
 package com.ajwalker.service;
 
-import com.ajwalker.dto.request.WorkHolidayDto;
+import com.ajwalker.dto.request.WorkHolidayRequestDto;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.WorkHoliday;
-import com.ajwalker.repository.PersonalDocumentRepository;
 import com.ajwalker.repository.WorkHolidayRepository;
 import com.ajwalker.utility.Enum.holiday.EHolidayState;
 import com.ajwalker.utility.Enum.holiday.EHolidayType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -25,15 +20,9 @@ public class WorkHolidayService {
 		return workHolidayRepository.findById(id).orElse(null);
 	}
 	
-	public WorkHolidayDto createWorkHoliday(WorkHolidayDto dto) {
+	public WorkHolidayRequestDto createWorkHoliday(WorkHolidayRequestDto dto) {
 		
 		PersonalDocument personalDocument = personalDocumentService.personalFindById(dto.userId());
-		
-		// Tarihleri dönüştürme
-		LocalDate startDate = Instant.ofEpochMilli(dto.beginDate()).atZone(ZoneId.systemDefault()).toLocalDate();
-		LocalDate endDate = Instant.ofEpochMilli(dto.endDate()).atZone(ZoneId.systemDefault()).toLocalDate();
-		
-		
 		
 		WorkHoliday workHoliday = WorkHoliday.builder()
 		                                     .userId(dto.userId())
@@ -44,15 +33,12 @@ public class WorkHolidayService {
 		                                     .holidayState(EHolidayState.PENDING) // İlk kayıt için varsayılan durumu belirtebilirsiniz.
 		                                     .build();
 		
-		// Doğrulama
-		if (startDate.isAfter(endDate)) {
-			throw new IllegalArgumentException("Start date cannot be after end date.");
-		}
+		
 		
 		WorkHoliday savedWorkHoliday = workHolidayRepository.save(workHoliday);
 		
 		// Entity'den DTO'ya Dönüştürme ve Döndürme
-		return new WorkHolidayDto(
+		return new WorkHolidayRequestDto(
 				savedWorkHoliday.getUserId(),
 				personalDocument.getFirstName(),
 				personalDocument.getLastName(),

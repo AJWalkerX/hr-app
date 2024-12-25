@@ -1,5 +1,7 @@
 package com.ajwalker.dto.response;
 
+import java.time.LocalDate;
+
 public record UserPermitResponseDto(
 		
 		Long userId,
@@ -7,8 +9,8 @@ public record UserPermitResponseDto(
 		String firstName,
 		String lastName,
 		String position,
-		Long beginDate,
-		Long endDate,
+		LocalDate beginDate,
+		LocalDate endDate,
 		String description,
 		String holidayType,
 		String holidayState
