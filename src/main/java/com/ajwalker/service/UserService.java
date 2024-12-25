@@ -177,23 +177,30 @@ public class UserService {
 	
 	public List<UserPermitResponseDto> getUserPermitList() {
 		List<User> userList = userRepository.findAll();
-		return  userList.stream().map(user ->{
-				PersonalDocument personalDocument = personalDocumentService.personalFindById(user.getId());
-			WorkHoliday workHoliday = workHolidayService.findById(user.getId());
-				
-				return new UserPermitResponseDto(
-					user.getId(),
-					user.getAvatar(),
-					personalDocument.getFirstName(),
-					personalDocument.getLastName(),
-					personalDocument.getPosition().toString(),
-					workHoliday.getBeginDate(),
-					workHoliday.getEndDate(),
-					workHoliday.getDescription(),
-					workHoliday.getHolidayType().toString(),
-					workHoliday.getHolidayState().toString()
-					
-			);
-		}).collect(Collectors.toList());
+		return userList.stream()
+		               .filter(user -> {
+			               PersonalDocument pd = personalDocumentService.personalFindById(user.getId());
+			               WorkHoliday wh = workHolidayService.findById(user.getId());
+			               return pd != null && wh != null;
+		               })
+		               .map(user -> {
+			               PersonalDocument pd = personalDocumentService.personalFindById(user.getId());
+			               WorkHoliday wh = workHolidayService.findById(user.getId());
+			               
+			               return new UserPermitResponseDto(
+					               user.getId(),
+					               user.getAvatar(),
+					               pd.getFirstName(),
+					               pd.getLastName(),
+					               pd.getPosition().toString(),
+					               wh.getBeginDate(),
+					               wh.getEndDate(),
+					               wh.getDescription(),
+					               wh.getHolidayType().toString(),
+					               wh.getHolidayState().toString()
+			               );
+		               })
+		               .collect(Collectors.toList());
+	
 	}
 }
