@@ -25,5 +25,6 @@ public class WorkHoliday extends BaseEntity {
 	private long endDate;
 	private EHolidayState holidayState;
 	private EHolidayType holidayType;
+	private String description;
 	
 }

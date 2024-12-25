@@ -18,6 +18,7 @@ public class RestApis {
 	public static final String MANAGER = ROOT+ "/manager";
 	public static final String COMMENT = ROOT+ "/comment";
 	public static final String COMPANY = ROOT+ "/company";
+	public static final String WORKHOLIDAY = ROOT+ "/work-holiday";
 
 	public static final String REGISTER = "/register";
 	public static final String AUTHMAIL = "/auth-mail";
@@ -32,5 +33,6 @@ public class RestApis {
 	public static final String GETUSERPROFILEINFO = "/get-user-profile-info";
 	public static final String UPDATE_COMPANY= "/update-company";
 	public static final String GETPERMITUSERLIST= "/get-user-permit-list";
+	public static final String CREATE_HOLIDAY= "/create-holiday";
 
 }
