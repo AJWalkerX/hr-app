@@ -1,8 +1,7 @@
 package com.ajwalker.controller;
 
-import com.ajwalker.dto.request.WorkHolidayDto;
+import com.ajwalker.dto.request.WorkHolidayRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
-import com.ajwalker.entity.WorkHoliday;
 import com.ajwalker.service.UserAuthVerifyCodeService;
 import com.ajwalker.service.WorkHolidayService;
 import jakarta.validation.Valid;
@@ -23,10 +22,10 @@ public class WorkHolidayController {
 	
 	
 	@PostMapping(CREATE_HOLIDAY)
-	public ResponseEntity<BaseResponse<WorkHolidayDto>> createWorkHoliday(@RequestBody @Valid WorkHolidayDto dto) {
-		return ResponseEntity.ok(BaseResponse.<WorkHolidayDto>builder().success(true)
+	public ResponseEntity<BaseResponse<WorkHolidayRequestDto>> createWorkHoliday(@RequestBody @Valid WorkHolidayRequestDto dto) {
+		return ResponseEntity.ok(BaseResponse.<WorkHolidayRequestDto>builder().success(true)
 		                                     .message("İzin oluşturuldu")
-				                         .code(200)
+		                                     .code(200)
 		                                     .data(workHolidayService.createWorkHoliday(dto))
 		                                     
 		                                     .build());
