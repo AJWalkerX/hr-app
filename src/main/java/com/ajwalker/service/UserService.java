@@ -11,6 +11,7 @@ import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.entity.Company;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
+import com.ajwalker.entity.WorkHoliday;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.mapper.UserMapper;
@@ -36,6 +37,7 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final PersonalDocumentService personalDocumentService;
 	private final CompanyService companyService;
+	private final WorkHolidayService workHolidayService;
 
 	
 	public Boolean register(RegisterRequestDto dto) {
@@ -177,13 +179,19 @@ public class UserService {
 		List<User> userList = userRepository.findAll();
 		return  userList.stream().map(user ->{
 				PersonalDocument personalDocument = personalDocumentService.personalFindById(user.getId());
-			return new UserPermitResponseDto(
+			WorkHoliday workHoliday = workHolidayService.findById(user.getId());
+				
+				return new UserPermitResponseDto(
 					user.getId(),
 					user.getAvatar(),
 					personalDocument.getFirstName(),
 					personalDocument.getLastName(),
 					personalDocument.getPosition().toString(),
-					personalDocument.getEmploymentStatus().toString()
+					workHoliday.getBeginDate(),
+					workHoliday.getEndDate(),
+					workHoliday.getDescription(),
+					workHoliday.getHolidayType().toString(),
+					workHoliday.getHolidayState().toString()
 					
 			);
 		}).collect(Collectors.toList());

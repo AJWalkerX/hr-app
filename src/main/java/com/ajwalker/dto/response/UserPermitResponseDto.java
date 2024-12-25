@@ -7,6 +7,11 @@ public record UserPermitResponseDto(
 		String firstName,
 		String lastName,
 		String position,
-		String employmentStatus
+		Long beginDate,
+		Long endDate,
+		String description,
+		String holidayType,
+		String holidayState
+		
 ) {
 }
