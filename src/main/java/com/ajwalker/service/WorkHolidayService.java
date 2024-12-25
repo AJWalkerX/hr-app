@@ -40,10 +40,6 @@ public class WorkHolidayService {
 		// Entity'den DTO'ya Dönüştürme ve Döndürme
 		return new WorkHolidayRequestDto(
 				savedWorkHoliday.getUserId(),
-				personalDocument.getFirstName(),
-				personalDocument.getLastName(),
-				personalDocument.getMobileNumber(),
-				personalDocument.getEmail(),
 				savedWorkHoliday.getBeginDate(),
 				savedWorkHoliday.getEndDate(),
 				savedWorkHoliday.getHolidayType().toString(),
