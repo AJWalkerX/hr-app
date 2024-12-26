@@ -1,11 +1,12 @@
 package com.ajwalker.dto.response;
 
+import com.ajwalker.utility.Enum.user.EEmploymentStatus;
+
 public record EmployeesResponseDto(
         Long companyId,
         Long userId,
         String avatar,
         String email,
-        String userState,
         String address,
         Double annualSalary,
         Long dateOfBirth,
@@ -17,6 +18,7 @@ public record EmployeesResponseDto(
         String identityNumber,
         String socialSecurityNumber,
         String mobileNumber,
-        String position
+        String position,
+        String employmentStatus
 
 ){}
