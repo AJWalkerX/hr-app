@@ -9,6 +9,9 @@ import com.ajwalker.utility.Enum.holiday.EHolidayType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class WorkHolidayService {
@@ -16,14 +19,9 @@ public class WorkHolidayService {
 	private final WorkHolidayRepository workHolidayRepository;
 	private  final PersonalDocumentService personalDocumentService;
 	
-	public WorkHoliday findById(Long id) {
-		return workHolidayRepository.findById(id).orElse(null);
-	}
-	
 	public Boolean createWorkHoliday(WorkHolidayRequestDto dto, Long userId) {
 		
-		PersonalDocument personalDocument = personalDocumentService.personalFindById(userId);
-		
+
 		WorkHoliday workHoliday = WorkHoliday.builder()
 		                                     .userId(userId)
 		                                     .beginDate(dto.beginDate()) // Tarih için dönüştürme gerekebilir.
@@ -40,5 +38,28 @@ public class WorkHolidayService {
 		// Entity'den DTO'ya Dönüştürme ve Döndürme
 		return true;
 	
+	}
+
+	public void approveEmployeeHoliday(Long holidayId) {
+		Optional<WorkHoliday> workHolidayOptional = workHolidayRepository.findById(holidayId);
+		if (workHolidayOptional.isPresent()) {
+			WorkHoliday workHoliday = workHolidayOptional.get();
+			workHoliday.setHolidayState(EHolidayState.APPROVED);
+			workHolidayRepository.save(workHoliday);
+		}
+	}
+
+	public void rejectEmployeeHoliday(Long holidayId) {
+		Optional<WorkHoliday> workHolidayOptional = workHolidayRepository.findById(holidayId);
+		if (workHolidayOptional.isPresent()) {
+			WorkHoliday workHoliday = workHolidayOptional.get();
+			workHoliday.setHolidayState(EHolidayState.REJECTED);
+			workHolidayRepository.save(workHoliday);
+		}
+	}
+
+	public List<WorkHoliday> findAllWorkHolidaysInPending() {
+
+		 return workHolidayRepository.findAllWorkHolidaysInPending(EHolidayState.PENDING);
 	}
 }

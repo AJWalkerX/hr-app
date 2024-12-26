@@ -30,5 +30,6 @@ public class WorkHoliday extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private EHolidayType holidayType;
 	private String description;
+
 	
 }

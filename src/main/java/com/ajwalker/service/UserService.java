@@ -19,10 +19,12 @@ import com.ajwalker.mapper.UserMapper;
 import com.ajwalker.repository.UserRepository;
 import com.ajwalker.utility.Enum.user.EUserState;
 import com.ajwalker.utility.JwtManager;
+import com.ajwalker.view.VwPermitUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -177,35 +179,44 @@ public class UserService {
 	}
 	
 	public List<UserPermitResponseDto> getUserPermitList() {
-		List<User> userList = userRepository.findAll();
-		return userList.stream()
-		               .filter(user -> {
-			               PersonalDocument pd = personalDocumentService.personalFindById(user.getId());
-			               WorkHoliday wh = workHolidayService.findById(user.getId());
-			               return pd != null && wh != null;
-		               })
-		               .map(user -> {
-			               PersonalDocument pd = personalDocumentService.personalFindById(user.getId());
-			               WorkHoliday wh = workHolidayService.findById(user.getId());
-			               
-			               return new UserPermitResponseDto(
-					               user.getId(),
-					               user.getAvatar(),
-					               pd.getFirstName(),
-					               pd.getLastName(),
-					               pd.getPosition().toString(),
-					               wh.getBeginDate(),
-					               wh.getEndDate(),
-					               wh.getDescription(),
-					               wh.getHolidayType().toString(),
-					               wh.getHolidayState().toString()
-			               );
-		               })
-		               .collect(Collectors.toList());
+		List<WorkHoliday> allWorkHolidaysInPending = workHolidayService.findAllWorkHolidaysInPending();
+		List<Long> userIdList = allWorkHolidaysInPending.stream().map(WorkHoliday::getUserId).toList();
+		Map<Long, VwPermitUser> vwPermitUserMap = findAllUsersByUserIds(userIdList);
+		Map<Long, PersonalDocument> personalDocumentMap = personalDocumentService.findPersonalDocumentByUserIds(userIdList);
+
+		return allWorkHolidaysInPending.stream()
+				.map(wh -> {
+					VwPermitUser user = vwPermitUserMap.get(wh.getUserId());
+					PersonalDocument pd = personalDocumentMap.get(wh.getUserId());
+					return new UserPermitResponseDto(
+							user.userId(),
+							wh.getId(),
+							user.avatar(),
+							pd.getFirstName(),
+							pd.getLastName(),
+							pd.getPosition().toString(),
+							wh.getBeginDate(),
+							wh.getEndDate(),
+							wh.getDescription(),
+							wh.getHolidayType().toString(),
+							wh.getHolidayState().toString()
+					);
+				})
+				.toList();
+
 	
 	}
-	
-	
+
+	private Map<Long, VwPermitUser> findAllUsersByUserIds(List<Long> userIdList) {
+		Map<Long, VwPermitUser> vwPermitUserMap = new HashMap<>();
+		List<VwPermitUser> allUsersByUserIds = userRepository.findAllUsersByUserIds(userIdList);
+		for(VwPermitUser user : allUsersByUserIds) {
+			vwPermitUserMap.put(user.userId(), user);
+		}
+		return vwPermitUserMap;
+	}
+
+
 	public Boolean createWorkHoliday(WorkHolidayRequestDto dto, Long userId) {
 		return workHolidayService.createWorkHoliday(dto, userId);
 	}
