@@ -179,7 +179,11 @@ public class UserService {
 	}
 	
 	public List<UserPermitResponseDto> getUserPermitList() {
+		
 		List<WorkHoliday> allWorkHolidaysInPending = workHolidayService.findAllWorkHolidaysInPending();
+		if (allWorkHolidaysInPending.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_WORKHOLIDAY_INPENDING);
+		}
 		List<Long> userIdList = allWorkHolidaysInPending.stream().map(WorkHoliday::getUserId).toList();
 		Map<Long, VwPermitUser> vwPermitUserMap = findAllUsersByUserIds(userIdList);
 		Map<Long, PersonalDocument> personalDocumentMap = personalDocumentService.findPersonalDocumentByUserIds(userIdList);
