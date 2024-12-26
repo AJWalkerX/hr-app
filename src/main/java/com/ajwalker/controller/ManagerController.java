@@ -2,6 +2,7 @@ package com.ajwalker.controller;
 
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.EmployeesResponseDto;
+import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.service.ManagerService;
@@ -36,6 +37,17 @@ public class ManagerController {
                 .success(true)
                 .data(employees)
                 .build());
+    }
+    
+    @GetMapping(GETPERMITUSERLIST)
+    public ResponseEntity<BaseResponse<List<UserPermitResponseDto>>> getUserPermitInfo(){
+        return ResponseEntity.ok(BaseResponse.<List<UserPermitResponseDto>>builder()
+                                             .message("kullanıcı bilgileri listelendi")
+                                             .code(200)
+                                             .success(true)
+                                             .data(managerService.getUserPermitList())
+                                             .build());
+        
     }
 
 

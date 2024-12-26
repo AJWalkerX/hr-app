@@ -213,5 +213,7 @@ public class UserService {
 	public List<User> findUserInfo(Long companyId) {
 		return userRepository.findUsersByCompanyId(companyId);
 	}
+	
+	
 
 }

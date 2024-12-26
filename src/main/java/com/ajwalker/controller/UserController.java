@@ -110,16 +110,7 @@ public class UserController {
 		                                     .build());
 		
 	}
-	@GetMapping(GETPERMITUSERLIST)
-	public ResponseEntity<BaseResponse<List<UserPermitResponseDto>>> getUserPermitInfo(){
-		return ResponseEntity.ok(BaseResponse.<List<UserPermitResponseDto>>builder()
-		                                     .message("kullanıcı bilgileri listelendi")
-		                                     .code(200)
-		                                     .success(true)
-		                                     .data(userService.getUserPermitList())
-		                                     .build());
-		
-	}
+
 	@PostMapping(CREATE_HOLIDAY)
 	public ResponseEntity<BaseResponse<Boolean>> createWorkHoliday(@RequestBody @Valid WorkHolidayRequestDto dto) {
 		Optional<Long> optionalUserId = jwtManager.verifyToken(dto.token());

@@ -21,7 +21,6 @@ import static com.ajwalker.constant.RestApis.*;
 @CrossOrigin("*")
 public class CommentController {
 	private final CommentService commentService;
-	/**/
 	
 	@GetMapping(GETALLCOMMENT)
 	public ResponseEntity<BaseResponse<List<CommentCardResponseDto>>> getAllComments(){ //Denied yada in review da olan userlar
