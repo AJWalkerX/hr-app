@@ -206,7 +206,7 @@ public class UserService {
 	}
 	
 	
-	public WorkHolidayRequestDto createWorkHoliday(WorkHolidayRequestDto dto) {
-		return workHolidayService.createWorkHoliday(dto);
+	public Boolean createWorkHoliday(WorkHolidayRequestDto dto, Long userId) {
+		return workHolidayService.createWorkHoliday(dto, userId);
 	}
 }

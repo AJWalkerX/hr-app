@@ -20,12 +20,12 @@ public class WorkHolidayService {
 		return workHolidayRepository.findById(id).orElse(null);
 	}
 	
-	public WorkHolidayRequestDto createWorkHoliday(WorkHolidayRequestDto dto) {
+	public Boolean createWorkHoliday(WorkHolidayRequestDto dto, Long userId) {
 		
-		PersonalDocument personalDocument = personalDocumentService.personalFindById(dto.userId());
+		PersonalDocument personalDocument = personalDocumentService.personalFindById(userId);
 		
 		WorkHoliday workHoliday = WorkHoliday.builder()
-		                                     .userId(dto.userId())
+		                                     .userId(userId)
 		                                     .beginDate(dto.beginDate()) // Tarih için dönüştürme gerekebilir.
 		                                     .endDate(dto.endDate())     // Aynı şekilde burada da.
 		                                     .holidayType(EHolidayType.valueOf(dto.holidayType())) // Enum'u string olarak aldığımız için dönüştürüyoruz.
@@ -35,16 +35,10 @@ public class WorkHolidayService {
 		
 		
 		
-		WorkHoliday savedWorkHoliday = workHolidayRepository.save(workHoliday);
+		workHolidayRepository.save(workHoliday);
 		
 		// Entity'den DTO'ya Dönüştürme ve Döndürme
-		return new WorkHolidayRequestDto(
-				savedWorkHoliday.getUserId(),
-				savedWorkHoliday.getBeginDate(),
-				savedWorkHoliday.getEndDate(),
-				savedWorkHoliday.getHolidayType().toString(),
-				savedWorkHoliday.getDescription()
-		);
+		return true;
 	
 	}
 }

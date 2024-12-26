@@ -16,6 +16,8 @@ import com.ajwalker.utility.Enum.user.EUserState;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -92,10 +94,12 @@ public class CommentGenerator {
 	}
 	
 	public static List<User> createUser() {
+//		User123** kullanici sifresi
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		User user1 = User.builder()
 		                 .companyId(1L)
 		                 .email("user1@gmail.com")
-		                 .password("User123**")
+		                 .password(passwordEncoder.encode("User123**"))
 		                 .avatar("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/67504416b49d5d3c41ee9d82_Semra%20Solak-p-500.png")
 				.userState(EUserState.ACTIVE)
 				.isFirstLogin(false)
@@ -104,7 +108,7 @@ public class CommentGenerator {
 		User user2 = User.builder()
 		                 .companyId(2L)
 		                 .email("user2@gmail.com")
-		                 .password("User123**")
+				.password(passwordEncoder.encode("User123**"))
 		                 .avatar("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/66f3ddef167ecc29169dc6ad_I3%20-%20FIRAT%20AYDIN-p-500.avif")
 				.userState(EUserState.ACTIVE)
 				.isFirstLogin(false)
@@ -113,7 +117,7 @@ public class CommentGenerator {
 		User user3 = User.builder()
 		                 .companyId(3L)
 		                 .email("user3@gmail.com")
-		                 .password("User123**")
+				.password(passwordEncoder.encode("User123**"))
 		                 .avatar("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/667bf03e84f0cb50547a84eb_ilkizalp-999x1024-p-500.avif")
 				.userState(EUserState.ACTIVE)
 				.isFirstLogin(false)
@@ -121,7 +125,7 @@ public class CommentGenerator {
 		User user4 = User.builder()
 		                 .companyId(4L)
 		                 .email("user4@gmail.com")
-		                 .password("User123**")
+				.password(passwordEncoder.encode("User123**"))
 		                 .avatar("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/6728b5ffef6a822ae0bce15c_deniz.demir%20(1)-p-500.avif")
 				.userState(EUserState.ACTIVE)
 				.isFirstLogin(false)
@@ -129,7 +133,7 @@ public class CommentGenerator {
 		User user5 = User.builder()
 		                 .companyId(5L)
 		                 .email("user5@gmail.com")
-		                 .password("User123**")
+				.password(passwordEncoder.encode("User123**"))
 		                 .avatar("https://cdn.prod.website-files.com/611a7bc6101f80bd34a2943b/670fae2401e2303d8dffefd8_nilay%20savas%CC%A7%20foto1-p-500.avif")
 				.userState(EUserState.ACTIVE)
 				.isFirstLogin(false)

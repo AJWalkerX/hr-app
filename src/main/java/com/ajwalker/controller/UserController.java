@@ -121,12 +121,15 @@ public class UserController {
 		
 	}
 	@PostMapping(CREATE_HOLIDAY)
-	public ResponseEntity<BaseResponse<WorkHolidayRequestDto>> createWorkHoliday(@RequestBody @Valid WorkHolidayRequestDto dto) {
-		return ResponseEntity.ok(BaseResponse.<WorkHolidayRequestDto>builder().success(true)
+	public ResponseEntity<BaseResponse<Boolean>> createWorkHoliday(@RequestBody @Valid WorkHolidayRequestDto dto) {
+		Optional<Long> optionalUserId = jwtManager.verifyToken(dto.token());
+		if (optionalUserId.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		return ResponseEntity.ok(BaseResponse.<Boolean>builder().success(true)
 		                                     .message("İzin oluşturuldu")
 		                                     .code(200)
-		                                     .data(userService.createWorkHoliday(dto))
-		                                     
+		                                     .data(userService.createWorkHoliday(dto, optionalUserId.get()))
 		                                     .build());
 		
 	}
