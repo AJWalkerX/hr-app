@@ -1,6 +1,7 @@
 package com.ajwalker.service;
 
 import com.ajwalker.dto.response.EmployeesResponseDto;
+import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.entity.Company;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
@@ -50,6 +51,10 @@ public class ManagerService {
         }
 
         return employeeList;
+    }
+    
+    public List<UserPermitResponseDto> getUserPermitList(){
+        return userService.getUserPermitList();
     }
 
 
