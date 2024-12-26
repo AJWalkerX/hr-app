@@ -4,6 +4,7 @@ import com.ajwalker.constant.MailApis;
 import com.ajwalker.dto.request.DologinRequestDto;
 import com.ajwalker.dto.request.NewPasswordRequestDto;
 import com.ajwalker.dto.request.RegisterRequestDto;
+import com.ajwalker.dto.request.WorkHolidayRequestDto;
 import com.ajwalker.dto.response.GetUserProfileInfoDto;
 import com.ajwalker.dto.response.LoginResponseDto;
 import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
@@ -202,5 +203,10 @@ public class UserService {
 		               })
 		               .collect(Collectors.toList());
 	
+	}
+	
+	
+	public WorkHolidayRequestDto createWorkHoliday(WorkHolidayRequestDto dto) {
+		return workHolidayService.createWorkHoliday(dto);
 	}
 }
