@@ -1,10 +1,7 @@
 package com.ajwalker.controller;
 
 import com.ajwalker.constant.ReactApis;
-import com.ajwalker.dto.request.DologinRequestDto;
-import com.ajwalker.dto.request.ForgotPasswordRequestDto;
-import com.ajwalker.dto.request.NewPasswordRequestDto;
-import com.ajwalker.dto.request.RegisterRequestDto;
+import com.ajwalker.dto.request.*;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.GetUserProfileInfoDto;
 import com.ajwalker.dto.response.LoginResponseDto;
@@ -120,6 +117,16 @@ public class UserController {
 		                                     .code(200)
 		                                     .success(true)
 		                                     .data(userService.getUserPermitList())
+		                                     .build());
+		
+	}
+	@PostMapping(CREATE_HOLIDAY)
+	public ResponseEntity<BaseResponse<WorkHolidayRequestDto>> createWorkHoliday(@RequestBody @Valid WorkHolidayRequestDto dto) {
+		return ResponseEntity.ok(BaseResponse.<WorkHolidayRequestDto>builder().success(true)
+		                                     .message("İzin oluşturuldu")
+		                                     .code(200)
+		                                     .data(userService.createWorkHoliday(dto))
+		                                     
 		                                     .build());
 		
 	}

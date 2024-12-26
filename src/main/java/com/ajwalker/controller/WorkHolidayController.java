@@ -21,14 +21,5 @@ public class WorkHolidayController {
 	private final UserAuthVerifyCodeService userAuthVerifyCodeService;
 	
 	
-	@PostMapping(CREATE_HOLIDAY)
-	public ResponseEntity<BaseResponse<WorkHolidayRequestDto>> createWorkHoliday(@RequestBody @Valid WorkHolidayRequestDto dto) {
-		return ResponseEntity.ok(BaseResponse.<WorkHolidayRequestDto>builder().success(true)
-		                                     .message("İzin oluşturuldu")
-		                                     .code(200)
-		                                     .data(workHolidayService.createWorkHoliday(dto))
-		                                     
-		                                     .build());
-		
-	}
+
 }
