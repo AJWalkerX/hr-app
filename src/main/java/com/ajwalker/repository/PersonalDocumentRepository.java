@@ -3,6 +3,7 @@ package com.ajwalker.repository;
 import com.ajwalker.entity.PersonalDocument;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -13,4 +14,9 @@ public interface PersonalDocumentRepository extends JpaRepository<PersonalDocume
 
     @Query("SELECT P FROM PersonalDocument P WHERE P.userId IN(?1)")
     List<PersonalDocument> findAllByUserIds(List<Long> userIds);
+
+
+    @Query("SELECT p FROM PersonalDocument p WHERE p.userId = :userId")
+    PersonalDocument findByListUserIdInfo(@Param("userId") Long id);
+
 }

@@ -209,4 +209,9 @@ public class UserService {
 	public Boolean createWorkHoliday(WorkHolidayRequestDto dto, Long userId) {
 		return workHolidayService.createWorkHoliday(dto, userId);
 	}
+
+	public List<User> findUserInfo(Long companyId) {
+		return userRepository.findUsersByCompanyId(companyId);
+	}
+
 }

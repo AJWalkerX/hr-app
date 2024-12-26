@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     Optional<User> findById(Long userId);
 
+    @Query("SELECT U FROM User U WHERE U.companyId IN (?1)")
+    List<User> findUsersByCompanyId(Long companyId);
 }

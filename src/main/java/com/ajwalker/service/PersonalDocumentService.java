@@ -58,4 +58,9 @@ public class PersonalDocumentService {
                         personalDocument -> personalDocument
                 ));
     }
+
+    public PersonalDocument findByUserIdInfo(Long id) {
+        return personalDocumentRepository.findByListUserIdInfo(id);
+    }
+
 }
