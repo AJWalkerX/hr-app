@@ -31,14 +31,16 @@ public class ManagerController {
 
     //TODO Token yerleştir
     @GetMapping(MANAGER_EMPLOYEES)
-    public ResponseEntity<BaseResponse<List<EmployeesResponseDto>>> employeeListByCompany(@RequestParam Long companyId) {
-        List<EmployeesResponseDto> employees = managerService.employeeListByCompany(companyId);
-
+    public ResponseEntity<BaseResponse<List<EmployeesResponseDto>>> employeeListByCompany(@RequestParam(name = "token") String token) {
+        Optional<Long> optionalManagerId = jwtManager.verifyToken(token);
+        if (optionalManagerId.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+        }
         return ResponseEntity.ok(BaseResponse.<List<EmployeesResponseDto>>builder()
                 .message("Çalışan Listesi!!!")
                 .code(200)
                 .success(true)
-                .data(employees)
+                .data(managerService.employeeListByCompany(optionalManagerId.get()))
                 .build());
     }
     

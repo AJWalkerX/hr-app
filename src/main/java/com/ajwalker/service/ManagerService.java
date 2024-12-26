@@ -7,9 +7,12 @@ import com.ajwalker.entity.Company;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
 import com.ajwalker.entity.WorkHoliday;
+import com.ajwalker.exception.ErrorType;
+import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.CompanyRepository;
 import com.ajwalker.utility.Enum.holiday.EHolidayState;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.Manager;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,38 +27,49 @@ public class ManagerService {
     private final PersonalDocumentService personalDocumentService;
     private final UserService userService;
     private final WorkHolidayService workHolidayService;
-
-
+    
+    
     public List<EmployeesResponseDto> employeeListByCompany(Long companyId) {
+        // Şirketin tüm kullanıcılarını al.
         List<User> users = userService.findUserInfo(companyId);
-        List<EmployeesResponseDto> employeeList = new ArrayList<>();
-
-        for (User user : users) {
-            PersonalDocument personalDocuments = personalDocumentService.findByUserIdInfo(user.getId());
-
-            employeeList.add(new EmployeesResponseDto(
-                    user.getCompanyId(),
-                    user.getId(),
-                    user.getAvatar() != null ? user.getAvatar() : "",
-                    user.getEmail() != null ? user.getEmail() : "",
-                    personalDocuments != null && personalDocuments.getAddress() != null ? personalDocuments.getAddress() : "",
-                    personalDocuments != null && personalDocuments.getAnnualSalary() != null ? personalDocuments.getAnnualSalary() : 0.0,
-                    personalDocuments != null && personalDocuments.getDateOfBirth() != null ? personalDocuments.getDateOfBirth() : null,
-                    personalDocuments != null && personalDocuments.getDateOfEmployment() != null ? personalDocuments.getDateOfEmployment() : null,
-                    personalDocuments != null && personalDocuments.getDateOfTermination() != null ? personalDocuments.getDateOfTermination() : null,
-                    personalDocuments != null && personalDocuments.getFirstName() != null ? personalDocuments.getFirstName() : "",
-                    personalDocuments != null && personalDocuments.getLastName() != null ? personalDocuments.getLastName() : "",
-                    personalDocuments != null && personalDocuments.getGender() != null ? personalDocuments.getGender().toString() : "",
-                    personalDocuments != null && personalDocuments.getIdentityNumber() != null ? personalDocuments.getIdentityNumber() : "",
-                    personalDocuments != null && personalDocuments.getSocialSecurityNumber() != null ? personalDocuments.getSocialSecurityNumber() : "",
-                    personalDocuments != null && personalDocuments.getMobileNumber() != null ? personalDocuments.getMobileNumber() : "",
-                    personalDocuments != null && personalDocuments.getPosition() != null ? personalDocuments.getPosition().toString() : "",
-                    personalDocuments != null && personalDocuments.getEmploymentStatus() != null ? personalDocuments.getEmploymentStatus().toString() : ""
-            ));
+        
+        if (users.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
-
-        return employeeList;
+        
+        // Kullanıcıların dökümantasyon bilgilerini toplayarak DTO listesi oluştur.
+        return users.stream()
+                    .map(user -> {
+                        Optional<PersonalDocument> optionalPersonalDocument = personalDocumentService.findByUserId(user.getId());
+                        
+                        // Eğer dökümantasyon eksikse, eksik bilgileri null olarak işleyebiliriz.
+                        PersonalDocument personalDocument = optionalPersonalDocument.orElse(null);
+                        
+                        return new EmployeesResponseDto(
+                                user.getCompanyId(),
+                                user.getId(),
+                                user.getAvatar(),
+                                user.getEmail(),
+                                personalDocument != null ? personalDocument.getAddress() : null,
+                                personalDocument != null ? personalDocument.getAnnualSalary() : null,
+                                personalDocument != null ? personalDocument.getDateOfBirth() : null,
+                                personalDocument != null ? personalDocument.getDateOfEmployment() : null,
+                                personalDocument != null ? personalDocument.getDateOfTermination() : null,
+                                personalDocument != null ? personalDocument.getFirstName() : null,
+                                personalDocument != null ? personalDocument.getLastName() : null,
+                                personalDocument != null ? personalDocument.getGender().toString() : null,
+                                personalDocument != null ? personalDocument.getIdentityNumber() : null,
+                                personalDocument != null ? personalDocument.getSocialSecurityNumber() : null,
+                                personalDocument != null ? personalDocument.getMobileNumber() : null,
+                                personalDocument != null ? personalDocument.getPosition().toString() : null,
+                                personalDocument != null ? personalDocument.getEmploymentStatus().toString() : null
+                        );
+                    })
+                    .collect(Collectors.toList());
     }
+    
+    
+    
     
     public List<UserPermitResponseDto> getUserPermitList(){
         return userService.getUserPermitList();
