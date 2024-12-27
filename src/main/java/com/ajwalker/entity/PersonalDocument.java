@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
+
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class PersonalDocument extends BaseEntity {
     private String firstName;
     private String lastName;
     private String identityNumber;
-    private Long dateOfBirth;
+    private LocalDate dateOfBirth;
     private String mobileNumber;
     private String address;
     @Enumerated(EnumType.STRING)
@@ -30,8 +32,8 @@ public class PersonalDocument extends BaseEntity {
     private String email;
     @Enumerated(EnumType.STRING)
     private EPosition position;
-    private Long dateOfEmployment;
-    private Long dateOfTermination;
+    private LocalDate dateOfEmployment;
+    private LocalDate dateOfTermination;
     private Double annualSalary;
     @Enumerated(EnumType.STRING)
     private EEmploymentStatus employmentStatus;

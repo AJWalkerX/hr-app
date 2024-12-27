@@ -3,17 +3,20 @@ package com.ajwalker.dto.response;
 import com.ajwalker.utility.Enum.user.EGender;
 import com.ajwalker.utility.Enum.user.EPosition;
 
+import java.time.LocalDate;
+
 public record GetUserProfileInfoDto(
+		String avatar,
 		String firstName  ,
 		String lastName ,
 		String identityNumber,
-		Long dateOfBirth,
+		LocalDate dateOfBirth,
 		String mobileNumber,
 		String address,
 		EGender gender,
 		String email,
 		EPosition position,
-		Long dateOfEmployment,
+		LocalDate dateOfEmployment,
 		String socialSecurityNumber
 		) {
 }
