@@ -63,4 +63,7 @@ public class PersonalDocumentService {
         return personalDocumentRepository.findByListUserIdInfo(id);
     }
 
+    public PersonalDocument save(PersonalDocument personalDocument) {
+        return personalDocumentRepository.save(personalDocument);
+    }
 }

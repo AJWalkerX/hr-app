@@ -124,4 +124,17 @@ public class UserController {
 		                                     .build());
 		
 	}
+	@PostMapping(USER_INFORMATION)
+	public ResponseEntity<BaseResponse<Boolean>> updateUserInformation(@RequestBody @Valid FirstLoginInformationDto dto) {
+		Optional<Long> optionalUserId = jwtManager.verifyToken(dto.token());
+		if (optionalUserId.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		return ResponseEntity.ok(BaseResponse.<Boolean>builder().success(true)
+				.message("İzin oluşturuldu")
+				.code(200)
+				.data(userService.updateUserInformation(dto, optionalUserId.get()))
+				.build());
+
+	}
 }

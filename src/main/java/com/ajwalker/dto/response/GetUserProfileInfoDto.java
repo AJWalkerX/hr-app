@@ -13,7 +13,7 @@ public record GetUserProfileInfoDto(
 		LocalDate dateOfBirth,
 		String mobileNumber,
 		String address,
-		EGender gender,
+		String gender,
 		String email,
 		EPosition position,
 		LocalDate dateOfEmployment,

@@ -1,10 +1,7 @@
 package com.ajwalker.service;
 
 import com.ajwalker.constant.MailApis;
-import com.ajwalker.dto.request.DologinRequestDto;
-import com.ajwalker.dto.request.NewPasswordRequestDto;
-import com.ajwalker.dto.request.RegisterRequestDto;
-import com.ajwalker.dto.request.WorkHolidayRequestDto;
+import com.ajwalker.dto.request.*;
 import com.ajwalker.dto.response.GetUserProfileInfoDto;
 import com.ajwalker.dto.response.LoginResponseDto;
 import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
@@ -17,6 +14,10 @@ import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.mapper.UserMapper;
 import com.ajwalker.repository.UserRepository;
+import com.ajwalker.utility.Enum.company.ECompanyType;
+import com.ajwalker.utility.Enum.company.ERegion;
+import com.ajwalker.utility.Enum.user.EGender;
+import com.ajwalker.utility.Enum.user.EPosition;
 import com.ajwalker.utility.Enum.user.EUserState;
 import com.ajwalker.utility.JwtManager;
 import com.ajwalker.view.VwPermitUser;
@@ -169,7 +170,7 @@ public class UserService {
 				personalDocument.getDateOfBirth(),
 				personalDocument.getMobileNumber(),
 				personalDocument.getAddress(),
-				personalDocument.getGender(),
+				personalDocument.getGender().toString(),
 				personalDocument.getEmail(),
 				personalDocument.getPosition(),
 				personalDocument.getDateOfEmployment(),
@@ -235,7 +236,112 @@ public class UserService {
 	public List<User> findUserInfo(Long companyId) {
 		return userRepository.findUsersByCompanyId(companyId);
 	}
-	
-	
-	
+
+	public Boolean updateUserInformation(FirstLoginInformationDto dto, Long userId) {
+		Optional<User> optionalUserId = userRepository.findById(userId);
+		if(optionalUserId.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		User user = optionalUserId.get();
+		user.setEmail(dto.mail());
+		user = userRepository.save(user);
+		Optional<PersonalDocument> personalDocumentOptional = personalDocumentService.findByUserId(user.getId());
+		if(personalDocumentOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
+		}
+		PersonalDocument personalDocument = personalDocumentOptional.get();
+		personalDocument.setFirstName(dto.firstName());
+		personalDocument.setLastName(dto.lastName());
+		personalDocument.setIdentityNumber(dto.identityNumber());
+		personalDocument.setDateOfBirth(dto.dateOfBirth());
+		personalDocument.setMobileNumber(dto.mobile());
+		personalDocument.setAddress(dto.address());
+		if(dto.gender().equalsIgnoreCase(EGender.MALE.toString())) {
+			personalDocument.setGender(EGender.MALE);
+		}
+		if(dto.gender().equalsIgnoreCase(EGender.FEMALE.toString())) {
+			personalDocument.setGender(EGender.FEMALE);
+		}
+		personalDocument.setDateOfEmployment(dto.dateOfBeginToWork());
+		personalDocument.setSocialSecurityNumber(dto.socialSecurityNumber());
+		switch (dto.companySector().toUpperCase()) {
+			case "INTERN":
+				personalDocument.setPosition(EPosition.INTERN);
+				break;
+			case "JUNIOR":
+				personalDocument.setPosition(EPosition.JUNIOR);
+				break;
+			case "MID_LEVEL":
+				personalDocument.setPosition(EPosition.MID_LEVEL);
+				break;
+			case "SENIOR":
+				personalDocument.setPosition(EPosition.SENIOR);
+				break;
+			case "TEAM_LEAD":
+				personalDocument.setPosition(EPosition.TEAM_LEAD);
+				break;
+			case "MANAGER":
+				personalDocument.setPosition(EPosition.MANAGER);
+				break;
+			case "DIRECTOR":
+				personalDocument.setPosition(EPosition.DIRECTOR);
+				break;
+			default:
+				personalDocument.setPosition(EPosition.NONE);
+				break;
+		}
+
+		personalDocumentService.save(personalDocument);
+		Optional<Company> companyOptional = companyService.findById(user.getCompanyId());
+		if(companyOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_COMPANY);
+		}
+		Company company = companyOptional.get();
+		company.setCompanyName(dto.companyName());
+		company.setCompanyMail(dto.companyMail());
+		company.setTelNo(dto.companyPhoneNumber());
+		switch (dto.companySector().toUpperCase()) {
+			case "TECHNOLOGY":
+				company.setCompanyType(ECompanyType.TECHNOLOGY);
+				break;
+			case "FOOD":
+				company.setCompanyType(ECompanyType.FOOD);
+				break;
+			case "HEALTHCARE":
+				company.setCompanyType(ECompanyType.HEALTHCARE);
+				break;
+			case "EDUCATION":
+				company.setCompanyType(ECompanyType.EDUCATION);
+				break;
+			case "CONSTRUCTION":
+				company.setCompanyType(ECompanyType.CONSTRUCTION);
+				break;
+			case "FINANCE":
+				company.setCompanyType(ECompanyType.FINANCE);
+				break;
+			case "ENERGY":
+				company.setCompanyType(ECompanyType.ENERGY);
+				break;
+			case "TOURISM":
+				company.setCompanyType(ECompanyType.TOURISM);
+				break;
+			case "MEDIA_AND_ENTERTAINMENT":
+				company.setCompanyType(ECompanyType.MEDIA_AND_ENTERTAINMENT);
+				break;
+			case "AUTOMOTIVE":
+				company.setCompanyType(ECompanyType.AUTOMOTIVE);
+				break;
+			case "FASHION_AND_TEXTILE":
+				company.setCompanyType(ECompanyType.FASHION_AND_TEXTILE);
+				break;
+			default:
+				company.setCompanyType(ECompanyType.UNKNOWN);
+				break;
+		}
+		company.setRegion(ERegion.TURKEY);
+
+		return true;
+
+	}
+
 }

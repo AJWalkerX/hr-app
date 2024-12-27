@@ -36,6 +36,7 @@ public class RestApis {
 	public static final String CREATE_HOLIDAY= "/create-holiday";
 	public static final String MANAGER_EMPLOYEES = "/employees";
 	public static final String PERMIT_AUTHORIZATION =  "/permit-authorization";
+	public static final String USER_INFORMATION =  "/user-information";
 
 
 }
