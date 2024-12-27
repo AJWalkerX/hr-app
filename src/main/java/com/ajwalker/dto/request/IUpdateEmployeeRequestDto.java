@@ -1,5 +1,7 @@
 package com.ajwalker.dto.request;
 
+import java.time.LocalDate;
+
 public record IUpdateEmployeeRequestDto (
         Long companyId,
         Long userId,
@@ -7,10 +9,10 @@ public record IUpdateEmployeeRequestDto (
         String email,
         String userState,
         String address,
-        String annualSalary,
-        String dateOfBirth,
-        String dateOfEmployment,
-        String dateOfTermination,
+        Double annualSalary,
+        LocalDate dateOfBirth,
+        LocalDate dateOfEmployment,
+        LocalDate dateOfTermination,
         String firstName,
         String lastName,
         String gender,
@@ -19,4 +21,3 @@ public record IUpdateEmployeeRequestDto (
         String mobileNumber,
         String position
 ){}
-

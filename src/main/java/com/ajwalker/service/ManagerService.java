@@ -1,6 +1,7 @@
 package com.ajwalker.service;
 
 import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
+import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
 import com.ajwalker.dto.response.EmployeesResponseDto;
 import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.entity.Company;
@@ -9,8 +10,12 @@ import com.ajwalker.entity.User;
 import com.ajwalker.entity.WorkHoliday;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
+import com.ajwalker.mapper.PersonalDocumentMapper;
+import com.ajwalker.mapper.UserMapper;
 import com.ajwalker.repository.CompanyRepository;
+import com.ajwalker.repository.PersonalDocumentRepository;
 import com.ajwalker.utility.Enum.holiday.EHolidayState;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.Manager;
 import org.springframework.stereotype.Service;
@@ -27,6 +32,7 @@ public class ManagerService {
     private final PersonalDocumentService personalDocumentService;
     private final UserService userService;
     private final WorkHolidayService workHolidayService;
+    private final PersonalDocumentRepository personalDocumentRepository;
     
     
     public List<EmployeesResponseDto> employeeListByCompany(Long companyId) {
@@ -86,5 +92,44 @@ public class ManagerService {
             return true;
         }
         else return false;
+    }
+    
+    public EmployeesResponseDto updateEmployee(IUpdateEmployeeRequestDto dto) {
+        Optional<User> optionalUser = userService.findUserById(dto.userId());
+        if (optionalUser.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_USER);
+        }
+        User user = optionalUser.get();
+ 
+        
+        PersonalDocument personalDocument = personalDocumentService.personalFindById(dto.userId());
+        
+        personalDocument = PersonalDocumentMapper.INSTANCE.fromIUpdateEmployeeRequestDto(dto, personalDocument);
+        personalDocumentService.save(personalDocument);
+        
+        return new EmployeesResponseDto(
+                user.getCompanyId(),
+                user.getId(),
+                user.getAvatar(),
+                user.getEmail(),
+               personalDocument.getAddress(),
+                personalDocument.getAnnualSalary(),
+                personalDocument.getDateOfBirth(),
+                personalDocument.getDateOfEmployment(),
+                personalDocument.getDateOfTermination(),
+                personalDocument.getFirstName(),
+                personalDocument.getLastName(),
+                personalDocument.getGender().toString(),
+                personalDocument.getIdentityNumber(),
+                personalDocument.getSocialSecurityNumber(),
+                personalDocument.getMobileNumber(),
+                personalDocument.getPosition().toString(),
+                personalDocument.getEmploymentStatus().toString()
+                
+                
+               
+                
+        );
+        
     }
 }

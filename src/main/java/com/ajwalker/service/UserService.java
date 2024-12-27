@@ -343,5 +343,8 @@ public class UserService {
 		return true;
 
 	}
-
+	
+	public void save(User user) {
+		userRepository.save(user);
+	}
 }

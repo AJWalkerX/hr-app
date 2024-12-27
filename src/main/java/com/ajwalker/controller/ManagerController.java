@@ -1,6 +1,7 @@
 package com.ajwalker.controller;
 
 import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
+import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.EmployeesResponseDto;
 import com.ajwalker.dto.response.UserPermitResponseDto;
@@ -66,6 +67,16 @@ public class ManagerController {
                 .success(true)
                 .data(managerService.authorizePermit(dto))
                 .build());
+    }
+    
+    @PutMapping(UPDATE_EMPLOYEE)
+    public ResponseEntity<BaseResponse<EmployeesResponseDto>>updateEmployee(@RequestBody @Valid IUpdateEmployeeRequestDto dto){
+        return ResponseEntity.ok(BaseResponse.<EmployeesResponseDto>builder()
+                                         .message("Çalışan bilgileri başarıyla güncellendi")
+                                         .code(200)
+                                         .success(true)
+                                         .data(managerService.updateEmployee(dto))
+                                             .build());
     }
 
 }
