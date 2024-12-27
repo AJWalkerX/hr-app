@@ -51,6 +51,7 @@ public class UserService {
 		User user = UserMapper.INSTANCE.fromRegisterDto(dto);
 		user.setUserState(EUserState.PENDING);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setIsFirstLogin(true);
 		user = userRepository.save(user);
 
 		personalDocumentService.createPersonalDocument(dto.personalRole(), dto.name(), dto.surname(), dto.email(), user.getId());
@@ -65,12 +66,15 @@ public class UserService {
 	}
 	
 	public LoginResponseDto doLogin(DologinRequestDto dto) {
-//
 		Optional<User> userOptional = userRepository.findOptionalByEmail(dto.email());
-
 		if (userOptional.isEmpty()) {
 			throw new HRAppException(ErrorType.INVALID_EMAIL_OR_PASSWORD);
 		}
+		Optional<PersonalDocument> personalDocumentOptional = personalDocumentService.findByUserId(userOptional.get().getId());
+		if (personalDocumentOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
+		}
+
 		User user = userOptional.get();
 		if(!passwordEncoder.matches(dto.password(), user.getPassword())){
 			throw new HRAppException(ErrorType.INVALID_EMAIL_OR_PASSWORD);
@@ -84,11 +88,12 @@ public class UserService {
 		if(user.getUserState().equals(EUserState.DENIED)){
 			throw new HRAppException(ErrorType.DENIED_USER);
 		}
-		if (dto.isFirstLogin() != null && !dto.isFirstLogin()) {
+		boolean isFirstLogin = user.getIsFirstLogin();
+		if (user.getIsFirstLogin()) {
 			user.setIsFirstLogin(false);
 			user = userRepository.save(user);
 		}
-        return new LoginResponseDto(jwtManager.createToken(user.getId()), user.getIsFirstLogin());
+        return new LoginResponseDto(jwtManager.createToken(user.getId()), isFirstLogin, personalDocumentOptional.get().getPosition().toString());
 	}
 
 	public Optional<User> findUserById(Long userId) {

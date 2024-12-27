@@ -14,8 +14,7 @@ public record DologinRequestDto(
 				message = "Şifreniz en az 8 en fazla 64 karakter olmalı, Şirenizde En az Bir büyük bir küçük harf ve özel karakter olmalıdır.",
 				regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*!.,?/])(?=\\S+$).{8,}$"
 		)
-		String password,
-		Boolean isFirstLogin
+		String password
 ) {
 
 }
