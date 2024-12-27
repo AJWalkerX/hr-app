@@ -32,6 +32,7 @@ public class AdminService {
 	private final MemberShipTrackingService memberShipTrackingService;
 	private final UserService userService;
 	private final PersonalDocumentService personalDocumentService;
+	private final MailService mailService;
 
 	public String adminLogin(AdminLoginRequestDto dto) {
 		Optional<Admin> adminOptional = adminRepository.findOptionalByUsername(dto.username());
@@ -133,10 +134,12 @@ public class AdminService {
 		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.ACCEPT.toString())) {
 			userService.updateUserToActive(user);
 			companyService.updateCompanyToAccepted(company);
+			mailService.sendMail(user.getEmail(),"Kolaysa İK Talep Onayı", "Kolaysa İK sitemize yaptığınız istek onaylanmıştır. Adrese giderek => http://localhost:3000/user-information sayfamızdan giriş yapabilirsiniz. Hayırlı İşler :) ");
 		}
 		if(dto.answer().equalsIgnoreCase(EUserAuthorisation.DENY.toString())) {
 			userService.updateUserToDenied(user);
 			companyService.updateCompanyToDenied(company);
+			mailService.sendMail(user.getEmail(),"Kolaysa İK Talep Onayı", "Kolaysa İK sitemize yaptığınız istek reddedilmiştir. :() ");
 		}
 		return true;
 	}
