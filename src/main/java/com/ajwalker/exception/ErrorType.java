@@ -25,6 +25,7 @@ public enum ErrorType {
 	NOTFOUND_WORKHOLIDAY_INPENDING(7003,"Herhangi bir izin isteği bulunamadı!!!",HttpStatus.BAD_REQUEST);
 	
 	
+	
 	int code;
 	String message;
 	HttpStatus httpStatus;

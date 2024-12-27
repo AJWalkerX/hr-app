@@ -3,12 +3,14 @@ package com.ajwalker.service;
 import com.ajwalker.dto.request.WorkHolidayRequestDto;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.WorkHoliday;
+import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.WorkHolidayRepository;
 import com.ajwalker.utility.Enum.holiday.EHolidayState;
 import com.ajwalker.utility.Enum.holiday.EHolidayType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.lang.model.type.ErrorType;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +26,16 @@ public class WorkHolidayService {
 
 		WorkHoliday workHoliday = WorkHoliday.builder()
 		                                     .userId(userId)
-		                                     .beginDate(dto.beginDate()) // Tarih için dönüştürme gerekebilir.
-		                                     .endDate(dto.endDate())     // Aynı şekilde burada da.
+		                                     .beginDate(dto.beginDate())
+		                                     .endDate(dto.endDate())
 		                                     .holidayType(EHolidayType.valueOf(dto.holidayType())) // Enum'u string olarak aldığımız için dönüştürüyoruz.
 		                                     .description(dto.description())
 		                                     .holidayState(EHolidayState.PENDING) // İlk kayıt için varsayılan durumu belirtebilirsiniz.
 		                                     .build();
 		
-		
+		if (dto.beginDate().isAfter(dto.endDate()) || dto.beginDate().equals(dto.endDate())) {
+			throw new IllegalArgumentException("Girmiş olduğunuz tarihler geçersizdir.");
+		}
 		
 		workHolidayRepository.save(workHoliday);
 		
