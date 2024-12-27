@@ -2,6 +2,8 @@ package com.ajwalker.dto.response;
 
 import com.ajwalker.utility.Enum.user.EEmploymentStatus;
 
+import java.time.LocalDate;
+
 public record EmployeesResponseDto(
         Long companyId,
         Long userId,
@@ -9,9 +11,9 @@ public record EmployeesResponseDto(
         String email,
         String address,
         Double annualSalary,
-        Long dateOfBirth,
-        Long dateOfEmployment,
-        Long dateOfTermination,
+        LocalDate dateOfBirth,
+        LocalDate dateOfEmployment,
+        LocalDate dateOfTermination,
         String firstName,
         String lastName,
         String gender,

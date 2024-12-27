@@ -155,12 +155,14 @@ public class UserService {
 	}
 	
 	public GetUserProfileInfoDto getUserProfileInfo(Long userId) {
+		User user = userRepository.findById(userId).get();
 		Optional<PersonalDocument> optionalPersonalDocument = personalDocumentService.findByUserId(userId);
 		if(optionalPersonalDocument.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
 		}
 		PersonalDocument personalDocument = optionalPersonalDocument.get();
 		return new GetUserProfileInfoDto(
+				user.getAvatar(),
 				personalDocument.getFirstName(),
 				personalDocument.getLastName(),
 				personalDocument.getIdentityNumber(),
