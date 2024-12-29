@@ -58,12 +58,12 @@ public class ManagerService {
                     personalDocument.getDateOfTermination(),
                     personalDocument.getFirstName(),
                     personalDocument.getLastName(),
-                    personalDocument.getGender().toString(),
+                    personalDocument.getGender() == null ? EGender.UNDEFINED.name() : personalDocument.getGender().toString(),
                     personalDocument.getIdentityNumber(),
                     personalDocument.getSocialSecurityNumber(),
                     personalDocument.getMobileNumber(),
                     personalDocument.getPosition().toString(),
-                    personalDocument.getEmploymentStatus().toString()
+                    personalDocument.getEmploymentStatus() == null ? EEmploymentStatus.UNDEFINED.name() : personalDocument.getEmploymentStatus().toString()
             );
         }).toList();
 

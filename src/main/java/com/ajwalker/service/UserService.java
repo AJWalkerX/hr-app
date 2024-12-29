@@ -351,6 +351,6 @@ public class UserService {
 
 
 	public List<User> findUsersByCompanyId(Long companyId) {
-		return  userRepository.findUsersByCompanyId(companyId, EState.ACTIVE.toString());
+		return  userRepository.findUsersByCompanyId(companyId, EState.ACTIVE);
 	}
 }
