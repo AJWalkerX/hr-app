@@ -17,6 +17,8 @@ public record GetUserProfileInfoDto(
 		String email,
 		EPosition position,
 		LocalDate dateOfEmployment,
-		String socialSecurityNumber
+		String socialSecurityNumber,
+		String companyName
+		
 		) {
 }
