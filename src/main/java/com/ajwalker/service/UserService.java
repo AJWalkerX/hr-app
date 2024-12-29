@@ -12,6 +12,7 @@ import com.ajwalker.entity.User;
 import com.ajwalker.entity.WorkHoliday;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
+import com.ajwalker.mapper.PersonalDocumentMapper;
 import com.ajwalker.mapper.UserMapper;
 import com.ajwalker.repository.UserRepository;
 import com.ajwalker.utility.Enum.EState;
@@ -167,6 +168,7 @@ public class UserService {
 		
 		PersonalDocument personalDocument = optionalPersonalDocument.get();
 		return new GetUserProfileInfoDto(
+				user.getId(),
 				user.getAvatar(),
 				personalDocument.getFirstName(),
 				personalDocument.getLastName(),
@@ -176,7 +178,7 @@ public class UserService {
 				personalDocument.getAddress(),
 				personalDocument.getGender().toString(),
 				personalDocument.getEmail(),
-				personalDocument.getPosition(),
+				personalDocument.getPosition().toString(),
 				personalDocument.getDateOfEmployment(),
 				personalDocument.getSocialSecurityNumber(),
 				company.getCompanyName()
@@ -352,5 +354,44 @@ public class UserService {
 
 	public List<User> findUsersByCompanyId(Long companyId) {
 		return  userRepository.findUsersByCompanyId(companyId, EState.ACTIVE);
+	}
+	public GetUserProfileInfoDto updateUserProfile(UpdateUserProfileInformationRequestDto dto) {
+		
+		Optional<User> optUser = userRepository.findById(dto.userId());
+		if(optUser.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		
+		Optional<PersonalDocument> optPersonalDocument = personalDocumentService.findByUserId(dto.userId());
+		if(optPersonalDocument.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
+		}
+		User user = optUser.get();
+		
+		PersonalDocument personalDocument = optPersonalDocument.get();
+		personalDocument= PersonalDocumentMapper.INSTANCE.fromUpdateUserProfileInformationRequestDto(dto, personalDocument);
+		personalDocumentService.save(personalDocument);
+		
+		Optional<Company> optCompany = companyService.findById(dto.userId());
+		if (optCompany.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_COMPANY);
+		}
+		Company company = optCompany.get();
+		return new GetUserProfileInfoDto(
+				user.getId(),
+				user.getAvatar(),
+				personalDocument.getFirstName(),
+				personalDocument.getLastName(),
+				personalDocument.getIdentityNumber(),
+				personalDocument.getDateOfBirth(),
+				personalDocument.getMobileNumber(),
+				personalDocument.getAddress(),
+				personalDocument.getGender().toString(),
+				personalDocument.getEmail(),
+				personalDocument.getPosition().toString(),
+				personalDocument.getDateOfEmployment(),
+				personalDocument.getSocialSecurityNumber(),
+				company.getCompanyName()
+		);
 	}
 }
