@@ -19,8 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     Optional<User> findById(Long userId);
 
-    @Query("SELECT U FROM User U WHERE U.companyId = ?1")
-    List<User> findUsersByCompanyId(Long companyId);
+    @Query("SELECT U FROM User U WHERE U.companyId = ?1 AND U.state = ?2")
+    List<User> findUsersByCompanyId(Long companyId, String state);
 
     @Query("SELECT new com.ajwalker.view.VwPermitUser (U.id, U.avatar) FROM User U WHERE U.id IN(?1)")
     List<VwPermitUser> findAllUsersByUserIds(List<Long> userIdList);

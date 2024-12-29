@@ -1,5 +1,6 @@
 package com.ajwalker.controller;
 
+import com.ajwalker.dto.request.AddEmployeeRequestDto;
 import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
 import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
@@ -69,13 +70,43 @@ public class ManagerController {
     }
     
     @PutMapping(UPDATE_EMPLOYEE)
-    public ResponseEntity<BaseResponse<EmployeesResponseDto>>updateEmployee(@RequestBody @Valid IUpdateEmployeeRequestDto dto){
-        return ResponseEntity.ok(BaseResponse.<EmployeesResponseDto>builder()
+    public ResponseEntity<BaseResponse<Boolean>>updateEmployee(@RequestBody @Valid IUpdateEmployeeRequestDto dto, String token){
+        Optional<Long> managerIdOptional = jwtManager.verifyToken(token);
+        if (managerIdOptional.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+        }
+        return ResponseEntity.ok(BaseResponse.<Boolean>builder()
                                          .message("Çalışan bilgileri başarıyla güncellendi")
                                          .code(200)
                                          .success(true)
                                          .data(managerService.updateEmployee(dto))
-                                             .build());
+                .build());
+    }
+    @DeleteMapping
+    public ResponseEntity<BaseResponse<Boolean>> deleteEmployee(@RequestBody Long userId, String token){
+        Optional<Long> managerId = jwtManager.verifyToken(token);
+        if (managerId.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+        }
+        return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+                .message("Çalışan bilgileri başarıyla güncellendi")
+                .code(200)
+                .success(true)
+                .data(managerService.deleteEmployee(userId))
+                .build());
     }
 
+    @PostMapping
+    public ResponseEntity<BaseResponse<Boolean>> addEmployee(@RequestBody AddEmployeeRequestDto dto, String token){
+        Optional<Long> managerIdOptional = jwtManager.verifyToken(token);
+        if (managerIdOptional.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+        }
+        return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+                .message("Çalışan bilgileri başarıyla güncellendi")
+                .code(200)
+                .success(true)
+                .data(managerService.addNewEmployee(dto, managerIdOptional.get()))
+                .build());
+    }
 }

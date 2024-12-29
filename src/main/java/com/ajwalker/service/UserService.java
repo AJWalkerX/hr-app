@@ -14,6 +14,7 @@ import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.mapper.UserMapper;
 import com.ajwalker.repository.UserRepository;
+import com.ajwalker.utility.Enum.EState;
 import com.ajwalker.utility.Enum.company.ECompanyType;
 import com.ajwalker.utility.Enum.company.ERegion;
 import com.ajwalker.utility.Enum.user.EGender;
@@ -344,12 +345,12 @@ public class UserService {
 
 	}
 	
-	public void save(User user) {
-		userRepository.save(user);
+	public User save(User user) {
+		return userRepository.save(user);
 	}
 
 
 	public List<User> findUsersByCompanyId(Long companyId) {
-		return  userRepository.findUsersByCompanyId(companyId);
+		return  userRepository.findUsersByCompanyId(companyId, EState.ACTIVE.toString());
 	}
 }
