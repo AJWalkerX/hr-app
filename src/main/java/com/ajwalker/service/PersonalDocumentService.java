@@ -42,8 +42,8 @@ public class PersonalDocumentService {
         };
     }
 
-    public PersonalDocument personalFindById(Long personalId) {
-        return personalDocumentRepository.findById(personalId).orElse(null);
+    public PersonalDocument findPersonalByUserId(Long userId) {
+        return personalDocumentRepository.findById(userId).orElse(null);
 
     }
     
@@ -59,11 +59,15 @@ public class PersonalDocumentService {
                 ));
     }
 
-    public PersonalDocument findByUserIdInfo(Long id) {
-        return personalDocumentRepository.findByListUserIdInfo(id);
-    }
 
     public PersonalDocument save(PersonalDocument personalDocument) {
         return personalDocumentRepository.save(personalDocument);
+    }
+
+    public Map<Long, PersonalDocument> findByUserIdList(List<Long> employeeIds) {
+        return personalDocumentRepository.findAllByUserIds(employeeIds).stream().collect(Collectors.toMap(
+                PersonalDocument::getUserId,
+                personalDocument -> personalDocument
+        ));
     }
 }

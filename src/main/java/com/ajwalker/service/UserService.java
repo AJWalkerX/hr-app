@@ -233,10 +233,6 @@ public class UserService {
 		return workHolidayService.createWorkHoliday(dto, userId);
 	}
 
-	public List<User> findUserInfo(Long companyId) {
-		return userRepository.findUsersByCompanyId(companyId);
-	}
-
 	public Boolean updateUserInformation(FirstLoginInformationDto dto, Long userId) {
 		Optional<User> optionalUserId = userRepository.findById(userId);
 		if(optionalUserId.isEmpty()) {
@@ -346,5 +342,10 @@ public class UserService {
 	
 	public void save(User user) {
 		userRepository.save(user);
+	}
+
+
+	public List<User> findUsersByCompanyId(Long companyId) {
+		return  userRepository.findUsersByCompanyId(companyId);
 	}
 }
