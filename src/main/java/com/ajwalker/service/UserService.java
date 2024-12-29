@@ -161,6 +161,9 @@ public class UserService {
 		if(optionalPersonalDocument.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
 		}
+		Company company = companyService.findById(user.getCompanyId())
+		                                   .orElseThrow(() -> new HRAppException(ErrorType.NOTFOUND_COMPANY));
+		
 		PersonalDocument personalDocument = optionalPersonalDocument.get();
 		return new GetUserProfileInfoDto(
 				user.getAvatar(),
@@ -174,7 +177,8 @@ public class UserService {
 				personalDocument.getEmail(),
 				personalDocument.getPosition(),
 				personalDocument.getDateOfEmployment(),
-				personalDocument.getSocialSecurityNumber()
+				personalDocument.getSocialSecurityNumber(),
+				company.getCompanyName()
 		);
 	}
 
