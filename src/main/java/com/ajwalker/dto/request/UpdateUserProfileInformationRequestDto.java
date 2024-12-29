@@ -1,11 +1,10 @@
-package com.ajwalker.dto.response;
+package com.ajwalker.dto.request;
 
-import com.ajwalker.utility.Enum.user.EGender;
 import com.ajwalker.utility.Enum.user.EPosition;
 
 import java.time.LocalDate;
 
-public record GetUserProfileInfoDto(
+public record UpdateUserProfileInformationRequestDto(
 		Long userId,
 		String avatar,
 		String firstName  ,
@@ -18,8 +17,6 @@ public record GetUserProfileInfoDto(
 		String email,
 		String position,
 		LocalDate dateOfEmployment,
-		String socialSecurityNumber,
-		String companyName
-		
-		) {
+		String socialSecurityNumber
+) {
 }

@@ -124,6 +124,7 @@ public class UserController {
 		                                     .build());
 		
 	}
+	
 	@PostMapping(USER_INFORMATION)
 	public ResponseEntity<BaseResponse<Boolean>> updateUserInformation(@RequestBody @Valid FirstLoginInformationDto dto) {
 		Optional<Long> optionalUserId = jwtManager.verifyToken(dto.token());
@@ -131,10 +132,23 @@ public class UserController {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
 		return ResponseEntity.ok(BaseResponse.<Boolean>builder().success(true)
-				.message("İzin oluşturuldu")
+				.message("bilgiler güncellendi")
 				.code(200)
 				.data(userService.updateUserInformation(dto, optionalUserId.get()))
 				.build());
 
 	}
+	
+	@PutMapping(USER_UPDATE_INFORMATION)
+	public ResponseEntity<BaseResponse<GetUserProfileInfoDto>> updateUserProfileInformation(@RequestBody @Valid UpdateUserProfileInformationRequestDto dto){
+		return ResponseEntity.ok(BaseResponse.<GetUserProfileInfoDto>builder()
+				                         .message("Personel bilgileri başarıyla Güncellendi")
+				                         .code(200)
+				                         .success(true)
+				                         .data(userService.updateUserProfile(dto))
+		                                     .build());
+	}
+	
+	
+	
 }
