@@ -30,7 +30,6 @@ public class ManagerController {
     private final ManagerService managerService;
 
 
-    //TODO Token yerleştir
     @GetMapping(MANAGER_EMPLOYEES)
     public ResponseEntity<BaseResponse<List<EmployeesResponseDto>>> employeeListByCompany(@RequestParam(name = "token") String token) {
         Optional<Long> optionalManagerId = jwtManager.verifyToken(token);
