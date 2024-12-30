@@ -1,15 +1,14 @@
 package com.ajwalker.controller;
 
+import com.ajwalker.dto.request.AddCommentRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.CommentCardResponseDto;
 import com.ajwalker.entity.Comment;
 import com.ajwalker.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +29,16 @@ public class CommentController {
 		                                     .success(true)
 		                                     .data(commentService.findAllComments())
 		                                     .build());
+	}
+	
+	@PostMapping(ADD_COMMENT)
+	public ResponseEntity<BaseResponse<Boolean>> addComment(@RequestBody @Valid AddCommentRequestDto dto){
+	return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+	                                     .message("Yorum başarıyla eklendi")
+	                                     .code(200)
+	                                     .success(true)
+	                                     .data(commentService.addComment(dto))
+	                                     .build());
+	                                     
 	}
 }
