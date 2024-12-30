@@ -41,6 +41,6 @@ public class RestApis {
 	public static final String USER_UPDATE_INFORMATION ="/user-update-information";
 	public static final String ADD_NEW_EMPLOYEE ="/add-new-employee";
 	public static final String GETALLVIEWUSERPERMIT ="/get-all-view-user-permit";
-
+	public static final String ADD_COMMENT ="/add-comment";
 
 }

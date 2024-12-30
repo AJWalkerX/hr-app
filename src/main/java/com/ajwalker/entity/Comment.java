@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
+
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -20,11 +22,9 @@ public class Comment extends BaseEntity {
     private Long userId;
     @Column(unique = true, nullable = false)
     private Long companyId;
-    @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
     private String content;
     private String description;
-    private Long commentDate;
+    private LocalDate commentDate;
     
 }
