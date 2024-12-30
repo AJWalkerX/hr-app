@@ -2,10 +2,7 @@ package com.ajwalker.service;
 
 import com.ajwalker.constant.MailApis;
 import com.ajwalker.dto.request.*;
-import com.ajwalker.dto.response.GetUserProfileInfoDto;
-import com.ajwalker.dto.response.LoginResponseDto;
-import com.ajwalker.dto.response.UserOnWaitInfoResponseDto;
-import com.ajwalker.dto.response.UserPermitResponseDto;
+import com.ajwalker.dto.response.*;
 import com.ajwalker.entity.Company;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
@@ -24,6 +21,7 @@ import com.ajwalker.utility.Enum.user.EUserState;
 import com.ajwalker.utility.JwtManager;
 import com.ajwalker.view.VwPermitUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -393,5 +391,17 @@ public class UserService {
 				personalDocument.getSocialSecurityNumber(),
 				company.getCompanyName()
 		);
+	}
+	
+	public List<ViewYourUserPermitResponseDto> viewYourUserPermit(Long userId) {
+		boolean userExists = existsById(userId);
+		if (!userExists) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		return workHolidayService.viewYourUserPermit(userId);
+	}
+	
+	public boolean existsById(Long userId) {
+		return userRepository.existsById(userId);
 	}
 }
