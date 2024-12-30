@@ -365,6 +365,7 @@ public class UserService {
 			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
 		}
 		User user = optUser.get();
+		user= UserMapper.INSTANCE.fromUpdateUserProfileInformationRequestDto(dto,user);
 		
 		PersonalDocument personalDocument = optPersonalDocument.get();
 		personalDocument= PersonalDocumentMapper.INSTANCE.fromUpdateUserProfileInformationRequestDto(dto, personalDocument);
