@@ -151,19 +151,25 @@ public class ManagerService {
             case "JUNIOR":
                 personalDocument.setPosition(EPosition.JUNIOR);
                 break;
-            case "MID_LEVEL":
+            case "MID LEVEL":
                 personalDocument.setPosition(EPosition.MID_LEVEL);
                 break;
             case "SENIOR":
                 personalDocument.setPosition(EPosition.SENIOR);
                 break;
-            case "TEAM_LEAD":
+            case "TEAM LEAD":
                 personalDocument.setPosition(EPosition.TEAM_LEAD);
+                break;
+            case "MANAGER":
+                personalDocument.setPosition(EPosition.MANAGER);
+                break;
+            case "DIRECTOR":
+                personalDocument.setPosition(EPosition.DIRECTOR);
                 break;
             default:
                 personalDocument.setPosition(EPosition.NONE);
         }
-        switch (dto.gender()){
+        switch (dto.gender().toUpperCase()){
             case "MALE":
                 personalDocument.setGender(EGender.MALE);
                 break;
