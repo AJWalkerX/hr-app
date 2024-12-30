@@ -1,6 +1,7 @@
 package com.ajwalker.controller;
 
 import com.ajwalker.dto.request.AddEmployeeRequestDto;
+import com.ajwalker.dto.request.DeleteEmployeeRequestDto;
 import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
 import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
@@ -82,9 +83,9 @@ public class ManagerController {
                                          .data(managerService.updateEmployee(dto))
                 .build());
     }
-    @DeleteMapping
-    public ResponseEntity<BaseResponse<Boolean>> deleteEmployee(@RequestBody Long userId, String token){
-        Optional<Long> managerId = jwtManager.verifyToken(token);
+    @DeleteMapping(DELETE_EMPLOYEE)
+    public ResponseEntity<BaseResponse<Boolean>> deleteEmployee(@RequestBody DeleteEmployeeRequestDto dto){
+        Optional<Long> managerId = jwtManager.verifyToken(dto.token());
         if (managerId.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
@@ -92,7 +93,7 @@ public class ManagerController {
                 .message("Çalışan bilgileri başarıyla güncellendi")
                 .code(200)
                 .success(true)
-                .data(managerService.deleteEmployee(userId))
+                .data(managerService.deleteEmployee(dto.userId()))
                 .build());
     }
 
