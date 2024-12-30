@@ -97,13 +97,14 @@ public class ManagerController {
     }
 
     @PostMapping(ADD_NEW_EMPLOYEE)
-    public ResponseEntity<BaseResponse<Boolean>> addEmployee(@RequestBody AddEmployeeRequestDto dto, String token){
-        Optional<Long> managerIdOptional = jwtManager.verifyToken(token);
+    public ResponseEntity<BaseResponse<Boolean>> addEmployee(@RequestBody AddEmployeeRequestDto dto){
+        System.out.println(dto.position());
+        Optional<Long> managerIdOptional = jwtManager.verifyToken(dto.token());
         if (managerIdOptional.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
         return ResponseEntity.ok(BaseResponse.<Boolean>builder()
-                .message("Çalışan bilgileri başarıyla güncellendi")
+                .message("Çalışan bilgileri başarıyla eklendi!")
                 .code(200)
                 .success(true)
                 .data(managerService.addNewEmployee(dto, managerIdOptional.get()))

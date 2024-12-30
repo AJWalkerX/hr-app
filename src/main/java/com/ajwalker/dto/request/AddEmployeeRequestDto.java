@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public record AddEmployeeRequestDto(
+        String token,
         @NotNull
         @Email
         String email,
