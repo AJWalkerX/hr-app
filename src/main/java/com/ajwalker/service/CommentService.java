@@ -62,35 +62,32 @@ public class CommentService {
 		}).collect(Collectors.toList());
 	}
 	
-	public Boolean addComment(AddCommentRequestDto dto) {
-		// Kullanıcıyı ID üzerinden bul
-		Optional<User> optUser = userService.findUserById(dto.userId());
-		if (optUser.isEmpty()) {
-			throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
-		}
-		
-		// Kullanıcıyı elde et
-		User user = optUser.get();
-		
-		// Kullanıcının company_id bilgisini al
+	public Boolean addComment(AddCommentRequestDto dto, Long managerId) {
+		User user = userService.findById(managerId).get();
 		if (user.getCompanyId() == null) {
 			throw new HRAppException(ErrorType.NOTFOUND_COMPANY);
 		}
 		
-		// Yorum nesnesini oluştur
+		Optional<Comment> existingComment = commentRepository.findByUserId(user.getId());
+		
+		if (existingComment.isPresent()) {
+			commentRepository.delete(existingComment.get());
+		}
+		
+		
 		Comment comment = Comment.builder()
-		                         .userId(dto.userId())
-		                         .companyId(user.getCompanyId()) // Kullanıcının şirket ID'sini ekle
+		                         .userId(managerId)
+		                         .companyId(user.getCompanyId())
 		                         .content(dto.content())
 		                         .description(dto.description())
 		                         .commentDate(LocalDate.now())
 		                         .build();
 		
-		// Yorum kaydedilir
 		commentRepository.save(comment);
 		
 		return true;
 	}
+	
 	
 	
 }

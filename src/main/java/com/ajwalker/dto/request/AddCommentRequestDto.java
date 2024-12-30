@@ -1,7 +1,7 @@
 package com.ajwalker.dto.request;
 
 public record AddCommentRequestDto(
-		Long userId,
+	    String token,
 		String content,
 		String description
 ) {
