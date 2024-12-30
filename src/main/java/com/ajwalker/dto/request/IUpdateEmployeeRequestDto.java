@@ -3,6 +3,7 @@ package com.ajwalker.dto.request;
 import java.time.LocalDate;
 
 public record IUpdateEmployeeRequestDto (
+        String token,
         Long companyId,
         Long userId,
         String avatar,

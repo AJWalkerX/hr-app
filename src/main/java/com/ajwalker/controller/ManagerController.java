@@ -70,8 +70,8 @@ public class ManagerController {
     }
     
     @PutMapping(UPDATE_EMPLOYEE)
-    public ResponseEntity<BaseResponse<Boolean>>updateEmployee(@RequestBody @Valid IUpdateEmployeeRequestDto dto, String token){
-        Optional<Long> managerIdOptional = jwtManager.verifyToken(token);
+    public ResponseEntity<BaseResponse<Boolean>>updateEmployee(@RequestBody @Valid IUpdateEmployeeRequestDto dto){
+        Optional<Long> managerIdOptional = jwtManager.verifyToken(dto.token());
         if (managerIdOptional.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
