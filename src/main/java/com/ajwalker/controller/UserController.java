@@ -2,10 +2,7 @@ package com.ajwalker.controller;
 
 import com.ajwalker.constant.ReactApis;
 import com.ajwalker.dto.request.*;
-import com.ajwalker.dto.response.BaseResponse;
-import com.ajwalker.dto.response.GetUserProfileInfoDto;
-import com.ajwalker.dto.response.LoginResponseDto;
-import com.ajwalker.dto.response.UserPermitResponseDto;
+import com.ajwalker.dto.response.*;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -149,6 +146,21 @@ public class UserController {
 		                                     .build());
 	}
 	
+	@GetMapping(GETALLVIEWUSERPERMIT)
+	public ResponseEntity<BaseResponse<List<ViewYourUserPermitResponseDto>>> viewYourUserPermit(@RequestParam(name =
+			"token") String token) {
+		Optional<Long> optionalUserId = jwtManager.verifyToken(token);
+		if (optionalUserId.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		
+		return  ResponseEntity.ok(BaseResponse.<List<ViewYourUserPermitResponseDto>>builder()
+		                                      .message("İzinler başarıyla listelendi")
+				                          .code(200)
+				                          .success(true)
+				                          .data(userService.viewYourUserPermit(optionalUserId.get()))
+				                          .build());
+	}
 	
 	
 }
