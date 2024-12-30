@@ -1,25 +1,28 @@
 package com.ajwalker.service;
 
 import com.ajwalker.dto.request.WorkHolidayRequestDto;
+import com.ajwalker.dto.response.ViewYourUserPermitResponseDto;
 import com.ajwalker.entity.PersonalDocument;
+import com.ajwalker.entity.User;
 import com.ajwalker.entity.WorkHoliday;
+import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.WorkHolidayRepository;
 import com.ajwalker.utility.Enum.holiday.EHolidayState;
 import com.ajwalker.utility.Enum.holiday.EHolidayType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import javax.lang.model.type.ErrorType;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class WorkHolidayService {
 	
 	private final WorkHolidayRepository workHolidayRepository;
-	private  final PersonalDocumentService personalDocumentService;
 	
 	public Boolean createWorkHoliday(WorkHolidayRequestDto dto, Long userId) {
 		
@@ -65,5 +68,24 @@ public class WorkHolidayService {
 	public List<WorkHoliday> findAllWorkHolidaysInPending() {
 
 		 return workHolidayRepository.findAllWorkHolidaysInPending(EHolidayState.PENDING);
+	}
+	
+	public List<ViewYourUserPermitResponseDto> viewYourUserPermit(Long userId) {
+	
+		List<WorkHoliday> workHolidays = workHolidayRepository.findByUserId(userId);
+		
+		return workHolidays.stream().map(
+				workHoliday -> new ViewYourUserPermitResponseDto(
+						workHoliday.getUserId(),
+						workHoliday.getId(),
+						workHoliday.getBeginDate(),
+						workHoliday.getEndDate(),
+						workHoliday.getDescription(),
+						workHoliday.getHolidayType().toString(),
+						workHoliday.getHolidayState().toString()
+				)
+		).collect(Collectors.toList());
+		
+	
 	}
 }
