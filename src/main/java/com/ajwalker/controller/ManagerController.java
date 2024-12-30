@@ -96,7 +96,7 @@ public class ManagerController {
                 .build());
     }
 
-    @PostMapping
+    @PostMapping(ADD_NEW_EMPLOYEE)
     public ResponseEntity<BaseResponse<Boolean>> addEmployee(@RequestBody AddEmployeeRequestDto dto, String token){
         Optional<Long> managerIdOptional = jwtManager.verifyToken(token);
         if (managerIdOptional.isEmpty()) {

@@ -39,6 +39,7 @@ public class RestApis {
 	public static final String USER_INFORMATION =  "/user-information";
 	public static final String UPDATE_EMPLOYEE =  "/employee-update-information";
 	public static final String USER_UPDATE_INFORMATION ="/user-update-information";
+	public static final String ADD_NEW_EMPLOYEE ="/add-new-employee";
 
 
 }
