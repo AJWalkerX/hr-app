@@ -22,8 +22,9 @@ public enum ErrorType {
 	ALREADY_EXIST_COMPANY(3003,"Şirket Siteme kayitli! Kayit olmadan once sirketiniz ile iletisime geciniz!",HttpStatus.BAD_REQUEST),
 	NOTFOUND_MEMBERSHIP_PLAN(2003,"Üyelik planı bulunamadı",HttpStatus.BAD_REQUEST),
 	NOTFOUND_MANAGER(5003,"Manager bulunamadı!!!",HttpStatus.BAD_REQUEST),
-	NOTFOUND_WORKHOLIDAY_INPENDING(7003,"Herhangi bir izin isteği bulunamadı!!!",HttpStatus.BAD_REQUEST);
-	
+	NOTFOUND_WORKHOLIDAY_INPENDING(7003,"Herhangi bir izin isteği bulunamadı!!!",HttpStatus.BAD_REQUEST),
+	DENIED_DELETE_USER(6110,"Kendinizi silemezsiniz!",HttpStatus.BAD_REQUEST);
+
 	
 	
 	int code;

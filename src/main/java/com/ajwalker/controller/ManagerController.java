@@ -89,8 +89,11 @@ public class ManagerController {
         if (managerId.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
+        if (managerId.get().equals(dto.userId())){
+            throw new HRAppException(ErrorType.DENIED_DELETE_USER);
+        }
         return ResponseEntity.ok(BaseResponse.<Boolean>builder()
-                .message("Çalışan bilgileri başarıyla güncellendi")
+                .message("Çalışan bilgileri başarıyla silindi!")
                 .code(200)
                 .success(true)
                 .data(managerService.deleteEmployee(dto.userId()))
@@ -104,6 +107,7 @@ public class ManagerController {
         if (managerIdOptional.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
+
         return ResponseEntity.ok(BaseResponse.<Boolean>builder()
                 .message("Çalışan bilgileri başarıyla eklendi!")
                 .code(200)
