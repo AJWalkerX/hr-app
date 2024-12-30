@@ -4,13 +4,17 @@ import com.ajwalker.dto.request.AddCommentRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.CommentCardResponseDto;
 import com.ajwalker.entity.Comment;
+import com.ajwalker.exception.ErrorType;
+import com.ajwalker.exception.HRAppException;
 import com.ajwalker.service.CommentService;
+import com.ajwalker.utility.JwtManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.ajwalker.constant.RestApis.*;
 
@@ -20,6 +24,7 @@ import static com.ajwalker.constant.RestApis.*;
 @CrossOrigin("*")
 public class CommentController {
 	private final CommentService commentService;
+	private final JwtManager jwtManager;
 	
 	@GetMapping(GETALLCOMMENT)
 	public ResponseEntity<BaseResponse<List<CommentCardResponseDto>>> getAllComments(){ //Denied yada in review da olan userlar
@@ -33,11 +38,15 @@ public class CommentController {
 	
 	@PostMapping(ADD_COMMENT)
 	public ResponseEntity<BaseResponse<Boolean>> addComment(@RequestBody @Valid AddCommentRequestDto dto){
-	return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+		Optional<Long> managerId = jwtManager.verifyToken(dto.token());
+		if (managerId.isEmpty()){
+			throw  new HRAppException(ErrorType.NOTFOUND_MANAGER);
+		}
+		return ResponseEntity.ok(BaseResponse.<Boolean>builder()
 	                                     .message("Yorum başarıyla eklendi")
 	                                     .code(200)
 	                                     .success(true)
-	                                     .data(commentService.addComment(dto))
+	                                     .data(commentService.addComment(dto,managerId.get()))
 	                                     .build());
 	                                     
 	}
