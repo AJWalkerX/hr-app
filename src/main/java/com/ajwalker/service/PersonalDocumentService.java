@@ -70,4 +70,8 @@ public class PersonalDocumentService {
                 personalDocument -> personalDocument
         ));
     }
+
+    public Optional<PersonalDocument> findById(Long userId) {
+        return personalDocumentRepository.findById(userId);
+    }
 }

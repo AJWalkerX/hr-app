@@ -4,6 +4,7 @@ public class RestApis {
 
 	public static final String DOMAIN = "http://localhost:9090";
 
+
 	private static final String VERSION = "/v1";
 	private static final String API = "/api";
 	private static final String DEVELOPER = "/dev";
@@ -43,5 +44,5 @@ public class RestApis {
 	public static final String GETALLVIEWUSERPERMIT ="/get-all-view-user-permit";
 	public static final String ADD_COMMENT ="/add-comment";
 	public static final String DELETE_EMPLOYEE ="/delete-employee";
-
+	public static final String GETUSERALLCOMMENT = "/comment-list";
 }

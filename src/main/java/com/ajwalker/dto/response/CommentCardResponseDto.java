@@ -8,6 +8,4 @@ public record CommentCardResponseDto(
 		String position,
 		String avatar
 		
-) {
-
-}
+) {}

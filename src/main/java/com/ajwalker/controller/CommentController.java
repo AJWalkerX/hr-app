@@ -3,6 +3,7 @@ package com.ajwalker.controller;
 import com.ajwalker.dto.request.AddCommentRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.CommentCardResponseDto;
+import com.ajwalker.dto.response.CommentUserCardResponse;
 import com.ajwalker.entity.Comment;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -10,6 +11,7 @@ import com.ajwalker.service.CommentService;
 import com.ajwalker.utility.JwtManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +29,7 @@ public class CommentController {
 	private final JwtManager jwtManager;
 	
 	@GetMapping(GETALLCOMMENT)
-	public ResponseEntity<BaseResponse<List<CommentCardResponseDto>>> getAllComments(){ //Denied yada in review da olan userlar
+	public ResponseEntity<BaseResponse<List<CommentCardResponseDto>>> getAllComments(){
 		return ResponseEntity.ok(BaseResponse.<List<CommentCardResponseDto>>builder()
 		                                     .message("Tum yorumların listesi")
 		                                     .code(200)
@@ -49,5 +51,15 @@ public class CommentController {
 	                                     .data(commentService.addComment(dto,managerId.get()))
 	                                     .build());
 	                                     
+	}
+
+	@GetMapping(GETUSERALLCOMMENT)
+	public ResponseEntity<BaseResponse<List<CommentUserCardResponse>>> getAllUserComments(){
+		return ResponseEntity.ok(BaseResponse.<List<CommentUserCardResponse>>builder()
+				.message("Tüm Managerlerin listesi.")
+				.code(200)
+				.success(true)
+				.data(commentService.findAllUserComments())
+				.build());
 	}
 }
