@@ -61,6 +61,16 @@ public class CompanyGenerator {
                 .telNo("333 999")
                 .companyAddress("Sakli Koy")
                 .build();
-        return List.of(company, company2, company3, company4, company5);
+        Company company6 = Company.builder()
+                                  .region(ERegion.TURKEY)
+                                  .companyType(ECompanyType.HEALTHCARE)
+                                  .companyMail("egs@gmail.com")
+                                  .companyLogo("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/672476df49dd3e0404491ce0_macfit%20yeni%20logo.avif")
+                                  .companyName("EGS")
+                                  .companyState(ECompanyState.IN_REVIEW)
+                                  .telNo("333 999")
+                                  .companyAddress("Çıkrıkçılar")
+                                  .build();
+        return List.of(company, company2, company3, company4, company5,company6);
     }
 }

@@ -57,8 +57,16 @@ public class UserGenerator {
 		                 .userState(EUserState.IN_REVIEW)
 		                 .isFirstLogin(true)
 		                 .build();
+		User user6 = User.builder()
+		                 .companyId(11L)
+		                 .email("kullanici8@gmail.com")
+		                 .password(passwordEncoder.encode("Aaa12345!"))
+		                 .avatar("https://b6s54eznn8xq.merlincdn.net/Uploads/Films/siyah-kanarya-2024111414245316947b81fe20494c8f01dd26cb2c7514.jpg")
+		                 .userState(EUserState.ACTIVE)
+		                 .isFirstLogin(true)
+		                 .build();
 		
-		return List.of(user1, user2, user3, user4, user5);
+		return List.of(user1, user2, user3, user4, user5,user6);
 	}
 
 	
