@@ -32,6 +32,7 @@ public class ManagerService {
     private final WorkHolidayService workHolidayService;
     private final PasswordEncoder getPasswordEncoder;
     private final MailService mailService;
+    private final SalaryService salaryService;
 
 
     public List<EmployeesResponseDto> employeeListByCompany(Long userId) {
@@ -192,9 +193,11 @@ public class ManagerService {
             default:
                 personalDocument.setGender(EGender.OTHER);
         }
-        personalDocumentService.save(personalDocument);
+       personalDocumentService.save(personalDocument);
+        salaryService.generateMonthlySalaries(user.getId());
         mailService.sendMail(user.getEmail(), "Yeni Calisan bilgileri", "mail adresinizi kullanarak ve asagidaki sifreyi kullanarak http://localhost:3000/login adresinden giris yapabilirsiniz" +
                 "\n Sifre: " + dto.password());
+        
         return true;
     }
 }
