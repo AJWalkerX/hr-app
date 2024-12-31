@@ -14,9 +14,9 @@ import java.util.Optional;
 
 @Service
 public class JwtManager {
-    @Value("56f71ab4bb5e1dae6d6653244d321a3e")
+    @Value("${hr_app.jwt.secret-key}")
     private String secretKey;
-    @Value("ZorIK")
+    @Value("${hr_app.jwt.issuer}")
     private String issuer;
     private final Long ExDate = 1000L * 60 * 40;
 

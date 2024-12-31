@@ -23,8 +23,9 @@ public enum ErrorType {
 	NOTFOUND_MEMBERSHIP_PLAN(2003,"Üyelik planı bulunamadı",HttpStatus.BAD_REQUEST),
 	NOTFOUND_MANAGER(5003,"Manager bulunamadı!!!",HttpStatus.BAD_REQUEST),
 	NOTFOUND_WORKHOLIDAY_INPENDING(7003,"Herhangi bir izin isteği bulunamadı!!!",HttpStatus.BAD_REQUEST),
-	DENIED_DELETE_USER(6110,"Kendinizi silemezsiniz!",HttpStatus.BAD_REQUEST);
-
+	DENIED_DELETE_USER(6110,"Kendinizi silemezsiniz!",HttpStatus.BAD_REQUEST),
+	PHOTO_SIZE_ERROR(101,"Fotoğraf boyutu 5MB'dan  fazla olmamalıdır!",HttpStatus.BAD_REQUEST),
+	INVALID_PHOTO_TYPE(102, "Dosya formati .png yada .jpg olmalidir!", HttpStatus.BAD_REQUEST),;
 	
 	
 	int code;

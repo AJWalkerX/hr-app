@@ -48,8 +48,16 @@ public class PersonalDocumentGenerator {
 				                .dateOfEmployment(LocalDate.of(2000,8,13))
 				                .dateOfTermination(LocalDate.of(2000,8,13)).annualSalary(9999.99)
 				                .employmentStatus(EEmploymentStatus.WORKING).socialSecurityNumber("951753").build();
+		PersonalDocument personalDocument6 =
+				PersonalDocument.builder().userId(11L).firstName("Mehmet").lastName("Ertop").identityNumber(
+						                "10235489675")
+				                .dateOfBirth(LocalDate.of(1999,03,10)).mobileNumber("059545646546").address("Ankara")
+				                .gender(EGender.MALE).email("kullanici8@gmail.com").position(EPosition.MANAGER)
+				                .dateOfEmployment(LocalDate.of(2000,8,13))
+				                .dateOfTermination(LocalDate.of(2000,8,13)).annualSalary(9999.99)
+				                .employmentStatus(EEmploymentStatus.WORKING).socialSecurityNumber("951753").build();
 		
-		return List.of(personalDocument1, personalDocument2, personalDocument3, personalDocument4, personalDocument5);
+		return List.of(personalDocument1, personalDocument2, personalDocument3, personalDocument4, personalDocument5,personalDocument6);
 	}
 
 }

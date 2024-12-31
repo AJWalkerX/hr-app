@@ -29,7 +29,11 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
-java15:
+hr_app:
   jwt:
     secret-key: ${JWT_SECRET_KEY}
     issuer: ${JWT_ISSUER}
+  cloudinary:
+    cloud-name: ${CLOUD_NAME}
+    api-key: ${CLOUD_API_KEY}
+    api-secret: ${CLOUD_API_SECRET}
