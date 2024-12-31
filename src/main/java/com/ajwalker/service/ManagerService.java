@@ -97,7 +97,18 @@ public class ManagerService {
         }
         PersonalDocument personalDocument = personalDocumentService.findPersonalByUserId(dto.userId());
         
-        personalDocument = PersonalDocumentMapper.INSTANCE.fromIUpdateEmployeeRequestDto(dto, personalDocument);
+        personalDocument.setEmail(dto.email());
+        personalDocument.setAddress(dto.address());
+        personalDocument.setAnnualSalary(dto.annualSalary());
+        personalDocument.setDateOfBirth(dto.dateOfBirth());
+        personalDocument.setDateOfEmployment(dto.dateOfEmployment());
+        personalDocument.setFirstName(dto.firstName());
+        personalDocument.setLastName(dto.lastName());
+        personalDocument.setGender(EGender.valueOf(dto.gender().toUpperCase()));
+        personalDocument.setIdentityNumber(dto.identityNumber());
+        personalDocument.setSocialSecurityNumber(dto.socialSecurityNumber());
+        personalDocument.setMobileNumber(dto.mobileNumber());
+        personalDocument.setPosition(EPosition.valueOf(dto.position().toUpperCase()));
         personalDocumentService.save(personalDocument);
         
         return true;
