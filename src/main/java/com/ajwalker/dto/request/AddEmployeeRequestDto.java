@@ -19,6 +19,7 @@ public record AddEmployeeRequestDto(
                 regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*!.,?/])(?=\\S+$).{8,}$"
         )
         String password,
+        String rePassword,
         String firstName,
         String lastName,
         String identityNumber,

@@ -31,6 +31,7 @@ public class ManagerService {
     private final UserService userService;
     private final WorkHolidayService workHolidayService;
     private final PasswordEncoder getPasswordEncoder;
+    private final MailService mailService;
 
 
     public List<EmployeesResponseDto> employeeListByCompany(Long userId) {
@@ -119,8 +120,9 @@ public class ManagerService {
         if (manager == null) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
-
-//         PersonalDocument icerisindeki employment status working olarak gelecek!
+        if (!dto.password().equals(dto.rePassword())){
+            throw new HRAppException(ErrorType.PASSWORD_ERROR);
+        }
 
         User user = User.builder()
                 .email(dto.email())
@@ -180,6 +182,8 @@ public class ManagerService {
                 personalDocument.setGender(EGender.OTHER);
         }
         personalDocumentService.save(personalDocument);
+        mailService.sendMail(user.getEmail(), "Yeni Calisan bilgileri", "mail adresinizi kullanarak ve asagidaki sifreyi kullanarak http://localhost:3000/login adresinden giris yapabilirsiniz" +
+                "\n Sifre: " + dto.password());
         return true;
     }
 }
