@@ -48,5 +48,6 @@ public class RestApis {
 	public static final String DELETE_EMPLOYEE ="/delete-employee";
 	public static final String GETUSERALLCOMMENT = "/comment-list";
 	public static final String ADD_PERSONAL_SPENDING = "/add-personal-spending";
+	public static final String GET_PERSONAL_SPENDINGS = "/get-personal-spendings";
 	public static final String GETALLCOMMENTDETAILS = "/get-all-comment-details";
 }
