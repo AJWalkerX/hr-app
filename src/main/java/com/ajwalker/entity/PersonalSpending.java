@@ -19,7 +19,7 @@ public class PersonalSpending extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userId;
+    private Long userId;
     private String description;
     private String billPdfUrl;
     private Double billAmount;

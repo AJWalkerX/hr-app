@@ -5,5 +5,6 @@ public enum ESpendingType {
     MEAL,
     TRANSACTION,
     OFFICE_SUPPLIES,
+    NONE
 
 }

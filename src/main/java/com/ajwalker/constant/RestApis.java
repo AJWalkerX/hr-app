@@ -20,6 +20,8 @@ public class RestApis {
 	public static final String COMMENT = ROOT+ "/comment";
 	public static final String COMPANY = ROOT+ "/company";
 	public static final String WORKHOLIDAY = ROOT+ "/work-holiday";
+	public static final String SALARY = ROOT+ "/salary";
+	public static final String PERSONAL_SPENDING = ROOT+ "/personal-spending";
 
 	public static final String REGISTER = "/register";
 	public static final String AUTHMAIL = "/auth-mail";
@@ -45,4 +47,5 @@ public class RestApis {
 	public static final String ADD_COMMENT ="/add-comment";
 	public static final String DELETE_EMPLOYEE ="/delete-employee";
 	public static final String GETUSERALLCOMMENT = "/comment-list";
+	public static final String ADD_PERSONAL_SPENDING = "/add-personal-spending";
 }

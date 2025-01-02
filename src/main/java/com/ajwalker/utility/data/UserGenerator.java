@@ -45,7 +45,7 @@ public class UserGenerator {
 				.email("kullanici4@gmail.com")
 				.password(passwordEncoder.encode("Aaa12345!"))
 		                 .avatar("https://b6s54eznn8xq.merlincdn.net/Uploads/Films/illegal-hayatlar-meclis-20241023152858df83c1bb7b1444d5807b348eab5878bf.jpg")
-		                 .userState(EUserState.IN_REVIEW)
+		                 .userState(EUserState.ACTIVE)
 		                 .isFirstLogin(true)
 		                 .build();
 		
