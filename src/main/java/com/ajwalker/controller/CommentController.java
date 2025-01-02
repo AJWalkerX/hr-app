@@ -3,6 +3,7 @@ package com.ajwalker.controller;
 import com.ajwalker.dto.request.AddCommentRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.CommentCardResponseDto;
+import com.ajwalker.dto.response.CommentDetailsResponseDto;
 import com.ajwalker.dto.response.CommentUserCardResponse;
 import com.ajwalker.entity.Comment;
 import com.ajwalker.exception.ErrorType;
@@ -61,5 +62,14 @@ public class CommentController {
 				.success(true)
 				.data(commentService.findAllUserComments())
 				.build());
+	}
+	
+	@GetMapping(GETALLCOMMENTDETAILS)
+	public ResponseEntity<BaseResponse<List<CommentDetailsResponseDto>>> getAllCommentDetails(){
+		return ResponseEntity.ok(BaseResponse.<List<CommentDetailsResponseDto>>builder()
+				                         .message("Detaylı yorumlar listelendi.")
+				                         .code(200)
+				                         .success(true)
+				                         .data(commentService.getAllCommentDetails()).build());
 	}
 }
