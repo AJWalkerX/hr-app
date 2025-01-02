@@ -5,7 +5,7 @@ import com.ajwalker.utility.Enum.personalSpending.ESpendingType;
 import java.time.LocalDate;
 
 public record AddPersonalSpendingRequestDto(
-		Long userId,
+		String token,
 		String description,
 		Double billAmount,
 		LocalDate spendingDate,
