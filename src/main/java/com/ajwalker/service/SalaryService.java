@@ -47,12 +47,9 @@ public class SalaryService {
 		}
 	}
 	
-	public List<Salary> findByUserId(Long userId) {
-		return salaryRepository.findByUserId(userId);
-	}
-	
+
 	public void addSpendingToSalary(Long userId, PersonalSpending personalSpending) {
-		LocalDate nextMonth = personalSpending.getSpendingDate().plusMonths(1);
+		LocalDate nextMonth = personalSpending.getSpendingDate().plusMonths(1).withDayOfMonth(1);
 		Optional<Salary> optionalSalary = salaryRepository.findByUserIdAndSalaryDate(userId, nextMonth);
 		if (optionalSalary.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_SALARY);
