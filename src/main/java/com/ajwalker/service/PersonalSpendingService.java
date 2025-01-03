@@ -97,4 +97,8 @@ public class PersonalSpendingService {
 			personalSpendingRepository.save(personalSpending);
 		}
 	}
+	
+	public Optional<PersonalSpending> findById(Long spendingId) {
+		return personalSpendingRepository.findById(spendingId);
+	}
 }

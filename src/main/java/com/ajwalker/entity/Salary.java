@@ -24,6 +24,6 @@ public class Salary extends BaseEntity {
 	private Long userId;
 	private Double monthlySalary;
 	private LocalDate salaryDate;
-	private Long bonusAmount;
+	private Double bonusAmount;
 	
 }

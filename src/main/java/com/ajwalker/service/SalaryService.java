@@ -1,7 +1,10 @@
 package com.ajwalker.service;
 
 import com.ajwalker.entity.PersonalDocument;
+import com.ajwalker.entity.PersonalSpending;
 import com.ajwalker.entity.Salary;
+import com.ajwalker.exception.ErrorType;
+import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.SalaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,5 +49,16 @@ public class SalaryService {
 	
 	public List<Salary> findByUserId(Long userId) {
 		return salaryRepository.findByUserId(userId);
+	}
+	
+	public void addSpendingToSalary(Long userId, PersonalSpending personalSpending) {
+		LocalDate nextMonth = personalSpending.getSpendingDate().plusMonths(1);
+		Optional<Salary> optionalSalary = salaryRepository.findByUserIdAndSalaryDate(userId, nextMonth);
+		if (optionalSalary.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_SALARY);
+		}
+		Salary salary = optionalSalary.get();
+		salary.setBonusAmount(personalSpending.getBillAmount());
+		salaryRepository.save(salary);
 	}
 }
