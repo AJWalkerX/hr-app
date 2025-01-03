@@ -5,7 +5,6 @@ import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
 import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
 import com.ajwalker.dto.response.EmployeesResponseDto;
 import com.ajwalker.dto.response.ManagerSpendingResponseDto;
-import com.ajwalker.dto.response.SpendingDetailDto;
 import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.PersonalSpending;
@@ -218,26 +217,30 @@ public class ManagerService {
         Map<Long, PersonalDocument> personalDocumentMap = personalDocumentService.findByUserIdList(employeeIds);
         Map<Long, List<PersonalSpending>> personalSpendingMap = personalSpendingService.findByUserIdList(employeeIds);
         
-        return companyEmployees.stream().map(employee -> {
-            PersonalDocument personalDocument = personalDocumentMap.get(employee.getId());
-            List<PersonalSpending> personalSpendings = personalSpendingMap.get(employee.getId());
-            
-            // Harcamaları SpendingDetailDto listesine dönüştür
-            List<SpendingDetailDto> spendingDetails = personalSpendings != null ? personalSpendings.stream().map(spending -> new SpendingDetailDto(
-                    spending.getSpendingDate(),
-                    spending.getDescription(),
-                    spending.getSpendingType().toString()
-            )).toList() : List.of();
-            return new ManagerSpendingResponseDto(
-                    employee.getId(),
-                    companyId,
-                    employee.getAvatar(),
-                    personalDocument.getFirstName(),
-                    personalDocument.getLastName(),
-                    personalDocument.getPosition().toString(),
-                    spendingDetails
-            );
-        }).toList();
+        return companyEmployees.stream()
+                               .filter(employee -> personalSpendingMap.containsKey(employee.getId())) // Harcaması olmayanları çıkar
+                               .map(employee -> {
+                                   PersonalDocument personalDocument = personalDocumentMap.get(employee.getId());
+                                   List<PersonalSpending> personalSpendings = personalSpendingMap.get(employee.getId());
+                                   
+                                   // Tüm harcamaları DTO'ya ekliyoruz
+                                   List<ManagerSpendingResponseDto.SpendingDetails> spendingDetailsList = personalSpendings.stream()
+                                                                                                                           .map(spending -> new ManagerSpendingResponseDto.SpendingDetails(
+                                                                                                                                   spending.getSpendingDate(),
+                                                                                                                                   spending.getDescription(),
+                                                                                                                                   spending.getSpendingType().toString()
+                                                                                                                           ))
+                                                                                                                           .toList();
+                                   
+                                   return new ManagerSpendingResponseDto(
+                                           companyId,
+                                           employee.getAvatar(),
+                                           personalDocument.getFirstName(),
+                                           personalDocument.getLastName(),
+                                           personalDocument.getPosition().toString(),
+                                           spendingDetailsList // Tüm harcama detayları ekleniyor
+                                   );
+                               }).toList();
     }
     
     
