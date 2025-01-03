@@ -26,7 +26,9 @@ public enum ErrorType {
 	DENIED_DELETE_USER(6110,"Kendinizi silemezsiniz!",HttpStatus.BAD_REQUEST),
 	PHOTO_SIZE_ERROR(101,"Fotoğraf boyutu 5MB'dan  fazla olmamalıdır!",HttpStatus.BAD_REQUEST),
 	INVALID_PHOTO_TYPE(102, "Dosya formati .png yada .jpg olmalidir!", HttpStatus.BAD_REQUEST),
-	NOTFOUND_COMMENT(8001, "Yorum bulunamdı!", HttpStatus.BAD_REQUEST),;
+	NOTFOUND_COMMENT(8001, "Yorum bulunamdı!", HttpStatus.BAD_REQUEST),
+	NOTFOUND_SPENDING(6103,"Kullanıcıya ait harcama bulunamadı",HttpStatus.BAD_REQUEST),
+	NOTFOUND_SALARY(6203,"Kullanıcıya ait aylık maaş bulunamadı",HttpStatus.BAD_GATEWAY);
 	
 	
 	int code;

@@ -252,6 +252,11 @@ public class ManagerService {
     public Boolean authorizeSpending(SpendingAuthorizeRequestDto dto) {
         if (dto.answer().equalsIgnoreCase(String.valueOf(ESpendingState.APPROVED))){
             personalSpendingService.approveEmployeeSpending(dto.spendingId());
+            Optional<PersonalSpending> optSpending = personalSpendingService.findById(dto.spendingId());
+            if (optSpending.isEmpty()){
+                throw new HRAppException(ErrorType.NOTFOUND_SPENDING);
+            }
+            salaryService.addSpendingToSalary(dto.userId(),optSpending.get());
             return true;
         }
         else if (dto.answer().equalsIgnoreCase(String.valueOf(ESpendingState.REJECTED))) {
