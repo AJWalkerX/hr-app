@@ -74,8 +74,27 @@ public class PersonalSpendingService {
 	}
 	
 	public Map<Long, List<PersonalSpending>> findByUserIdList(List<Long> employeeIds) {
-		return personalSpendingRepository.findAllByUserIds(employeeIds).stream()
+		
+		return personalSpendingRepository.findAllByUserIds(employeeIds,ESpendingState.PENDING).stream()
 		                                 .collect(Collectors.groupingBy(PersonalSpending::getUserId));
 	}
 	
+	public void approveEmployeeSpending(Long spendingId) {
+		Optional<PersonalSpending> optSpending = personalSpendingRepository.findById(spendingId);
+		if (optSpending.isPresent()){
+			PersonalSpending personalSpending = optSpending.get();
+			personalSpending.setSpendingState(ESpendingState.APPROVED);
+			personalSpendingRepository.save(personalSpending);
+		}
+		
+	}
+	
+	public void rejectEmployeeSpending(Long spendingId) {
+		Optional<PersonalSpending> optSpending = personalSpendingRepository.findById(spendingId);
+		if (optSpending.isPresent()){
+			PersonalSpending personalSpending = optSpending.get();
+			personalSpending.setSpendingState(ESpendingState.REJECTED);
+			personalSpendingRepository.save(personalSpending);
+		}
+	}
 }

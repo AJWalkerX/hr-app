@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record ManagerSpendingResponseDto(
+		Long userId,
 		Long companyId,
 		String avatar,
 		String firstName,
@@ -14,6 +15,7 @@ public record ManagerSpendingResponseDto(
 	public record SpendingDetails(
 			LocalDate spendingDate,
 			String description,
-			String spendingType
+			String spendingType,
+			Long spendingId
 	) {}
 }

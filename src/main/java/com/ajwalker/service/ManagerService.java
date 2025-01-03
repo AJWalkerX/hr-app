@@ -3,6 +3,7 @@ package com.ajwalker.service;
 import com.ajwalker.dto.request.AddEmployeeRequestDto;
 import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
 import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
+import com.ajwalker.dto.request.SpendingAuthorizeRequestDto;
 import com.ajwalker.dto.response.EmployeesResponseDto;
 import com.ajwalker.dto.response.ManagerSpendingResponseDto;
 import com.ajwalker.dto.response.UserPermitResponseDto;
@@ -14,10 +15,12 @@ import com.ajwalker.exception.HRAppException;
 import com.ajwalker.mapper.PersonalDocumentMapper;
 import com.ajwalker.utility.Enum.EState;
 import com.ajwalker.utility.Enum.holiday.EHolidayState;
+import com.ajwalker.utility.Enum.personalSpending.ESpendingState;
 import com.ajwalker.utility.Enum.user.EEmploymentStatus;
 import com.ajwalker.utility.Enum.user.EGender;
 import com.ajwalker.utility.Enum.user.EPosition;
 import com.ajwalker.utility.Enum.user.EUserState;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -228,11 +231,13 @@ public class ManagerService {
                                                                                                                            .map(spending -> new ManagerSpendingResponseDto.SpendingDetails(
                                                                                                                                    spending.getSpendingDate(),
                                                                                                                                    spending.getDescription(),
-                                                                                                                                   spending.getSpendingType().toString()
+                                                                                                                                   spending.getSpendingType().toString(),
+                                                                                                                                   spending.getId()
                                                                                                                            ))
                                                                                                                            .toList();
                                    
                                    return new ManagerSpendingResponseDto(
+                                           employee.getId(),
                                            companyId,
                                            employee.getAvatar(),
                                            personalDocument.getFirstName(),
@@ -243,5 +248,18 @@ public class ManagerService {
                                }).toList();
     }
     
+    
+    public Boolean authorizeSpending(SpendingAuthorizeRequestDto dto) {
+        if (dto.answer().equalsIgnoreCase(String.valueOf(ESpendingState.APPROVED))){
+            personalSpendingService.approveEmployeeSpending(dto.spendingId());
+            return true;
+        }
+        else if (dto.answer().equalsIgnoreCase(String.valueOf(ESpendingState.REJECTED))) {
+            personalSpendingService.rejectEmployeeSpending(dto.spendingId());
+            return true;
+            
+        }
+        else return false;
+    }
     
 }
