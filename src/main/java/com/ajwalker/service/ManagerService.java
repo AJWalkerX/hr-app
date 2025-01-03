@@ -5,6 +5,7 @@ import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
 import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
 import com.ajwalker.dto.response.EmployeesResponseDto;
 import com.ajwalker.dto.response.ManagerSpendingResponseDto;
+import com.ajwalker.dto.response.SpendingDetailDto;
 import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.PersonalSpending;
@@ -203,8 +204,8 @@ public class ManagerService {
         
         return true;
     }
-	
-	public List<ManagerSpendingResponseDto> employeeListBySpending(Long userId) {
+    
+    public List<ManagerSpendingResponseDto> employeeListBySpending(Long userId) {
         Optional<User> optUser = userService.findById(userId);
         if (optUser.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_USER);
@@ -213,23 +214,31 @@ public class ManagerService {
         Long companyId = user.getCompanyId();
         List<User> companyEmployees = userService.findUsersByCompanyId(companyId);
         List<Long> employeeIds = companyEmployees.stream().map(User::getId).toList();
-        Map<Long, PersonalDocument> personalDocumentMap = personalDocumentService.findByUserIdList(employeeIds);
-        Map<Long, PersonalSpending> personalSpendingMap = personalSpendingService.findByUserIdList(employeeIds);
         
-        return  companyEmployees.stream().map(employee ->{
+        Map<Long, PersonalDocument> personalDocumentMap = personalDocumentService.findByUserIdList(employeeIds);
+        Map<Long, List<PersonalSpending>> personalSpendingMap = personalSpendingService.findByUserIdList(employeeIds);
+        
+        return companyEmployees.stream().map(employee -> {
             PersonalDocument personalDocument = personalDocumentMap.get(employee.getId());
-            PersonalSpending personalSpending = personalSpendingMap.get(employee.getId());
+            List<PersonalSpending> personalSpendings = personalSpendingMap.get(employee.getId());
+            
+            // Harcamaları SpendingDetailDto listesine dönüştür
+            List<SpendingDetailDto> spendingDetails = personalSpendings != null ? personalSpendings.stream().map(spending -> new SpendingDetailDto(
+                    spending.getSpendingDate(),
+                    spending.getDescription(),
+                    spending.getSpendingType().toString()
+            )).toList() : List.of();
             return new ManagerSpendingResponseDto(
+                    employee.getId(),
                     companyId,
                     employee.getAvatar(),
                     personalDocument.getFirstName(),
                     personalDocument.getLastName(),
                     personalDocument.getPosition().toString(),
-                    personalSpending.getSpendingDate(),
-                    personalSpending.getDescription(),
-                    personalSpending.getSpendingType().toString()
+                    spendingDetails
             );
         }).toList();
-        
     }
+    
+    
 }
