@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.ajwalker.constant.RestApis.*;
@@ -24,8 +25,8 @@ public class ShiftController {
     private final JwtManager jwtManager;
     private final ShiftService shiftService;
     @PostMapping(CREATE_SHIFT)
-    public ResponseEntity<BaseResponse<Boolean>> createShift(@RequestBody @Valid CreateShiftRequestDto dto) {
-        Optional<Long> managerIdOptional = jwtManager.verifyToken(dto.token());
+    public ResponseEntity<BaseResponse<Boolean>> createShift(@RequestBody @Valid List<CreateShiftRequestDto> dto) {
+        Optional<Long> managerIdOptional = jwtManager.verifyToken(dto.getFirst().token());
         if (managerIdOptional.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
