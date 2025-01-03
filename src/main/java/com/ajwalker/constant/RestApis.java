@@ -50,7 +50,7 @@ public class RestApis {
 	public static final String GETUSERALLCOMMENT = "/comment-list";
 	public static final String ADD_PERSONAL_SPENDING = "/add-personal-spending";
 	public static final String GET_PERSONAL_SPENDINGS = "/get-personal-spendings";
-	public static final String GETALLCOMMENTDETAILS = "/get-all-comment-details";
+	public static final String GETCOMMENTDETAILS = "/get-comment-details";
 	public static final String MANAGER_EMPLOYEES_SPENDING ="/manager-employees-spending";
 	public static final String CREATE_SHIFT ="/create-shift";
 	public static final String ASSIGN_SHIFT ="/assign-shift";
