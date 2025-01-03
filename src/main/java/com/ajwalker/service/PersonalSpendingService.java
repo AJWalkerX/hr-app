@@ -73,10 +73,9 @@ public class PersonalSpendingService {
 		).collect(Collectors.toList());
 	}
 	
-	public Map<Long, PersonalSpending> findByUserIdList(List<Long> employeeIds) {
-		return personalSpendingRepository.findAllByUserIds(employeeIds).stream().collect(Collectors.toMap(
-				PersonalSpending::getUserId,
-				personalSpending -> personalSpending
-		));
+	public Map<Long, List<PersonalSpending>> findByUserIdList(List<Long> employeeIds) {
+		return personalSpendingRepository.findAllByUserIds(employeeIds).stream()
+		                                 .collect(Collectors.groupingBy(PersonalSpending::getUserId));
 	}
+	
 }
