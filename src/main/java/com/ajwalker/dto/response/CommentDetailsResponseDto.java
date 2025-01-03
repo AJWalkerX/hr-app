@@ -1,7 +1,6 @@
 package com.ajwalker.dto.response;
 
 public record CommentDetailsResponseDto(
-		Long userId,
 		Long commentId,
 		String companyLogo,
 		String companyName,

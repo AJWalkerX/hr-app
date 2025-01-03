@@ -64,12 +64,12 @@ public class CommentController {
 				.build());
 	}
 	
-	@GetMapping(GETALLCOMMENTDETAILS)
-	public ResponseEntity<BaseResponse<List<CommentDetailsResponseDto>>> getAllCommentDetails(){
-		return ResponseEntity.ok(BaseResponse.<List<CommentDetailsResponseDto>>builder()
+	@GetMapping(GETCOMMENTDETAILS)
+	public ResponseEntity<BaseResponse<CommentDetailsResponseDto>> getAllCommentDetails(@RequestParam Long commentId){
+		return ResponseEntity.ok(BaseResponse.<CommentDetailsResponseDto>builder()
 				                         .message("Detaylı yorumlar listelendi.")
 				                         .code(200)
 				                         .success(true)
-				                         .data(commentService.getAllCommentDetails()).build());
+				                         .data(commentService.getCommentDetails(commentId)).build());
 	}
 }

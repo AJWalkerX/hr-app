@@ -113,38 +113,35 @@ public class CommentService {
 		}).collect(Collectors.toList());
 	}
 	
-	public List<CommentDetailsResponseDto> getAllCommentDetails() {
-		List<Comment> commentDetail = commentRepository.findAll();
-		return commentDetail.stream()
-		                    .filter(comment -> {
-			                    PersonalDocument personalDocument = personalDocumentService.findById(comment.getUserId()).orElse(null);
-			                    return personalDocument != null && personalDocument.getPosition() == EPosition.MANAGER;
-		                    })
-		                    .map(comment -> {
-			                    PersonalDocument personalDocument = personalDocumentService.findById(comment.getUserId())
-			                                                                               .orElseThrow(() -> new RuntimeException("Personal document not found for userId: " + comment.getUserId()));
-			                    
-			                    User user = userService.findById(comment.getUserId())
-			                                           .orElseThrow(() -> new RuntimeException("User not found for comment ID: " + comment.getId()));
-			                    
-			                    Company company = companyService.findById(comment.getCompanyId())
-			                                                    .orElseThrow(() -> new RuntimeException("Company not found for comment ID: " + comment.getId()));
-			                    
-			                    return new CommentDetailsResponseDto(
-					                    user.getId(),
-					                    comment.getId(),
-					                    company.getCompanyLogo(),
-					                    company.getCompanyName(),
-					                    personalDocument.getFirstName(),
-					                    personalDocument.getLastName(),
-					                    personalDocument.getPosition().toString(),
-					                    comment.getContent(),
-					                    comment.getDescription(),
-					                    company.getRegion().toString(),
-					                    company.getCompanyType().toString()
-			                    );
-		                    })
-		                    .collect(Collectors.toList());
+	public CommentDetailsResponseDto getCommentDetails(Long commentId) {
+		Optional<Comment> optComment = commentRepository.findById(commentId);
+		if (optComment.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_COMMENT);
+		}
+		Comment comment = optComment.get();
+		Optional<Company> optCompany = companyService.findById(comment.getCompanyId());
+		if (optCompany.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_COMPANY);
+		}
+		Company company = optCompany.get();
+		Optional<PersonalDocument> optPersonalDocument = personalDocumentService.findByUserId(comment.getUserId());
+		if (optPersonalDocument.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
+		}
+		PersonalDocument personalDocument = optPersonalDocument.get();
+		
+		return new CommentDetailsResponseDto(
+				comment.getId(),
+				company.getCompanyLogo(),
+				company.getCompanyName(),
+				personalDocument.getFirstName(),
+				personalDocument.getLastName(),
+				personalDocument.getPosition().toString(),
+				comment.getContent(),
+				comment.getDescription(),
+				company.getRegion().toString(),
+				company.getCompanyType().toString()
+				
+		);
 	}
-
-	}
+}
