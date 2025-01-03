@@ -6,6 +6,7 @@ import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
 import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.EmployeesResponseDto;
+import com.ajwalker.dto.response.ManagerSpendingResponseDto;
 import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -13,6 +14,7 @@ import com.ajwalker.service.ManagerService;
 import com.ajwalker.utility.JwtManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.Manager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -114,5 +116,19 @@ public class ManagerController {
                 .success(true)
                 .data(managerService.addNewEmployee(dto, managerIdOptional.get()))
                 .build());
+    }
+    
+    @GetMapping(MANAGER_EMPLOYEES_SPENDING)
+    public ResponseEntity<BaseResponse<List<ManagerSpendingResponseDto>>> employeeListBySpending(@RequestParam(name = "token") String token) {
+        Optional<Long> optionalManagerId = jwtManager.verifyToken(token);
+        if (optionalManagerId.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+        }
+        return ResponseEntity.ok(BaseResponse.<List<ManagerSpendingResponseDto>>builder()
+                                             .message("Çalışan Listesi!!!")
+                                             .code(200)
+                                             .success(true)
+                                             .data(managerService.employeeListBySpending(optionalManagerId.get()))
+                                             .build());
     }
 }

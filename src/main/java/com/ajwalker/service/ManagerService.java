@@ -4,8 +4,10 @@ import com.ajwalker.dto.request.AddEmployeeRequestDto;
 import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
 import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
 import com.ajwalker.dto.response.EmployeesResponseDto;
+import com.ajwalker.dto.response.ManagerSpendingResponseDto;
 import com.ajwalker.dto.response.UserPermitResponseDto;
 import com.ajwalker.entity.PersonalDocument;
+import com.ajwalker.entity.PersonalSpending;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
@@ -33,8 +35,9 @@ public class ManagerService {
     private final PasswordEncoder getPasswordEncoder;
     private final MailService mailService;
     private final SalaryService salaryService;
-
-
+    private final PersonalSpendingService personalSpendingService;
+    
+    
     public List<EmployeesResponseDto> employeeListByCompany(Long userId) {
         Optional<User> optionalUser = userService.findById(userId);
         if (optionalUser.isEmpty()) {
@@ -199,5 +202,34 @@ public class ManagerService {
                 "\n Sifre: " + dto.password());
         
         return true;
+    }
+	
+	public List<ManagerSpendingResponseDto> employeeListBySpending(Long userId) {
+        Optional<User> optUser = userService.findById(userId);
+        if (optUser.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_USER);
+        }
+        User user = optUser.get();
+        Long companyId = user.getCompanyId();
+        List<User> companyEmployees = userService.findUsersByCompanyId(companyId);
+        List<Long> employeeIds = companyEmployees.stream().map(User::getId).toList();
+        Map<Long, PersonalDocument> personalDocumentMap = personalDocumentService.findByUserIdList(employeeIds);
+        Map<Long, PersonalSpending> personalSpendingMap = personalSpendingService.findByUserIdList(employeeIds);
+        
+        return  companyEmployees.stream().map(employee ->{
+            PersonalDocument personalDocument = personalDocumentMap.get(employee.getId());
+            PersonalSpending personalSpending = personalSpendingMap.get(employee.getId());
+            return new ManagerSpendingResponseDto(
+                    companyId,
+                    employee.getAvatar(),
+                    personalDocument.getFirstName(),
+                    personalDocument.getLastName(),
+                    personalDocument.getPosition().toString(),
+                    personalSpending.getSpendingDate(),
+                    personalSpending.getDescription(),
+                    personalSpending.getSpendingType().toString()
+            );
+        }).toList();
+        
     }
 }
