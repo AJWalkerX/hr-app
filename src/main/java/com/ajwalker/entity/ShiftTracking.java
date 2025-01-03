@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
+
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,6 +22,6 @@ public class ShiftTracking extends BaseEntity{
 	private Long id;
 	private Long shiftId;
 	private Long userId;
-	private Long beginDate;
-	private Long endDate;
+	private LocalDate beginDate;
+	private LocalDate endDate;
 }

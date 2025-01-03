@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalTime;
+
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,6 +22,6 @@ public class Shift extends BaseEntity {
 	private Long id;
 	private Long companyId;
 	private String shiftName;
-	private Long beginHour;
-	private Long endHour;
+	private LocalTime beginHour;
+	private LocalTime endHour;
 }

@@ -22,6 +22,7 @@ public class RestApis {
 	public static final String WORKHOLIDAY = ROOT+ "/work-holiday";
 	public static final String SALARY = ROOT+ "/salary";
 	public static final String PERSONAL_SPENDING = ROOT+ "/personal-spending";
+	public static final String SHIFT = ROOT+ "/shift";
 
 	public static final String REGISTER = "/register";
 	public static final String AUTHMAIL = "/auth-mail";
@@ -51,4 +52,6 @@ public class RestApis {
 	public static final String GET_PERSONAL_SPENDINGS = "/get-personal-spendings";
 	public static final String GETALLCOMMENTDETAILS = "/get-all-comment-details";
 	public static final String MANAGER_EMPLOYEES_SPENDING ="/manager-employees-spending";
+	public static final String CREATE_SHIFT ="/create-shift";
+	public static final String ASSIGN_SHIFT ="/assign-shift";
 }
