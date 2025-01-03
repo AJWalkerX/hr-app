@@ -54,4 +54,5 @@ public class RestApis {
 	public static final String MANAGER_EMPLOYEES_SPENDING ="/manager-employees-spending";
 	public static final String CREATE_SHIFT ="/create-shift";
 	public static final String ASSIGN_SHIFT ="/assign-shift";
+	public static final String SPENDING_AUTHORIZATION =  "/spending-authorization";
 }

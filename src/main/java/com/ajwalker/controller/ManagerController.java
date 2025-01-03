@@ -1,9 +1,6 @@
 package com.ajwalker.controller;
 
-import com.ajwalker.dto.request.AddEmployeeRequestDto;
-import com.ajwalker.dto.request.DeleteEmployeeRequestDto;
-import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
-import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
+import com.ajwalker.dto.request.*;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.EmployeesResponseDto;
 import com.ajwalker.dto.response.ManagerSpendingResponseDto;
@@ -129,6 +126,19 @@ public class ManagerController {
                                              .code(200)
                                              .success(true)
                                              .data(managerService.employeeListBySpending(optionalManagerId.get()))
+                                             .build());
+    }
+    
+    @PostMapping(SPENDING_AUTHORIZATION)
+    public ResponseEntity<BaseResponse<Boolean>> authorizeSpending(@RequestBody @Valid SpendingAuthorizeRequestDto dto) {
+        if(jwtManager.verifyToken(dto.token()).isEmpty()){
+            throw new HRAppException(ErrorType.INVALID_TOKEN);
+        }
+        return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+                                             .message("Spending bilgileri listelendi")
+                                             .code(200)
+                                             .success(true)
+                                             .data(managerService.authorizeSpending(dto))
                                              .build());
     }
 }
