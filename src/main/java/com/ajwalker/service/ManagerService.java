@@ -232,7 +232,8 @@ public class ManagerService {
                                                                                                                                    spending.getSpendingDate(),
                                                                                                                                    spending.getDescription(),
                                                                                                                                    spending.getSpendingType().toString(),
-                                                                                                                                   spending.getId()
+                                                                                                                                   spending.getId(),
+                                                                                                                                   spending.getBillAmount()
                                                                                                                            ))
                                                                                                                            .toList();
                                    
@@ -242,7 +243,6 @@ public class ManagerService {
                                            employee.getAvatar(),
                                            personalDocument.getFirstName(),
                                            personalDocument.getLastName(),
-                                           personalDocument.getPosition().toString(),
                                            spendingDetailsList // Tüm harcama detayları ekleniyor
                                    );
                                }).toList();
@@ -256,6 +256,7 @@ public class ManagerService {
             if (optSpending.isEmpty()){
                 throw new HRAppException(ErrorType.NOTFOUND_SPENDING);
             }
+            System.out.println("user idmiz: "+dto.userId());
             salaryService.addSpendingToSalary(dto.userId(),optSpending.get());
             return true;
         }

@@ -9,13 +9,13 @@ public record ManagerSpendingResponseDto(
 		String avatar,
 		String firstName,
 		String lastName,
-		String position,
 		List<SpendingDetails> spendingDetails
 ) {
 	public record SpendingDetails(
 			LocalDate spendingDate,
 			String description,
 			String spendingType,
-			Long spendingId
+			Long spendingId,
+			Double billAmount
 	) {}
 }
