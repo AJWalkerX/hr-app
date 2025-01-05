@@ -19,6 +19,7 @@ public class Embezzlement extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+    private Long companyId;
     @Enumerated(EnumType.STRING)
     private EEmbezzlementType embezzlementType;
     @Enumerated(EnumType.STRING)

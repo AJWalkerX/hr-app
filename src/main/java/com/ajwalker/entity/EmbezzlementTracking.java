@@ -17,6 +17,7 @@ public class EmbezzlementTracking extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long embezzlementId;
+    private Long managerId;
     private Long userId;
     private Long givenDate;
     private Long takenDate;
