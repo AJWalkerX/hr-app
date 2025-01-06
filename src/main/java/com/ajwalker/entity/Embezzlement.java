@@ -20,6 +20,8 @@ public class Embezzlement extends BaseEntity {
     private Long id;
     private String description;
     private Long companyId;
+    private Long managerId;
+    private Long userId;
     @Enumerated(EnumType.STRING)
     private EEmbezzlementType embezzlementType;
     @Enumerated(EnumType.STRING)
