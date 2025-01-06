@@ -105,6 +105,7 @@ public class CommentService {
 					                                                                        " " + comment.getId()));
 			
 			return new CommentUserCardResponse(
+					comment.getId(),
 					personalDocument.getFirstName(),
 					personalDocument.getLastName(),
 					company.getCompanyName(),
@@ -129,6 +130,8 @@ public class CommentService {
 			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
 		}
 		PersonalDocument personalDocument = optPersonalDocument.get();
+		
+		System.out.println(comment.getDescription());
 		
 		return new CommentDetailsResponseDto(
 				comment.getId(),
