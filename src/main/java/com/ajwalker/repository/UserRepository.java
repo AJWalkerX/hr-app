@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT new com.ajwalker.view.VwPermitUser (U.id, U.avatar) FROM User U WHERE U.id IN(?1)")
     List<VwPermitUser> findAllUsersByUserIds(List<Long> userIdList);
+    
+   
 }

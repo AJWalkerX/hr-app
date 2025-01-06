@@ -1,6 +1,7 @@
 package com.ajwalker.controller;
 
 import com.ajwalker.dto.request.AddEmbezzlementRequestDto;
+import com.ajwalker.dto.request.AssigmentEmbezzlementRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.EmbezzlementResponseDto;
 import com.ajwalker.exception.ErrorType;
@@ -50,6 +51,20 @@ public class EmbezzlementController {
 				                         .code(200)
 				                         .success(true)
 				                         .data(embezzlementService.embezzlementList(managerId.get()))
+		                                     .build());
+	}
+	
+	@PutMapping(ASSIGMENT_EMBEZZLEMENT)
+	public ResponseEntity<BaseResponse<Boolean>> assigmentEmbezzlement(@RequestBody @Valid AssigmentEmbezzlementRequestDto dto){
+		Optional<Long> managerId = jwtManager.verifyToken(dto.token());
+		if (managerId.isEmpty()){
+			throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+		}
+		return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+				                         .message("atama başarılı bir şekilde gercekleşti")
+				                         .code(200)
+				                         .success(true)
+				                         .data(embezzlementService.assigmentEmbezzlement(dto,managerId.get()))
 		                                     .build());
 	}
 }

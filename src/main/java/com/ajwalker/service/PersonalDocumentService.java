@@ -74,4 +74,9 @@ public class PersonalDocumentService {
     public Optional<PersonalDocument> findById(Long userId) {
         return personalDocumentRepository.findById(userId);
     }
+    
+    public PersonalDocument findByFirstNameAndLastNameAndEmail(String firstName, String lastName, String email) {
+        return personalDocumentRepository.findByFirstNameAndLastNameAndEmail(firstName, lastName, email);
+    }
+    
 }
