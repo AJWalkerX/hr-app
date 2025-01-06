@@ -5,6 +5,9 @@ public record EmbezzlementResponseDto(
 	Long companyId,
 	String description,
 	String embezzlementType,
-	String embezzlementState
+	String embezzlementState,
+	String avatar,
+	String firstName,
+	String lastName
 ) {
 }
