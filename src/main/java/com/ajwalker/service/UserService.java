@@ -356,26 +356,43 @@ public class UserService {
 	public GetUserProfileInfoDto updateUserProfile(UpdateUserProfileInformationRequestDto dto) {
 		
 		Optional<User> optUser = userRepository.findById(dto.userId());
-		if(optUser.isEmpty()) {
+		if (optUser.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
 		
 		Optional<PersonalDocument> optPersonalDocument = personalDocumentService.findByUserId(dto.userId());
-		if(optPersonalDocument.isEmpty()) {
+		if (optPersonalDocument.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
 		}
-		User user = optUser.get();
-		user= UserMapper.INSTANCE.fromUpdateUserProfileInformationRequestDto(dto,user);
-		
-		PersonalDocument personalDocument = optPersonalDocument.get();
-		personalDocument= PersonalDocumentMapper.INSTANCE.fromUpdateUserProfileInformationRequestDto(dto, personalDocument);
-		personalDocumentService.save(personalDocument);
 		
 		Optional<Company> optCompany = companyService.findById(dto.userId());
 		if (optCompany.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_COMPANY);
 		}
+		
+		User user = optUser.get();
+		PersonalDocument personalDocument = optPersonalDocument.get();
 		Company company = optCompany.get();
+		
+		
+		if (dto.avatar() != null) {
+			user.setAvatar(dto.avatar());
+		}
+		
+		if (dto.mobileNumber() != null) {
+			personalDocument.setMobileNumber(dto.mobileNumber());
+		}
+		if (dto.address() != null) {
+			personalDocument.setAddress(dto.address());
+		}
+		if (dto.email() != null) {
+			personalDocument.setEmail(dto.email());
+		}
+		
+		
+		userRepository.save(user);
+		personalDocumentService.save(personalDocument);
+		
 		return new GetUserProfileInfoDto(
 				user.getId(),
 				user.getAvatar(),
@@ -393,6 +410,7 @@ public class UserService {
 				company.getCompanyName()
 		);
 	}
+	
 	
 	public List<ViewYourUserPermitResponseDto> viewYourUserPermit(Long userId) {
 		boolean userExists = existsById(userId);
