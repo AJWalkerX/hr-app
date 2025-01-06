@@ -23,6 +23,8 @@ public class RestApis {
 	public static final String SALARY = ROOT+ "/salary";
 	public static final String PERSONAL_SPENDING = ROOT+ "/personal-spending";
 	public static final String SHIFT = ROOT+ "/shift";
+	public static final String EMBEZZLEMENT = ROOT+ "/embezzlement";
+	
 
 	public static final String REGISTER = "/register";
 	public static final String AUTHMAIL = "/auth-mail";
@@ -59,4 +61,6 @@ public class RestApis {
 	public static final String MY_SHIFTS =  "/list-my-shift";
 	public static final String UPDATE_SHIFT =  "/update-shift";
 	public static final String DELETE_SHIFT =  "/delete-shift";
+	public static final String ADD_EMBEZZLEMENT =  "/add-embezzlement";
+	public static final String GET_EMBEZZLEMENT_LIST =  "/get-embezzlement-list";
 }
