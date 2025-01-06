@@ -30,8 +30,9 @@ public enum ErrorType {
 	NOTFOUND_SPENDING(6103,"Kullanıcıya ait harcama bulunamadı",HttpStatus.BAD_REQUEST),
 	NOTFOUND_SALARY(6203,"Kullanıcıya ait aylık maaş bulunamadı",HttpStatus.BAD_REQUEST),
 	NOTFOUND_SHIFT(4003,"Boyle bir vardiya bulunamadi!",HttpStatus.BAD_REQUEST),
-	OUTOFBOUNDRY_SHIFT_HOURS(4004,"24 saati gecicek sekilde vardiya atamasi yapamazsiniz!",HttpStatus.BAD_REQUEST);
-
+	OUTOFBOUNDRY_SHIFT_HOURS(4004,"24 saati gecicek sekilde vardiya atamasi yapamazsiniz!",HttpStatus.BAD_REQUEST),
+	MANAGER_AND_PERSONAL_NOT_SAME_COMPANY(6201,"manager ve personal aynı şirkette değiller !!!",HttpStatus.BAD_REQUEST),
+	NOT_FOUND_EMBEZZLEMENT(5001,"Zimmet eşyası bulunamadı",HttpStatus.BAD_REQUEST);
 	
 	int code;
 	String message;

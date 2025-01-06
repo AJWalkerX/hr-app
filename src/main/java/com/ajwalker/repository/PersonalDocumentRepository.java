@@ -18,5 +18,7 @@ public interface PersonalDocumentRepository extends JpaRepository<PersonalDocume
 
     @Query("SELECT p FROM PersonalDocument p WHERE p.userId = :userId")
     PersonalDocument findByListUserIdInfo(@Param("userId") Long id);
-
+	
+	PersonalDocument findByFirstNameAndLastNameAndEmail(String firstName, String lastName, String email);
+	
 }

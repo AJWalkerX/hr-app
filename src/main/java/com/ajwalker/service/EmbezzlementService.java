@@ -1,6 +1,7 @@
 package com.ajwalker.service;
 
 import com.ajwalker.dto.request.AddEmbezzlementRequestDto;
+import com.ajwalker.dto.request.AssigmentEmbezzlementRequestDto;
 import com.ajwalker.dto.response.EmbezzlementResponseDto;
 import com.ajwalker.entity.Embezzlement;
 import com.ajwalker.entity.PersonalDocument;
@@ -13,6 +14,7 @@ import com.ajwalker.utility.Enum.embezzlement.EEmbezzlementType;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.Manager;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -81,35 +83,68 @@ public class EmbezzlementService {
 		User user = userService.findById(managerId)
 		                       .orElseThrow(() -> new HRAppException(ErrorType.NOTFOUND_USER));
 		
-		// Şirket ID'sini al
 		Long companyId = user.getCompanyId();
-		
-		// Şirkete ait embezzlement kayıtlarını al
 		List<Embezzlement> embezzlementList = embezzlementRepository.findEmbezzlementByCompanyId(companyId);
-		
-		// Kişisel Belgeyi al, null kontrolü ekleniyor
-		PersonalDocument personalDocument = personalDocumentService.findPersonalByUserId(user.getId());
 		
 		
 		// Embezzlement'ları DTO'ya dönüştür ve döndür
 		return embezzlementList.stream()
 		                       .map(embezzlement -> {
-			                       // Zimmetin kullanıcı bilgilerini DTO'ya eklerken, null kontrolleri yapılır.
-			                       String firstName = personalDocument.getFirstName() != null ? personalDocument.getFirstName() : "N/A";
-			                       String lastName = personalDocument.getLastName() != null ? personalDocument.getLastName() : "N/A";
-			                       String avatar = user.getAvatar() != null ? user.getAvatar() : "default-avatar.png";
+			                      
 			                       return new EmbezzlementResponseDto(
-					                       embezzlement.getUserId(),
+					                       
 					                       companyId,
 					                       embezzlement.getDescription(),
 					                       embezzlement.getEmbezzlementType().toString(),
-					                       embezzlement.getEmbezzlementState().toString(),
-					                       avatar,
-					                       firstName,
-					                       lastName
+					                       embezzlement.getEmbezzlementState().toString()
 			                       );
 		                       })
 		                       .collect(Collectors.toList());
 	}
+	
+	/**
+	 * ad soyad ve email ile kullanıcı varmı kontrol et
+	 * frontend de tıklanan embezlementın id si bulunacak
+	 * manager companyid ile bulunan personalın companyid si aynımı kontrol edilecek
+	 * eğer butun veriler dogruysa embezzlementın user id si güncellenecek
+	 *
+	 */
+	public Boolean assigmentEmbezzlement(AssigmentEmbezzlementRequestDto dto, Long managerId) {
+		
+		PersonalDocument personalDocument = personalDocumentService.findByFirstNameAndLastNameAndEmail(dto.firstName(), dto.lastName(), dto.email());
+		if (personalDocument == null) {
+			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
+			
+		}
+		
+		
+		User user = userService.findById(personalDocument.getUserId()).orElse(null);
+		if (user == null) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+			
+		}
+		
+		
+		User manager = userService.findById(managerId).orElse(null);
+		if (manager == null || !manager.getCompanyId().equals(user.getCompanyId())) {
+			throw new HRAppException(ErrorType.MANAGER_AND_PERSONAL_NOT_SAME_COMPANY);
+			
+		}
+		
+		
+		Embezzlement embezzlement = embezzlementRepository.findById(dto.embezzlementId()).orElse(null);
+		if (embezzlement == null) {
+			throw new HRAppException(ErrorType.NOT_FOUND_EMBEZZLEMENT);
+			
+		}
+		
+		
+		embezzlement.setUserId(user.getId());
+		embezzlement.setEmbezzlementState(EEmbezzlementState.ASSIGNED);
+		embezzlementRepository.save(embezzlement);
+		
+		return true;
+	}
+	
 	
 }
