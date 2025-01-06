@@ -55,4 +55,8 @@ public class RestApis {
 	public static final String CREATE_SHIFT ="/create-shift";
 	public static final String ASSIGN_SHIFT ="/assign-shift";
 	public static final String SPENDING_AUTHORIZATION =  "/spending-authorization";
+	public static final String LIST_SHIFT =  "/list-shift";
+	public static final String MY_SHIFTS =  "/list-my-shift";
+	public static final String UPDATE_SHIFT =  "/update-shift";
+	public static final String DELETE_SHIFT =  "/delete-shift";
 }

@@ -27,4 +27,9 @@ public class ShiftTrackingService {
         shiftTrackingRepository.saveAll(shiftTrackings);
         return true;
     }
+
+    public List< ShiftTracking> getAllMyShiftTracking(Long userId) {
+        return shiftTrackingRepository.findAllByUserId(userId);
+
+    }
 }

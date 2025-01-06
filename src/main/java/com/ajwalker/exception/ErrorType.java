@@ -28,8 +28,9 @@ public enum ErrorType {
 	INVALID_PHOTO_TYPE(102, "Dosya formati .png yada .jpg olmalidir!", HttpStatus.BAD_REQUEST),
 	NOTFOUND_COMMENT(8001, "Yorum bulunamdı!", HttpStatus.BAD_REQUEST),
 	NOTFOUND_SPENDING(6103,"Kullanıcıya ait harcama bulunamadı",HttpStatus.BAD_REQUEST),
-	NOTFOUND_SALARY(6203,"Kullanıcıya ait aylık maaş bulunamadı",HttpStatus.BAD_GATEWAY);
-	
+	NOTFOUND_SALARY(6203,"Kullanıcıya ait aylık maaş bulunamadı",HttpStatus.BAD_REQUEST),
+	NOTFOUND_SHIFT(4003,"Boyle bir vardiya bulunamadi!",HttpStatus.BAD_REQUEST);
+
 	
 	int code;
 	String message;
