@@ -15,10 +15,12 @@ import com.ajwalker.repository.ShiftTrackingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,12 +31,48 @@ public class ShiftService {
     private final ShiftTrackingService shiftTrackingService;
     private final ShiftTrackingRepository shiftTrackingRepository;
 
-    public Boolean createShift(List<CreateShiftRequestDto> dtoList, Long managerId) {
+    public Boolean createAndCheckShift(List<CreateShiftRequestDto> dtoList, Long managerId) {
         Optional<User> userOptional = userService.findById(managerId);
         if (userOptional.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
             User user = userOptional.get();
+        if(shiftRepository.count() == 0) {
+            return createShift(dtoList, user);
+        }
+        else {
+            List<Shift> allShifts = shiftRepository.findAll();
+            AtomicLong totalMinutes = new AtomicLong(allShifts.stream()
+                    .mapToLong(shift -> {
+                        long duration = Duration.between(shift.getBeginHour(), shift.getEndHour()).toMinutes();
+                        if (duration < 0) {
+                            duration += 24 * 60;
+                        }
+                        return duration;
+                    })
+                    .sum());
+
+            dtoList.forEach(dto -> {
+                long duration = Duration.between(dto.shiftStart(), dto.shiftEnd()).toMinutes();
+                if (duration < 0) {
+                    duration += 24 * 60;
+                }
+
+                if (totalMinutes.get() + duration > 24 * 60) {
+                    throw new HRAppException(ErrorType.OUTOFBOUNDRY_SHIFT_HOURS);
+                }
+
+                totalMinutes.addAndGet(duration);
+            });
+
+            if (totalMinutes.get() < 24 * 60) {
+                return createShift(dtoList, user);
+            }
+        }
+        return false;
+    }
+
+    private Boolean createShift(List<CreateShiftRequestDto> dtoList, User user) {
         if (dtoList.size() == 1) {
             CreateShiftRequestDto dto = dtoList.getFirst();
             Shift shift =  Shift.builder()
@@ -62,7 +100,6 @@ public class ShiftService {
         else{
             throw new HRAppException(ErrorType.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     public Boolean assignShift(AssignShiftRequestDto dto) {

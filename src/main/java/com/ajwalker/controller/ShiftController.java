@@ -36,7 +36,7 @@ public class ShiftController {
         }
         return ResponseEntity.ok(BaseResponse.<Boolean>builder()
                         .success(true)
-                        .data(shiftService.createShift(dto, managerIdOptional.get()))
+                        .data(shiftService.createAndCheckShift(dto, managerIdOptional.get()))
                         .code(200)
                         .message("Vardiya olusturma islemi tamamlandi!")
                 .build());

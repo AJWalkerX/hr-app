@@ -29,7 +29,8 @@ public enum ErrorType {
 	NOTFOUND_COMMENT(8001, "Yorum bulunamdı!", HttpStatus.BAD_REQUEST),
 	NOTFOUND_SPENDING(6103,"Kullanıcıya ait harcama bulunamadı",HttpStatus.BAD_REQUEST),
 	NOTFOUND_SALARY(6203,"Kullanıcıya ait aylık maaş bulunamadı",HttpStatus.BAD_REQUEST),
-	NOTFOUND_SHIFT(4003,"Boyle bir vardiya bulunamadi!",HttpStatus.BAD_REQUEST);
+	NOTFOUND_SHIFT(4003,"Boyle bir vardiya bulunamadi!",HttpStatus.BAD_REQUEST),
+	OUTOFBOUNDRY_SHIFT_HOURS(4004,"24 saati gecicek sekilde vardiya atamasi yapamazsiniz!",HttpStatus.BAD_REQUEST);
 
 	
 	int code;
