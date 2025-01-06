@@ -7,7 +7,7 @@ import java.time.LocalTime;
 
 public record ShiftResponseDto(
         Long shiftId,
-        String ShiftName,
+        String shiftName,
         LocalTime beginTime,
         LocalTime endTime
 ) {
