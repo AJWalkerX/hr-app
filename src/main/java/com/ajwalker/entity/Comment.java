@@ -22,6 +22,7 @@ public class Comment extends BaseEntity {
     private Long companyId;
     private String title;
     private String content;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private LocalDate commentDate;
     

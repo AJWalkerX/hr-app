@@ -1,5 +1,7 @@
 package com.ajwalker.dto.response;
 
+import jakarta.persistence.Lob;
+
 public record CommentDetailsResponseDto(
 		Long commentId,
 		String companyLogo,
