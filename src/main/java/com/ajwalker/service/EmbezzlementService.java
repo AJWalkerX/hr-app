@@ -92,7 +92,7 @@ public class EmbezzlementService {
 		                       .map(embezzlement -> {
 			                      
 			                       return new EmbezzlementResponseDto(
-					                       
+					                       embezzlement.getId(),
 					                       companyId,
 					                       embezzlement.getDescription(),
 					                       embezzlement.getEmbezzlementType().toString(),
