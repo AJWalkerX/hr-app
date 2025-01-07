@@ -25,19 +25,21 @@ public class EmbezzlementService {
 	private final PersonalDocumentService personalDocumentService;
 	
 	public Boolean addEmbezzlement(AddEmbezzlementRequestDto dto, Long managerId) {
+		
+		
 		User user = userService.findById(managerId).orElseThrow(() -> new HRAppException(ErrorType.NOTFOUND_USER));
 		
-		// Kullanıcının bir şirkete bağlı olup olmadığını kontrol et
 		if (user.getCompanyId() == null) {
 			throw new HRAppException(ErrorType.NOTFOUND_COMPANY);
 		}
 		
-		// Yeni bir zimmet kaydı oluştur
 		Embezzlement embezzlement = new Embezzlement();
+		embezzlement.setTitle(dto.title());
 		embezzlement.setDescription(dto.description());
 		embezzlement.setCompanyId(user.getCompanyId());
 		embezzlement.setEmbezzlementState(EEmbezzlementState.PENDING);
 		embezzlement.setManagerId(user.getId());
+		
 		switch(dto.embezzlementType().toUpperCase()){
 			case "ELECTRONICDEVICES":
 				embezzlement.setEmbezzlementType(EEmbezzlementType.ELECTRONICDEVICES);
@@ -63,26 +65,14 @@ public class EmbezzlementService {
 			case "CLOTHINGANDUNIFORMS":
 				embezzlement.setEmbezzlementType(EEmbezzlementType.CLOTHINGANDUNIFORMS);
 				break;
-				
 		}
 		
-		// Zimmet kaydını veritabanına kaydet
 		embezzlementRepository.save(embezzlement);
 		
 		return true;
 	}
 	
 	
-	
-	
-	
-	/**
-	 * ad soyad ve email ile kullanıcı varmı kontrol et
-	 * frontend de tıklanan embezlementın id si bulunacak
-	 * manager companyid ile bulunan personalın companyid si aynımı kontrol edilecek
-	 * eğer butun veriler dogruysa embezzlementın user id si güncellenecek
-	 *
-	 */
 	public Boolean assigmentEmbezzlement(AssigmentEmbezzlementRequestDto dto, Long managerId) {
 		
 		PersonalDocument personalDocument = personalDocumentService.findByFirstNameAndLastNameAndEmail(dto.firstName(), dto.lastName(), dto.email());
@@ -133,7 +123,7 @@ public class EmbezzlementService {
 		
 		return embezzlementList.stream()
 		                       .map(embezzlement -> {
-			                       // Eğer userId null ise
+			                      
 			                       if (embezzlement.getUserId() == null) {
 				                       return new EmbezzlementResponseDto(
 						                       embezzlement.getId(),
@@ -142,6 +132,7 @@ public class EmbezzlementService {
 						                       embezzlement.getDescription(),
 						                       embezzlement.getEmbezzlementType().toString(),
 						                       embezzlement.getEmbezzlementState().toString(),
+											   embezzlement.getTitle(),
 						                       null
 				                       );
 			                       }
@@ -161,6 +152,7 @@ public class EmbezzlementService {
 					                       embezzlement.getDescription(),
 					                       embezzlement.getEmbezzlementType().toString(),
 					                       embezzlement.getEmbezzlementState().toString(),
+										   embezzlement.getTitle(),
 					                       new EmbezzlementResponseDto.UserDetails(
 							                       user.getAvatar(),
 							                       personalDocument.getFirstName(),

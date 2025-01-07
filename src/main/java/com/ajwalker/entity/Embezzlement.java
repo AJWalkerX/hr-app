@@ -18,6 +18,7 @@ public class Embezzlement extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String title;
     private String description;
     private Long companyId;
     private Long managerId;
