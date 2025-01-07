@@ -455,8 +455,4 @@ public class UserService {
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
 	}
-	
-	public Company findUserByCompanyId(Long companyId) {
-		return userRepository.findUserByCompanyId(companyId);
-	}
 }

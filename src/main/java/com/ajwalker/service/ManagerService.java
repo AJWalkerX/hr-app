@@ -20,7 +20,6 @@ import com.ajwalker.utility.Enum.user.EGender;
 import com.ajwalker.utility.Enum.user.EPosition;
 import com.ajwalker.utility.Enum.user.EUserState;
 import com.ajwalker.utility.JwtManager;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -277,7 +276,11 @@ public class ManagerService {
         }
         Optional<User> userOpt = userService.findById(optManagerId.get());
         User manager = userOpt.get();
-        Company company = userService.findUserByCompanyId(manager.getCompanyId());
+        Optional<Company> companyOptional = companyService.findById(manager.getCompanyId());
+        if (companyOptional.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_COMPANY);
+        }
+        Company company = companyOptional.get();
         Optional<PersonalDocument> optPersonalDocument = personalDocumentService.findByUserId(manager.getId());
         PersonalDocument personalDocument = optPersonalDocument.get();
         
@@ -299,9 +302,9 @@ public class ManagerService {
         personalDocument.setSocialSecurityNumber(dto.socialSecurityNumber());
         
         // Şirket bilgilerini güncelleme
-       
-            company.setCompanyType(ECompanyType.valueOf(dto.companyType()));
-            company.setRegion(ERegion.valueOf(dto.region()));
+
+        company.setCompanyType(ECompanyType.valueOf(dto.companyType()));
+        company.setRegion(ERegion.valueOf(dto.region()));
        
            
         

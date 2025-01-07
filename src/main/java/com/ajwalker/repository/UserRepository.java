@@ -28,5 +28,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<VwPermitUser> findAllUsersByUserIds(List<Long> userIdList);
 	
 	
-	Company findUserByCompanyId(Long companyId);
 }
