@@ -103,7 +103,7 @@ public class ShiftService {
     }
 
     public Boolean assignShift(AssignShiftRequestDto dto) {
-        return shiftTrackingService.assignShift(dto);
+        return shiftTrackingService.checkBeforeAssignShift(dto);
 
     }
 
