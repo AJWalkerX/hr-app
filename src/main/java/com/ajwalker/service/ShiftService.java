@@ -147,19 +147,6 @@ public class ShiftService {
         ).collect(Collectors.toList());
     }
 
-    public Boolean updateShift(UpdateShiftRequestDto dto) {
-        Optional<Shift> shiftOptional = shiftRepository.findById(dto.shiftId());
-        if (shiftOptional.isEmpty()) {
-            throw new HRAppException(ErrorType.NOTFOUND_SHIFT);
-        }
-        Shift shift = shiftOptional.get();
-        shift.setShiftName(dto.shiftName() != null ? dto.shiftName() : shift.getShiftName());
-        shift.setBeginHour(dto.shiftStart() != null ? dto.shiftStart() : shift.getBeginHour());
-        shift.setEndHour(dto.shiftEnd() != null ? dto.shiftEnd() : shift.getEndHour());
-        shiftRepository.save(shift);
-        return true;
-    }
-
     public Boolean deleteShift(Long shiftId) {
         shiftRepository.deleteById(shiftId);
         return true;

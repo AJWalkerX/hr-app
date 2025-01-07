@@ -85,19 +85,6 @@ public class ShiftController {
                 .build());
     }
 
-    @PutMapping(UPDATE_SHIFT)
-    public ResponseEntity<BaseResponse<Boolean>> updateShift(@RequestBody @Valid UpdateShiftRequestDto dto){
-        Optional<Long> optUserId = jwtManager.verifyToken(dto.token());
-        if (optUserId.isEmpty()) {
-            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
-        }
-        return ResponseEntity.ok(BaseResponse.<Boolean>builder()
-                .success(true)
-                .code(200)
-                .message("Vardiya basatili bir sekilde guncelledi!")
-                .data(shiftService.updateShift(dto))
-                .build());
-    }
     @DeleteMapping(DELETE_SHIFT)
     public ResponseEntity<BaseResponse<Boolean>> deleteShift(@RequestBody DeleteShiftRequestDto dto){
         Optional<Long> optUserId = jwtManager.verifyToken(dto.token());
