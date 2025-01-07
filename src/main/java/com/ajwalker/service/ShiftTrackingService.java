@@ -13,18 +13,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShiftTrackingService {
     private final ShiftTrackingRepository shiftTrackingRepository;
+    private final UserService userService;
+
     public Boolean assignShift(AssignShiftRequestDto dto) {
-         List<ShiftTracking> shiftTrackings = new ArrayList<>();
-        dto.userId().forEach(userId -> {
-            new ShiftTracking();
-            shiftTrackings.add(ShiftTracking.builder()
-                            .shiftId(dto.shiftId())
-                            .userId(userId)
-                            .beginDate(dto.startDate())
-                            .endDate(dto.endDate())
-                    .build());
-        });
-        shiftTrackingRepository.saveAll(shiftTrackings);
+        Long userId = userService.findUserForShift(dto.firstName(), dto.lastName(), dto.email());
+        ShiftTracking shiftTracking = ShiftTracking.builder()
+                .userId(userId)
+                .beginDate(dto.startDate())
+                .endDate(dto.endDate())
+                .build();
+        shiftTrackingRepository.save(shiftTracking);
         return true;
     }
 

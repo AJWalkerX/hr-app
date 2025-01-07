@@ -423,6 +423,24 @@ public class UserService {
 	public boolean existsById(Long userId) {
 		return userRepository.existsById(userId);
 	}
-	
-	
+
+
+    public Long findUserForShift(String firstName, String lastName, String email) {
+		Optional<User> userOptional = userRepository.findOptionalByEmail(email);
+		if (userOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		User user = userOptional.get();
+		Optional<PersonalDocument> personalDocumentOptional = personalDocumentService.findByUserId(user.getId());
+		if (personalDocumentOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
+		}
+		PersonalDocument personalDocument = personalDocumentOptional.get();
+		if (personalDocument.getFirstName().equals(firstName) && personalDocument.getLastName().equals(lastName)) {
+			return user.getId();
+		}
+		else{
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+	}
 }

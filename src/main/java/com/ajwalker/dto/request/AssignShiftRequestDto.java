@@ -5,7 +5,9 @@ import java.util.List;
 
 public record AssignShiftRequestDto(
         String token,
-        List<Long> userId,
+        String email,
+        String firstName,
+        String lastName,
         Long shiftId,
         LocalDate startDate,
         LocalDate endDate
