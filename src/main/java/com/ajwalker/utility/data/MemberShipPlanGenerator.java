@@ -20,22 +20,9 @@ public class MemberShipPlanGenerator {
 		                                               .memberShipState(EMemberShipState.NONE).build();
 		MemberShipPlan memberShipPlan5 = MemberShipPlan.builder().companyId(5L).memberType(EMemberType.YEARLY)
 		                                               .memberShipState(EMemberShipState.PAUSED).build();
-		MemberShipPlan memberShipPlan6 = MemberShipPlan.builder().companyId(6L).memberType(EMemberType.NONE)
-				.memberShipState(EMemberShipState.NONE).build();
-		MemberShipPlan memberShipPlan7 = MemberShipPlan.builder().companyId(7L).memberType(EMemberType.NONE)
-				.memberShipState(EMemberShipState.NONE).build();
-		MemberShipPlan memberShipPlan8 = MemberShipPlan.builder().companyId(8L).memberType(EMemberType.NONE)
-				.memberShipState(EMemberShipState.NONE).build();
-		MemberShipPlan memberShipPlan9 = MemberShipPlan.builder().companyId(9L).memberType(EMemberType.NONE)
-				.memberShipState(EMemberShipState.NONE).build();
-		MemberShipPlan memberShipPlan10 = MemberShipPlan.builder().companyId(10L).memberType(EMemberType.NONE)
-				.memberShipState(EMemberShipState.NONE).build();
-
-
-
 		
-		return List.of(memberShipPlan1, memberShipPlan2, memberShipPlan3, memberShipPlan4, memberShipPlan5,
-				memberShipPlan6, memberShipPlan7, memberShipPlan8, memberShipPlan9, memberShipPlan10);
+
+		return List.of(memberShipPlan1, memberShipPlan2, memberShipPlan3, memberShipPlan4, memberShipPlan5);
 		
 	}
 
@@ -71,38 +58,8 @@ public class MemberShipPlanGenerator {
 				.statDate(System.currentTimeMillis())
 				.paymentAmount(33.99)
 				.build();
-		MemberShipTracking memberShipTracking6 = MemberShipTracking.builder()
-				.memberShipPlanId(3L)
-				.endDate(System.currentTimeMillis())
-				.statDate(System.currentTimeMillis())
-				.paymentAmount(33.99)
-				.build();
-		MemberShipTracking memberShipTracking7 = MemberShipTracking.builder()
-				.memberShipPlanId(4L)
-				.endDate(System.currentTimeMillis())
-				.statDate(System.currentTimeMillis())
-				.paymentAmount(19.99)
-				.build();
-		MemberShipTracking memberShipTracking8 = MemberShipTracking.builder()
-				.memberShipPlanId(4L)
-				.endDate(System.currentTimeMillis())
-				.statDate(System.currentTimeMillis())
-				.paymentAmount(19.00)
-				.build();
-		MemberShipTracking memberShipTracking9 = MemberShipTracking.builder()
-				.memberShipPlanId(5L)
-				.endDate(System.currentTimeMillis())
-				.statDate(System.currentTimeMillis())
-				.paymentAmount(200.00)
-				.build();
-		MemberShipTracking memberShipTracking10 = MemberShipTracking.builder()
-				.memberShipPlanId(5L)
-				.endDate(System.currentTimeMillis())
-				.statDate(System.currentTimeMillis())
-				.paymentAmount(109.13)
-				.build();
+		
 
-		return List.of(memberShipTracking, memberShipTracking2, memberShipTracking3, memberShipTracking4, memberShipTracking5,
-				memberShipTracking6, memberShipTracking7, memberShipTracking8, memberShipTracking9, memberShipTracking10);
+		return List.of(memberShipTracking, memberShipTracking2, memberShipTracking3, memberShipTracking4, memberShipTracking5);
 	}
 }

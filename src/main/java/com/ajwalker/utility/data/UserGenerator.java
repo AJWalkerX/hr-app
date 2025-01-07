@@ -14,59 +14,116 @@ public class UserGenerator {
 		//Kullanici sifresi Aaa12345!
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		User user1 = User.builder()
-				.companyId(6L)
+				.companyId(3L)
 				.email("kullanici1@gmail.com")
 				.password(passwordEncoder.encode("Aaa12345!"))
-				.avatar("https://b6s54eznn8xq.merlincdn.net/Uploads/Films/gladyator-2-20241113144046c09c0a34acc34dbba257e687e2e14339.jpg")
-				.userState(EUserState.IN_REVIEW)
+				.avatar("https://randomuser.me/api/portraits/men/78.jpg")
+				.userState(EUserState.ACTIVE)
 				.isFirstLogin(true)
 				.build();
 		
 		User user2 = User.builder()
-		                 .companyId(7L)
+		                 .companyId(5L)
 				.email("kullanici2@gmail.com")
 				.password(passwordEncoder.encode("Aaa12345!"))
-		                 .avatar("https://b6s54eznn8xq.merlincdn.net/Uploads/ImageEntries/Event/48651/Kapak-3270ba3742ac43c0b03f2e248ee6e7bd.jpg")
+		                 .avatar("https://randomuser.me/api/portraits/men/67.jpg")
 		                 .userState(EUserState.IN_REVIEW)
 		                 .isFirstLogin(true)
 		                 .build();
 		
 		User user3 = User.builder()
-		                 .companyId(8L)
+		                 .companyId(5L)
 				.email("kullanici3@gmail.com")
 				.password(passwordEncoder.encode("Aaa12345!"))
-		                 .avatar("https://b6s54eznn8xq.merlincdn.net/Uploads/Films/100-kurt-202411141334544b1af1c97efa48ffb19793f21a3bbbe1.jpg")
+		                 .avatar("https://randomuser.me/api/portraits/men/67.jpg")
 		                 .userState(EUserState.IN_REVIEW)
 		                 .isFirstLogin(true)
 		                 .build();
 		
 		User user4 = User.builder()
-		                 .companyId(11L)
+		                 .companyId(3L)
 				.email("kullanici4@gmail.com")
 				.password(passwordEncoder.encode("Aaa12345!"))
-		                 .avatar("https://b6s54eznn8xq.merlincdn.net/Uploads/Films/illegal-hayatlar-meclis-20241023152858df83c1bb7b1444d5807b348eab5878bf.jpg")
+		                 .avatar("https://randomuser.me/api/portraits/men/13.jpg")
 		                 .userState(EUserState.ACTIVE)
 		                 .isFirstLogin(true)
 		                 .build();
 		
 		User user5 = User.builder()
-		                 .companyId(10L)
+		                 .companyId(5L)
 				.email("kullanici5@gmail.com")
 				.password(passwordEncoder.encode("Aaa12345!"))
-		                 .avatar("https://b6s54eznn8xq.merlincdn.net/Uploads/Films/siyah-kanarya-2024111414245316947b81fe20494c8f01dd26cb2c7514.jpg")
+		                 .avatar("https://randomuser.me/api/portraits/women/90.jpg")
 		                 .userState(EUserState.IN_REVIEW)
 		                 .isFirstLogin(true)
 		                 .build();
 		User user6 = User.builder()
-		                 .companyId(11L)
+		                 .companyId(1L)
+		                 .email("kullanici6@gmail.com")
+		                 .password(passwordEncoder.encode("Aaa12345!"))
+		                 .avatar("https://randomuser.me/api/portraits/women/44.jpg")
+		                 .userState(EUserState.IN_REVIEW)
+		                 .isFirstLogin(true)
+		                 .build();
+		User user7 = User.builder()
+		                 .companyId(5L)
+		                 .email("kullanici7@gmail.com")
+		                 .password(passwordEncoder.encode("Aaa12345!"))
+		                 .avatar("https://randomuser.me/api/portraits/women/71.jpg")
+		                 .userState(EUserState.ACTIVE)
+		                 .isFirstLogin(true)
+		                 .build();
+		User user8 = User.builder()
+		                 .companyId(3L)
 		                 .email("kullanici8@gmail.com")
 		                 .password(passwordEncoder.encode("Aaa12345!"))
-		                 .avatar("https://b6s54eznn8xq.merlincdn.net/Uploads/Films/siyah-kanarya-2024111414245316947b81fe20494c8f01dd26cb2c7514.jpg")
+		                 .avatar("https://randomuser.me/api/portraits/men/33.jpg")
+		                 .userState(EUserState.ACTIVE)
+		                 .isFirstLogin(true)
+		                 .build();
+		User user9 = User.builder()
+		                 .companyId(1L)
+		                 .email("kullanici9@gmail.com")
+		                 .password(passwordEncoder.encode("Aaa12345!"))
+		                 .avatar("https://randomuser.me/api/portraits/women/19.jpg")
+		                 .userState(EUserState.ACTIVE)
+		                 .isFirstLogin(true)
+		                 .build();
+		User user10 = User.builder()
+		                 .companyId(2L)
+		                 .email("kullanici10@gmail.com")
+		                 .password(passwordEncoder.encode("Aaa12345!"))
+		                 .avatar("https://randomuser.me/api/portraits/men/67.jpg")
+		                 .userState(EUserState.ACTIVE)
+		                 .isFirstLogin(true)
+		                 .build();
+		User user11 = User.builder()
+		                 .companyId(3L)
+		                 .email("kullanici11@gmail.com")
+		                 .password(passwordEncoder.encode("Aaa12345!"))
+		                 .avatar("https://randomuser.me/api/portraits/women/85.jpg")
+		                 .userState(EUserState.ACTIVE)
+		                 .isFirstLogin(true)
+		                 .build();
+		User user12 = User.builder()
+		                 .companyId(4L)
+		                 .email("kullanici12@gmail.com")
+		                 .password(passwordEncoder.encode("Aaa12345!"))
+		                 .avatar("https://randomuser.me/api/portraits/men/18.jpg")
+		                 .userState(EUserState.ACTIVE)
+		                 .isFirstLogin(true)
+		                 .build();
+		User user13 = User.builder()
+		                 .companyId(4L)
+		                 .email("kullanici13@gmail.com")
+		                 .password(passwordEncoder.encode("Aaa12345!"))
+		                 .avatar("https://randomuser.me/api/portraits/women/14.jpg")
 		                 .userState(EUserState.ACTIVE)
 		                 .isFirstLogin(true)
 		                 .build();
 		
-		return List.of(user1, user2, user3, user4, user5,user6);
+		
+		return List.of(user1, user2, user3, user4, user5,user6,user7,user8,user9,user9,user10,user11,user12,user13);
 	}
 
 	
