@@ -11,6 +11,7 @@ public record EmbezzlementResponseDto(
 	String description,
 	String embezzlementType,
 	String embezzlementState,
+	String title,
 	UserDetails userDetails
 ) {
 	public  record UserDetails(
