@@ -160,9 +160,13 @@ public class UserService {
 			throw new HRAppException(ErrorType.NOTFOUND_PERSONALDOCUMENT);
 		}
 		Company company = companyService.findById(user.getCompanyId())
-		                                   .orElseThrow(() -> new HRAppException(ErrorType.NOTFOUND_COMPANY));
+		                                .orElseThrow(() -> new HRAppException(ErrorType.NOTFOUND_COMPANY));
 		
 		PersonalDocument personalDocument = optionalPersonalDocument.get();
+		
+		// Cinsiyet kontrolü yapılıyor, null ise varsayılan değer atanıyor
+		String gender = personalDocument.getGender() != null ? personalDocument.getGender().toString() : "UNKNOWN";
+		
 		return new GetUserProfileInfoDto(
 				user.getId(),
 				user.getAvatar(),
@@ -172,7 +176,7 @@ public class UserService {
 				personalDocument.getDateOfBirth(),
 				personalDocument.getMobileNumber(),
 				personalDocument.getAddress(),
-				personalDocument.getGender().toString(),
+				gender, // Null kontrolünden sonra gender
 				personalDocument.getEmail(),
 				personalDocument.getPosition().toString(),
 				personalDocument.getDateOfEmployment(),
@@ -180,7 +184,8 @@ public class UserService {
 				company.getCompanyName()
 		);
 	}
-
+	
+	
 	public Optional<User> findById(Long userId) {
 		return userRepository.findById(userId);
 	}
@@ -449,5 +454,9 @@ public class UserService {
 		else{
 			throw new HRAppException(ErrorType.NOTFOUND_USER);
 		}
+	}
+	
+	public Company findUserByCompanyId(Long companyId) {
+		return userRepository.findUserByCompanyId(companyId);
 	}
 }

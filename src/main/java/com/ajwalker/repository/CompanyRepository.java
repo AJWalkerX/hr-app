@@ -1,6 +1,7 @@
 package com.ajwalker.repository;
 
 import com.ajwalker.entity.Company;
+import com.ajwalker.entity.User;
 import com.ajwalker.utility.Enum.company.ECompanyState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
     List<Company> findAllByIdAndStateInReview(List<Long> companyIds, ECompanyState inReview);
 
     List<Company> findAllByCompanyState(ECompanyState eCompanyState);
+	
+	
 }

@@ -1,5 +1,6 @@
 package com.ajwalker.repository;
 
+import com.ajwalker.entity.Company;
 import com.ajwalker.entity.User;
 import com.ajwalker.utility.Enum.EState;
 import com.ajwalker.utility.Enum.user.EUserState;
@@ -25,6 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT new com.ajwalker.view.VwPermitUser (U.id, U.avatar) FROM User U WHERE U.id IN(?1)")
     List<VwPermitUser> findAllUsersByUserIds(List<Long> userIdList);
-    
-   
+	
+	
+	Company findUserByCompanyId(Long companyId);
 }
