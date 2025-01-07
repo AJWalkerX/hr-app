@@ -4,6 +4,7 @@ import com.ajwalker.dto.request.AddEmbezzlementRequestDto;
 import com.ajwalker.dto.request.AssigmentEmbezzlementRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.EmbezzlementResponseDto;
+import com.ajwalker.dto.response.PersonalEmbezzlementResponseDto;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.service.EmbezzlementService;
@@ -68,6 +69,19 @@ public class EmbezzlementController {
 		                                     .build());
 	}
 	
+	@GetMapping(GET_ALL_MY_EMBEZZLEMENT_LIST)
+	public ResponseEntity<BaseResponse<List<PersonalEmbezzlementResponseDto>>> getAllMyEmbezzlementList(@RequestParam(name = "token") String token){
+		Optional<Long> personalId = jwtManager.verifyToken(token);
+		if(personalId.isEmpty()){
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		return ResponseEntity.ok(BaseResponse.<List<PersonalEmbezzlementResponseDto>>builder()
+				                         .message("Zimmet listeniz başarıyla getirildi")
+				                         .success(true)
+				                         .code(200)
+				                         .data(embezzlementService.getAllMyEmbezzlementList(personalId.get()))
+		                                     .build());
+	}
 	
 
 }

@@ -3,6 +3,7 @@ package com.ajwalker.service;
 import com.ajwalker.dto.request.AddEmbezzlementRequestDto;
 import com.ajwalker.dto.request.AssigmentEmbezzlementRequestDto;
 import com.ajwalker.dto.response.EmbezzlementResponseDto;
+import com.ajwalker.dto.response.PersonalEmbezzlementResponseDto;
 import com.ajwalker.entity.Embezzlement;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.User;
@@ -15,7 +16,11 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -164,4 +169,21 @@ public class EmbezzlementService {
 	}
 	
 	
+	public List<PersonalEmbezzlementResponseDto> getAllMyEmbezzlementList(Long personalId) {
+		Optional<User> optUser = userService.findById(personalId);
+		if (optUser.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		}
+		User user = optUser.get();
+		List<Embezzlement> myEmbezzlementList = embezzlementRepository.findAllByUserId(personalId);
+		
+		return myEmbezzlementList.stream().map(embezzlement -> new PersonalEmbezzlementResponseDto(
+				embezzlement.getTitle(),
+				embezzlement.getDescription(),
+				Instant.ofEpochMilli(embezzlement.getUpdate_at()) // long değeri Instant'a çevir
+				       .atZone(ZoneId.systemDefault()) // Sistem saat dilimini kullan
+				       .toLocalDate() // LocalDate'e dönüştür
+		)).collect(Collectors.toList());
+		
+	}
 }

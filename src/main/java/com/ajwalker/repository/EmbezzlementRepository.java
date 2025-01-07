@@ -11,6 +11,5 @@ public interface EmbezzlementRepository extends JpaRepository<Embezzlement, Long
 	List<Embezzlement> findEmbezzlementByCompanyId(Long companyId);
 	
 	
-	
-	
+	List<Embezzlement> findAllByUserId(Long personalId);
 }
