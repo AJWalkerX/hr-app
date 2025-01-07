@@ -1,24 +1,26 @@
 package com.ajwalker.service;
 
-import com.ajwalker.dto.request.AddEmployeeRequestDto;
-import com.ajwalker.dto.request.HolidayAuthorizeRequestDto;
-import com.ajwalker.dto.request.IUpdateEmployeeRequestDto;
-import com.ajwalker.dto.request.SpendingAuthorizeRequestDto;
+import com.ajwalker.dto.request.*;
 import com.ajwalker.dto.response.EmployeesResponseDto;
 import com.ajwalker.dto.response.ManagerSpendingResponseDto;
 import com.ajwalker.dto.response.UserPermitResponseDto;
+import com.ajwalker.entity.Company;
 import com.ajwalker.entity.PersonalDocument;
 import com.ajwalker.entity.PersonalSpending;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.utility.Enum.EState;
+import com.ajwalker.utility.Enum.company.ECompanyType;
+import com.ajwalker.utility.Enum.company.ERegion;
 import com.ajwalker.utility.Enum.holiday.EHolidayState;
 import com.ajwalker.utility.Enum.personalSpending.ESpendingState;
 import com.ajwalker.utility.Enum.user.EEmploymentStatus;
 import com.ajwalker.utility.Enum.user.EGender;
 import com.ajwalker.utility.Enum.user.EPosition;
 import com.ajwalker.utility.Enum.user.EUserState;
+import com.ajwalker.utility.JwtManager;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,8 @@ public class ManagerService {
     private final MailService mailService;
     private final SalaryService salaryService;
     private final PersonalSpendingService personalSpendingService;
+    private final JwtManager jwtManager;
+    private final CompanyService companyService;
     
     
     public List<EmployeesResponseDto> employeeListByCompany(Long userId) {
@@ -265,5 +269,54 @@ public class ManagerService {
         }
         else return false;
     }
+    
+    public Boolean updateManager(UpdateManagerRequestDto dto) {
+        Optional<Long> optManagerId = jwtManager.verifyToken(dto.token());
+        if (optManagerId.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+        }
+        Optional<User> userOpt = userService.findById(optManagerId.get());
+        User manager = userOpt.get();
+        Company company = userService.findUserByCompanyId(manager.getCompanyId());
+        Optional<PersonalDocument> optPersonalDocument = personalDocumentService.findByUserId(manager.getId());
+        PersonalDocument personalDocument = optPersonalDocument.get();
+        
+        // Avatar bilgisini User'dan güncelleme
+        manager.setAvatar(dto.avatar());
+        
+        // PersonalDocument'ten gelen bilgileri güncelleme
+        personalDocument.setIdentityNumber(dto.identityNumber());
+        personalDocument.setDateOfBirth(dto.dateOfBirth());
+        personalDocument.setMobileNumber(dto.mobileNumber());
+        personalDocument.setAddress(dto.address());
+        
+        // String'ten enum'a çevirme işlemi
+        
+            personalDocument.setGender(EGender.valueOf(dto.gender()));
+            
+        
+        personalDocument.setDateOfEmployment(dto.dateOfEmployment());
+        personalDocument.setSocialSecurityNumber(dto.socialSecurityNumber());
+        
+        // Şirket bilgilerini güncelleme
+       
+            company.setCompanyType(ECompanyType.valueOf(dto.companyType()));
+            company.setRegion(ERegion.valueOf(dto.region()));
+       
+           
+        
+        company.setCompanyMail(dto.companyMail());
+        company.setCompanyLogo(dto.companyLogo());
+        company.setCompanyAddress(dto.companyAddress());
+        company.setTelNo(dto.telNo());
+        
+        // Güncellenen verileri kaydetme
+        userService.save(manager);
+        personalDocumentService.save(personalDocument);
+        companyService.save(company);
+        
+        return true;
+    }
+    
     
 }

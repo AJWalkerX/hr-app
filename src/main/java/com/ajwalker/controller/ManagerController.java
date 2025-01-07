@@ -9,6 +9,7 @@ import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.service.ManagerService;
 import com.ajwalker.utility.JwtManager;
+import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.Manager;
@@ -143,6 +144,20 @@ public class ManagerController {
                                              .code(200)
                                              .success(true)
                                              .data(managerService.authorizeSpending(dto))
+                                             .build());
+    }
+    
+    @PutMapping(UPDATE_MANAGER)
+    public ResponseEntity<BaseResponse<Boolean>> updateManager(@RequestBody @Valid UpdateManagerRequestDto dto){
+        Optional<Long> optManagerId = jwtManager.verifyToken(dto.token());
+        if (optManagerId.isEmpty()) {
+            throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+        }
+        return ResponseEntity.ok(BaseResponse.<Boolean>builder()
+                                         .message("manager bilgileri başarıyla kaydedildi")
+                                         .success(true)
+                                         .code(200)
+                                             .data(managerService.updateManager(dto))
                                              .build());
     }
 }

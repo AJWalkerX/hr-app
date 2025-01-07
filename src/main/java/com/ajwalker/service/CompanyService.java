@@ -4,6 +4,7 @@ import com.ajwalker.dto.request.CompanyCustomerInfoRequestDto;
 import com.ajwalker.dto.response.CompanyCustomersInfoResponseDto;
 import com.ajwalker.entity.Company;
 import com.ajwalker.entity.MemberShipPlan;
+import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.mapper.CompanyMapper;
@@ -122,5 +123,10 @@ public class CompanyService {
 
     public Optional<Company> findCompanyByCompanyName(String companyName) {
         return companyRepository.findByCompanyName(companyName);
+    }
+    
+    
+    public void save(Company company) {
+         companyRepository.save(company);
     }
 }
