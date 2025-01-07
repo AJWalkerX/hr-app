@@ -11,15 +11,15 @@ import java.util.List;
 public class CompanyGenerator {
 
     public static List<Company> generateCompanyList() {
-        Company company = Company.builder()
+        Company company1 = Company.builder()
                 .region(ERegion.TURKEY)
                 .companyType(ECompanyType.CONSTRUCTION)
                 .companyMail("vivense@gmail.com")
-                .companyLogo("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/61151b580dac64c995e2daea_kolayik_decathlon-1.svg")
+                .companyLogo("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/651be4942239edeb28d0039f_vivensee%201.svg")
                 .companyName("VIVENSE")
                 .companyState(ECompanyState.IN_REVIEW)
-                .telNo("333 999")
-                .companyAddress("Sakli Koy")
+                .telNo("333 444")
+                .companyAddress("İstanbul")
                 .build();
         Company company2 = Company.builder()
                 .region(ERegion.TURKEY)
@@ -28,8 +28,8 @@ public class CompanyGenerator {
                 .companyLogo("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/61151b72f1c2892d476ff297_nike-1.svg")
                 .companyName("Nike")
                 .companyState(ECompanyState.IN_REVIEW)
-                .telNo("333 999")
-                .companyAddress("Sakli Koy")
+                .telNo("333 555")
+                .companyAddress("Ankara")
                 .build();
         Company company3 = Company.builder()
                 .region(ERegion.TURKEY)
@@ -38,8 +38,8 @@ public class CompanyGenerator {
                 .companyLogo("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/61152901d2468247ac4f0859_kolayik_rentgo.svg")
                 .companyName("Rent Go")
                 .companyState(ECompanyState.IN_REVIEW)
-                .telNo("333 999")
-                .companyAddress("Sakli Koy")
+                .telNo("333 666")
+                .companyAddress("İzmir")
                 .build();
         Company company4 = Company.builder()
                 .region(ERegion.TURKEY)
@@ -48,8 +48,8 @@ public class CompanyGenerator {
                 .companyLogo("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/66f2c4c49bf5fbd4b7d904c3_kordsa.svg")
                 .companyName("Kord SA")
                 .companyState(ECompanyState.IN_REVIEW)
-                .telNo("333 999")
-                .companyAddress("Sakli Koy")
+                .telNo("333 777")
+                .companyAddress("Bursa")
                 .build();
         Company company5 = Company.builder()
                 .region(ERegion.TURKEY)
@@ -58,8 +58,8 @@ public class CompanyGenerator {
                 .companyLogo("https://cdn.prod.website-files.com/6113889e45c6e62ebf4ca212/672476df49dd3e0404491ce0_macfit%20yeni%20logo.avif")
                 .companyName("MAC")
                 .companyState(ECompanyState.IN_REVIEW)
-                .telNo("333 999")
-                .companyAddress("Sakli Koy")
+                .telNo("333 888")
+                .companyAddress("Adana")
                 .build();
         Company company6 = Company.builder()
                                   .region(ERegion.TURKEY)
@@ -69,8 +69,8 @@ public class CompanyGenerator {
                                   .companyName("EGS")
                                   .companyState(ECompanyState.IN_REVIEW)
                                   .telNo("333 999")
-                                  .companyAddress("Çıkrıkçılar")
+                                  .companyAddress("Ankara/Çıkrıkçılar")
                                   .build();
-        return List.of(company, company2, company3, company4, company5,company6);
+        return List.of(company1, company2, company3, company4, company5,company6);
     }
 }

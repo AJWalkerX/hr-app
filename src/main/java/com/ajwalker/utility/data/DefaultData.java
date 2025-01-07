@@ -20,6 +20,9 @@ public class DefaultData {
     private final PersonalDocumentRepository personalDocumentRepository;
     private final CommentRepository commentRepository;
     private final MemberShipTrackingRepository memberShipTrackingRepository;
+    private final EmbezzlementRepository embezzlementRepository;
+    private final PersonalSpendingRepository personalSpendingRepository;
+    private final WorkHolidayRepository workHolidayRepository;
     
     
     @PostConstruct
@@ -28,28 +31,34 @@ public class DefaultData {
             generateAdmin();
         }
         if(commentRepository.count() == 0) {
-            companyRepository.saveAll(CommentGenerator.createCompany());
-            userRepository.saveAll(CommentGenerator.createUser());
             commentRepository.saveAll(CommentGenerator.createComment());
-            personalDocumentRepository.saveAll(CommentGenerator.createPersonalDocument());
         }
 
         if(memberShipTrackingRepository.count() == 0) {
             memberShipTrackingRepository.saveAll(MemberShipPlanGenerator.generateMemberShipTracking());
         }
 
-        if(companyRepository.count() == 5) {
+        if(companyRepository.count() == 0) {
             companyRepository.saveAll(CompanyGenerator.generateCompanyList());
 
         }
-        if(userRepository.count() == 5) {
+        if(userRepository.count() == 0) {
             userRepository.saveAll(UserGenerator.generateUser());
         }
-        if(personalDocumentRepository.count() == 5) {
+        if(personalDocumentRepository.count() == 0) {
             personalDocumentRepository.saveAll(PersonalDocumentGenerator.generatePersonalDocuments());
         }
         if(memberShipPlanRepository.count() == 0) {
             memberShipPlanRepository.saveAll(MemberShipPlanGenerator.generateMemberShipPlans());
+        }
+        if(embezzlementRepository.count() ==0) {
+            embezzlementRepository.saveAll(EmbezzlementGenerator.generateEmbezzlementList());
+        }
+        if (personalSpendingRepository.count() ==0) {
+            personalSpendingRepository.saveAll(PersonalSpendingGenerator.generatePersonalSpendingList());
+        }
+        if (workHolidayRepository.count()==0) {
+            workHolidayRepository.saveAll(WorkHolidayGenerator.generateWorkHolidayList());
         }
 
     }
