@@ -2,7 +2,6 @@ package com.ajwalker.service;
 
 import com.ajwalker.dto.request.AssignShiftRequestDto;
 import com.ajwalker.dto.request.CreateShiftRequestDto;
-import com.ajwalker.dto.request.UpdateShiftRequestDto;
 import com.ajwalker.dto.response.MyShiftResponseDto;
 import com.ajwalker.dto.response.ShiftResponseDto;
 import com.ajwalker.entity.Shift;
@@ -12,6 +11,7 @@ import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.ShiftRepository;
 import com.ajwalker.repository.ShiftTrackingRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -102,7 +102,7 @@ public class ShiftService {
         }
     }
 
-    public Boolean assignShift(AssignShiftRequestDto dto) {
+    public Boolean assignShift(@Valid List<AssignShiftRequestDto> dto) {
         return shiftTrackingService.checkBeforeAssignShift(dto);
 
     }

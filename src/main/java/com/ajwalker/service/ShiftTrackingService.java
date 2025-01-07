@@ -5,12 +5,11 @@ import com.ajwalker.entity.ShiftTracking;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.repository.ShiftTrackingRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,25 +18,29 @@ public class ShiftTrackingService {
     private final ShiftTrackingRepository shiftTrackingRepository;
     private final UserService userService;
 
-    public Boolean checkBeforeAssignShift(AssignShiftRequestDto dto) {
-        Long userId = userService.findUserForShift(dto.firstName(), dto.lastName(), dto.email());
-        List<ShiftTracking> shiftTrackingList = shiftTrackingRepository.findAllByUserId(userId);
+    public Boolean checkBeforeAssignShift(@Valid List<AssignShiftRequestDto> dto) {
+        dto.forEach( d -> {
+            Long userId = userService.findUserForShift(d.firstName(), d.lastName(), d.email());
+            List<ShiftTracking> shiftTrackingList = shiftTrackingRepository.findAllByUserId(userId);
             if (!shiftTrackingList.isEmpty()) {
                 shiftTrackingList.forEach(shiftTracking -> {
-                    if (shiftTracking.getEndDate().isBefore(dto.startDate()) || dto.startDate().isBefore(shiftTracking.getBeginDate())) {
+                    if (shiftTracking.getEndDate().isBefore(d.startDate()) || d.startDate().isBefore(shiftTracking.getBeginDate())) {
                         throw new HRAppException(ErrorType.INVALID_SHIFT_TIMING);
                     }
                 });
             }
-                return assignShift(userId, dto.startDate(), dto.endDate());
+             assignShift(userId, d.startDate(), d.endDate(), d.shiftId());
+        });
+        return true;
     }
 
-    public Boolean assignShift(Long userId, LocalDate startDate, LocalDate endDate) {
+    public Boolean assignShift(Long userId, LocalDate startDate, LocalDate endDate, Long shiftId) {
 
         ShiftTracking shiftTracking = ShiftTracking.builder()
                 .userId(userId)
                 .beginDate(startDate)
                 .endDate(endDate)
+                .shiftId(shiftId)
                 .build();
         shiftTrackingRepository.save(shiftTracking);
         return true;

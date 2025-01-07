@@ -43,8 +43,8 @@ public class ShiftController {
     }
 
     @PostMapping(ASSIGN_SHIFT)
-    public ResponseEntity<BaseResponse<Boolean>> assignShift(@RequestBody @Valid AssignShiftRequestDto dto){
-        Optional<Long> managerIdOptional = jwtManager.verifyToken(dto.token());
+    public ResponseEntity<BaseResponse<Boolean>> assignShift(@RequestBody @Valid List<AssignShiftRequestDto> dto){
+        Optional<Long> managerIdOptional = jwtManager.verifyToken(dto.getFirst().token());
         if (managerIdOptional.isEmpty()) {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
