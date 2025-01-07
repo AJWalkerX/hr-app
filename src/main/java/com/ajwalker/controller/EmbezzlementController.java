@@ -4,7 +4,6 @@ import com.ajwalker.dto.request.AddEmbezzlementRequestDto;
 import com.ajwalker.dto.request.AssigmentEmbezzlementRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.EmbezzlementResponseDto;
-import com.ajwalker.dto.response.GetEmbezzlementDetailsResponseDto;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
 import com.ajwalker.service.EmbezzlementService;
@@ -68,19 +67,7 @@ public class EmbezzlementController {
 				                         .data(embezzlementService.assigmentEmbezzlement(dto,managerId.get()))
 		                                     .build());
 	}
-	@GetMapping(GET_EMBEZZLEMENT_DETAILS)
-	public ResponseEntity<BaseResponse<GetEmbezzlementDetailsResponseDto>> getEmbezzlementDetails(@RequestParam(name = "token") String token, @PathVariable Long embezzlementId){
-		Optional<Long> managerId = jwtManager.verifyToken(token);
-		if(managerId.isEmpty()){
-			throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
-		}
-		return ResponseEntity.ok(BaseResponse.<GetEmbezzlementDetailsResponseDto>builder()
-				                         .message("zimmet detay bilgisi getirildi")
-				                         .code(200)
-				                         .success(true)
-				                         .data(embezzlementService.getEmbezzlementDetails(embezzlementId))
-		                                     .build());
-	}
+	
 	
 
 }
