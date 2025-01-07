@@ -23,6 +23,7 @@ public class DefaultData {
     private final EmbezzlementRepository embezzlementRepository;
     private final PersonalSpendingRepository personalSpendingRepository;
     private final WorkHolidayRepository workHolidayRepository;
+    private final ShiftRepository shiftRepository;
     
     
     @PostConstruct
@@ -59,6 +60,9 @@ public class DefaultData {
         }
         if (workHolidayRepository.count()==0) {
             workHolidayRepository.saveAll(WorkHolidayGenerator.generateWorkHolidayList());
+        }
+        if (shiftRepository.count()==0){
+            shiftRepository.saveAll(ShiftGenerator.generateShiftList());
         }
 
     }
