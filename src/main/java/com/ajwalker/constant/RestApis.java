@@ -65,5 +65,6 @@ public class RestApis {
 	public static final String GET_EMBEZZLEMENT_LIST =  "/get-embezzlement-list";
 	public static final String ASSIGMENT_EMBEZZLEMENT=  "/assignment-embezzlement";
 	public static final String GET_ALL_MY_EMBEZZLEMENT_LIST=  "/get-all-my-embezzlement-list";
+	public static final String DELETE_EMBEZZLEMENT_BY_USERID=  "/delete-embezzlement-by-userid";
 
 }

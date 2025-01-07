@@ -2,6 +2,7 @@ package com.ajwalker.service;
 
 import com.ajwalker.dto.request.AddEmbezzlementRequestDto;
 import com.ajwalker.dto.request.AssigmentEmbezzlementRequestDto;
+import com.ajwalker.dto.request.DeleteEmbezzlementRequestDto;
 import com.ajwalker.dto.response.EmbezzlementResponseDto;
 import com.ajwalker.dto.response.PersonalEmbezzlementResponseDto;
 import com.ajwalker.entity.Embezzlement;
@@ -13,6 +14,7 @@ import com.ajwalker.repository.EmbezzlementRepository;
 import com.ajwalker.utility.Enum.embezzlement.EEmbezzlementState;
 import com.ajwalker.utility.Enum.embezzlement.EEmbezzlementType;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -185,5 +187,17 @@ public class EmbezzlementService {
 				       .toLocalDate() // LocalDate'e dönüştür
 		)).collect(Collectors.toList());
 		
+	}
+	
+	public Boolean deleteEmbezzlementByUserId( DeleteEmbezzlementRequestDto dto) {
+		Optional<Embezzlement> optEmbezzlement = embezzlementRepository.findById(dto.embezzlementId());
+		if (optEmbezzlement.isEmpty()) {
+			throw new HRAppException(ErrorType.NOT_FOUND_EMBEZZLEMENT);
+		}
+		Embezzlement embezzlement = optEmbezzlement.get();
+		embezzlement.setUserId(null);
+		embezzlement.setEmbezzlementState(EEmbezzlementState.PENDING);
+		embezzlementRepository.save(embezzlement);
+		return true;
 	}
 }

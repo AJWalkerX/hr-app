@@ -2,6 +2,7 @@ package com.ajwalker.controller;
 
 import com.ajwalker.dto.request.AddEmbezzlementRequestDto;
 import com.ajwalker.dto.request.AssigmentEmbezzlementRequestDto;
+import com.ajwalker.dto.request.DeleteEmbezzlementRequestDto;
 import com.ajwalker.dto.response.BaseResponse;
 import com.ajwalker.dto.response.EmbezzlementResponseDto;
 import com.ajwalker.dto.response.PersonalEmbezzlementResponseDto;
@@ -83,5 +84,18 @@ public class EmbezzlementController {
 		                                     .build());
 	}
 	
+	@PutMapping(DELETE_EMBEZZLEMENT_BY_USERID)
+	public  ResponseEntity<BaseResponse<Boolean>> deleteEmbezzlementByUserId(@RequestBody @Valid DeleteEmbezzlementRequestDto dto){
+		Optional<Long> managerId = jwtManager.verifyToken(dto.token());
+		if(managerId.isEmpty()){
+			throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+		}
+		return  ResponseEntity.ok(BaseResponse.<Boolean>builder()
+				                          .message("personal ataması başarıyla kaldırıldı")
+				                          .success(true)
+				                          .code(200)
+				                          .data(embezzlementService.deleteEmbezzlementByUserId(dto))
+		                                      .build());
+	}
 
 }
