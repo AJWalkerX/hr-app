@@ -12,7 +12,6 @@ import com.ajwalker.entity.PersonalSpending;
 import com.ajwalker.entity.User;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
-import com.ajwalker.mapper.PersonalDocumentMapper;
 import com.ajwalker.utility.Enum.EState;
 import com.ajwalker.utility.Enum.holiday.EHolidayState;
 import com.ajwalker.utility.Enum.personalSpending.ESpendingState;
@@ -20,7 +19,6 @@ import com.ajwalker.utility.Enum.user.EEmploymentStatus;
 import com.ajwalker.utility.Enum.user.EGender;
 import com.ajwalker.utility.Enum.user.EPosition;
 import com.ajwalker.utility.Enum.user.EUserState;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -80,8 +78,8 @@ public class ManagerService {
     
     
     
-    public List<UserPermitResponseDto> getUserPermitList(){
-        return userService.getUserPermitList();
+    public List<UserPermitResponseDto> getUserPermitList(Long managerId){
+        return userService.getUserPermitList(managerId);
     }
 
 

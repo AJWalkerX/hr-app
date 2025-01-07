@@ -9,7 +9,6 @@ import com.ajwalker.entity.User;
 import com.ajwalker.entity.WorkHoliday;
 import com.ajwalker.exception.ErrorType;
 import com.ajwalker.exception.HRAppException;
-import com.ajwalker.mapper.PersonalDocumentMapper;
 import com.ajwalker.mapper.UserMapper;
 import com.ajwalker.repository.UserRepository;
 import com.ajwalker.utility.Enum.EState;
@@ -21,7 +20,6 @@ import com.ajwalker.utility.Enum.user.EUserState;
 import com.ajwalker.utility.JwtManager;
 import com.ajwalker.view.VwPermitUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -191,9 +189,18 @@ public class UserService {
 		return userRepository.findAllUserByUserState(inReview);
 	}
 	
-	public List<UserPermitResponseDto> getUserPermitList() {
-		
-		List<WorkHoliday> allWorkHolidaysInPending = workHolidayService.findAllWorkHolidaysInPending();
+	public List<UserPermitResponseDto> getUserPermitList(Long managerId) {
+		Optional<User> managerOptional = findById(managerId);
+		if(managerOptional.isEmpty()) {
+			throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
+		}
+		User manager = managerOptional.get();
+		List<User> allPersonals = findUsersByCompanyId(manager.getCompanyId());
+		List<Long> allPersonalsIds = allPersonals.stream()
+				.map(User::getId)  // Extracts the ID
+				.toList();
+
+		List<WorkHoliday> allWorkHolidaysInPending = workHolidayService.findAllWorkHolidaysInPending(allPersonalsIds);
 		if (allWorkHolidaysInPending.isEmpty()) {
 			throw new HRAppException(ErrorType.NOTFOUND_WORKHOLIDAY_INPENDING);
 		}

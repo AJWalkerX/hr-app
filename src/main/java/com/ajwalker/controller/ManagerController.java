@@ -46,12 +46,16 @@ public class ManagerController {
     }
     
     @GetMapping(GETPERMITUSERLIST)
-    public ResponseEntity<BaseResponse<List<UserPermitResponseDto>>> getUserPermitInfo(){
+    public ResponseEntity<BaseResponse<List<UserPermitResponseDto>>> getUserPermitInfo(@RequestParam(name = "token") String token){
+        if(jwtManager.verifyToken(token).isEmpty()){
+            throw new HRAppException(ErrorType.INVALID_TOKEN);
+        }
+        Long managerId = jwtManager.verifyToken(token).get();
         return ResponseEntity.ok(BaseResponse.<List<UserPermitResponseDto>>builder()
                                              .message("kullanıcı bilgileri listelendi")
                                              .code(200)
                                              .success(true)
-                                             .data(managerService.getUserPermitList())
+                                             .data(managerService.getUserPermitList(managerId))
                                              .build());
         
     }
