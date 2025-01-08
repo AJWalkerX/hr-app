@@ -138,19 +138,33 @@ public class UserService {
 	}
 
 	public boolean updateUserPassword(NewPasswordRequestDto dto) {
+		Optional<Long> userIdOptional = Optional.empty();
+		Optional<User> userOptional = Optional.empty();
+		if(dto.token() != null) {
+		userIdOptional = jwtManager.verifyToken(dto.token());
+		}
 		Optional<Long> userIdByAuthCode = userAuthVerifyCodeService.findUserIdByAuthCode(dto.authCode());
-		System.out.println(dto.authCode());
-		if(userIdByAuthCode.isEmpty()) {
-			throw new HRAppException(ErrorType.NOTFOUND_USER);
+		if(userIdOptional.isEmpty()) {
+			if(userIdByAuthCode.isEmpty()) {
+				throw new HRAppException(ErrorType.NOTFOUND_USER);
+			}
+			else{
+		 		userOptional = userRepository.findById(userIdByAuthCode.get());
+				if (userOptional.isEmpty()) {
+					throw new HRAppException(ErrorType.NOTFOUND_USER);
+				}
+				User user = userOptional.get();
+				user.setPassword(passwordEncoder.encode(dto.password()));
+				userRepository.save(user);
+			}
 		}
-		Optional<User> userOptional = userRepository.findById(userIdByAuthCode.get());
-		if (userOptional.isEmpty()) {
-			throw new HRAppException(ErrorType.NOTFOUND_USER);
-		}
-		User user = userOptional.get();
-		user.setPassword(passwordEncoder.encode(dto.password()));
-		userRepository.save(user);
+		Long userID = userIdOptional.get();
+		userRepository.findById(userID).ifPresent(user -> {
+			user.setPassword(passwordEncoder.encode(dto.password()));
+			userRepository.save(user);
+		});
 		return true;
+
 	}
 	
 	public GetUserProfileInfoDto getUserProfileInfo(Long userId) {

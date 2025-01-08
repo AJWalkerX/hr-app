@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record NewPasswordRequestDto(
+        String token,
         String authCode,
         @NotNull
         @Size(min = 8, max = 64)
