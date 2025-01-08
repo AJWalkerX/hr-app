@@ -24,7 +24,7 @@ public class ShiftTrackingService {
             List<ShiftTracking> shiftTrackingList = shiftTrackingRepository.findAllByUserId(userId);
             if (!shiftTrackingList.isEmpty()) {
                 shiftTrackingList.forEach(shiftTracking -> {
-                    if (shiftTracking.getEndDate().isBefore(d.startDate())) {
+                    if (shiftTracking.getBeginDate().isBefore(d.endDate())) {
                         throw new HRAppException(ErrorType.INVALID_SHIFT_TIMING);
                     }
                 });
