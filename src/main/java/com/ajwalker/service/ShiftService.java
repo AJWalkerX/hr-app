@@ -37,11 +37,12 @@ public class ShiftService {
             throw new HRAppException(ErrorType.NOTFOUND_MANAGER);
         }
             User user = userOptional.get();
-        if(shiftRepository.count() == 0) {
+        Long companyId = user.getCompanyId();
+        if(shiftRepository.findAllByCompanyId(companyId).isEmpty()) {
             return createShift(dtoList, user);
         }
         else {
-            List<Shift> allShifts = shiftRepository.findAll();
+            List<Shift> allShifts = shiftRepository.findAllByCompanyId(companyId);
             AtomicLong totalMinutes = new AtomicLong(allShifts.stream()
                     .mapToLong(shift -> {
                         long duration = Duration.between(shift.getBeginHour(), shift.getEndHour()).toMinutes();
